@@ -14,14 +14,16 @@ const config = {
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'https://your-miko-site.com',
+  url: 'https://Miko-Protocol.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/',
+  baseUrl: '/docs/',
 
   // GitHub pages deployment config.
-  organizationName: 'your-org', // Usually your GitHub org/user name.
-  projectName: 'miko-protocol', // Usually your repo name.
+  organizationName: 'Miko-Protocol', // Usually your GitHub org/user name.
+  projectName: 'docs', // Usually your repo name.
+
+  trailingSlash: false,
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -47,6 +49,7 @@ const config = {
       ({
         docs: {
           sidebarPath: './sidebars.js',
+	  routeBasePath:'/',
           // Please change this to your repo.
         },
         blog: false, // Disabled blog functionality
@@ -63,7 +66,7 @@ const config = {
       // Replace with your project's social card
       image: 'img/miko-social-card.jpg',
       colorMode: {
-        defaultMode: 'dark',
+        defaultMode: 'light',
         disableSwitch: false,
         respectPrefersColorScheme: true,
       },
@@ -95,7 +98,7 @@ const config = {
             items: [
               {
                 label: 'Whitepaper',
-                to: '/docs/introduction',
+                to: '/introduction',
               },
             ],
           },
