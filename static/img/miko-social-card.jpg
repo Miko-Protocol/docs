@@ -1,0 +1,16 @@
+
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0c0c1e"/>
+      <stop offset="100%" stop-color="#1a1a2e"/>
+    </linearGradient>
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f000b8"/>
+      <stop offset="100%" stop-color="#f880dd"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bgGrad)"/>
+  <text x="600" y="280" font-family="Arial, sans-serif" font-size="80" fill="url(#textGrad)" text-anchor="middle" font-weight="bold">MIKO Protocol</text>
+  <text x="600" y="380" font-family="Arial, sans-serif" font-size="40" fill="#e0e0e0" text-anchor="middle">The Dawn of Dynamic, Intelligence-Based Yield</text>
+</svg>

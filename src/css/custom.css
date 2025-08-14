@@ -1,0 +1,83 @@
+/* Custom styling for the MIKO Protocol documentation site. */
+
+:root {
+  /* Primary palette inspired by Miko's pastel anime aesthetic. */
+  --ifm-color-primary: #a78bfa;
+  --ifm-color-primary-dark: #7c3aed;
+  --ifm-color-primary-darker: #6c2bd9;
+  --ifm-color-primary-darkest: #5820b0;
+  --ifm-color-primary-light: #c4b5fd;
+  --ifm-color-primary-lighter: #ddd6fe;
+  --ifm-color-primary-lightest: #ede9fe;
+
+  --ifm-background-color: #fdfbff;
+  --ifm-footer-background-color: #1e1b3a;
+
+  /* Custom font sizes */
+  --ifm-heading-font-weight: 700;
+}
+
+/* Hero banner customisation */
+.hero--primary {
+  background-image: url('/img/hero-bg.png');
+  background-size: cover;
+  background-position: center;
+  color: #ffffff;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* Darken overlay for readability */
+.hero--primary:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(16, 16, 32, 0.4);
+  z-index: -1;
+}
+
+/* Buttons styling */
+.button.button--secondary.button--lg {
+  border-radius: 24px;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease;
+}
+.button.button--secondary.button--lg:hover {
+  transform: translateY(-2px);
+}
+
+/* Call out boxes for important content */
+.callout {
+  padding: 1rem 1.5rem;
+  border-left: 4px solid var(--ifm-color-primary);
+  margin: 1rem 0;
+  background-color: var(--ifm-color-primary-lightest);
+  border-radius: 4px;
+}
+
+/* Override table styling to ensure readability on light background */
+.markdown table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1rem 0;
+}
+.markdown table th,
+.markdown table td {
+  border: 1px solid var(--ifm-color-primary-light);
+  padding: 0.5rem;
+}
+
+.markdown table thead {
+  background-color: var(--ifm-color-primary-lightest);
+}
+
+/* Mermaid diagrams colour overrides for pastel theme */
+:root .mermaid {
+  --mermaid-font-family: inherit;
+  --mermaid-node-background: var(--ifm-color-primary-lightest);
+  --mermaid-edge-label-background: var(--ifm-background-color);
+}
+
