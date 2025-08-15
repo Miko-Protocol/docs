@@ -67,8 +67,8 @@ const config = {
       image: 'img/miko-social-card.jpg',
       colorMode: {
         defaultMode: 'light',
-        disableSwitch: false,
-        respectPrefersColorScheme: true,
+        disableSwitch: true,
+        respectPrefersColorScheme: false,
       },
       navbar: {
         title: 'MIKO Protocol',

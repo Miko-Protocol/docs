@@ -12,6 +12,8 @@ The Miko AI Agent is not a simple automation script. It is designed as an autono
 
 ### 1.1 Miko Character Profile: The Crypto-Native Explorer
 
+![miko_profile](./images/miko_profile.png)
+
 At the heart of the MIKO Protocol's appeal is the 'Miko' persona itself. This persona is clearly defined as a sort of 'character bible' for the AI and consists of the following core elements:
 
 -   **Identity and Background:** Miko is a high school girl inspired by classic Japanese anime. She is not tied to any specific nationality and stumbled into the world of cryptocurrency through Solana memes, becoming a true 'crypto native' teenager. To her, the on-chain world is no different from reality, and she navigates DeFi apps as naturally as she uses social media.
