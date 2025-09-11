@@ -49,7 +49,7 @@ const config = {
       ({
         docs: {
           sidebarPath: './sidebars.js',
-	  routeBasePath:'/',
+	  routeBasePath:'/docs',
           // Please change this to your repo.
         },
         blog: false, // Disabled blog functionality
