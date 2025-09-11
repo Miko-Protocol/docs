@@ -9,7 +9,7 @@ As the MIKO Protocol combines autonomous systems with financial incentives, it p
 ## 1. Smart Contract Security and Token Immutability
 
 -   **Token Contract Ensuring Immutability:** MIKO's SPL token has no backdoors. The mint authority is permanently renounced and the freeze authority is disabled, meaning the total supply cannot be changed, and it is impossible to freeze specific wallets. This guarantees that the MIKO token cannot be arbitrarily manipulated by the development team.
--   **Permissioned Off-Chain Execution and On-Chain Verification:** The Keeper Bot is a centralized component, but its actions are thoroughly audited and verified through on-chain logs. All fund movements require the Keeper's secure key signature, and any unintended activity is immediately identifiable on-chain. Additionally, 'Verification Contracts' are introduced during the development process to ensure that core logic (e.g., 5% fee accuracy, system account exclusion) is mechanically verified at each deployment stage, providing an extra layer of trust.
+-   **Permissioned Off-Chain Execution and On-Chain Verification:** The Keeper Bot is a centralized component, but its actions are thoroughly audited and verified through on-chain logs. All fund movements require the Keeper's secure key signature, and any unintended activity is immediately identifiable on-chain. Additionally, 'Verification Contracts' are introduced during the development process to ensure that core logic (e.g., 6% fee accuracy, system account exclusion) is mechanically verified at each deployment stage, providing an extra layer of trust.
 
 ## 2. Safeguards for Fair Reward Distribution
 

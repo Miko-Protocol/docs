@@ -11,7 +11,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 const config = {
   title: 'MIKO Protocol',
   tagline: "Solana's First AI-Driven Dynamic Reward Token", // <-- Updated Tagline
-  favicon: 'img/favicon.ico',
+  favicon: 'img/logo_2.png',
 
   // Set the production url of your site here
   url: 'https://Miko-Protocol.github.io',
@@ -74,7 +74,7 @@ const config = {
         title: 'MIKO Protocol',
         logo: {
           alt: 'MIKO Logo',
-          src: 'img/logo.svg',
+          src: 'img/logo_2.png',
         },
         items: [
           {

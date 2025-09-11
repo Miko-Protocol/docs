@@ -22,12 +22,15 @@ MIKO is committed to a 100% fair launch, ensuring equal opportunity for all part
 ```mermaid
 pie
     title MIKO Token Distribution
-    "Liquidity" : 90
+    "Liquidity" : 80
+    "Airdrop" : 10
     "Reserve" : 10
 ```
 
--   **Liquidity Poll: 90%**
-    - At the moment of launch, 90% of the total supply will be permanently locked into the liquidity pool to ensure a deep and stable market.
+-   **Liquidity Poll: 80%**
+    - At the moment of launch, 80% of the total supply will be permanently locked into the liquidity pool to ensure a deep and stable market.
+-   **Community Airdrop: 10%**
+    - This allocation is dedicated to fostering a vibrant and active community. These tokens will be distributed as rewards for meaningful engagement, such as creating valuable content, and contributing to the growth of the MIKO ecosystem. It serves as a direct incentive for our most dedicated supporters and ambassadors.
 -   **Ecosystem Reserve: 10%** 
     - This portion is reserved for the protocol's growth, including marketing initiatives, exchange listings, and other ecosystem developments.
 
