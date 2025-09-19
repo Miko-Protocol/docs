@@ -20,7 +20,7 @@ const FeatureList = [
     img: '/img/feature_tax_miko.png', // Placeholder path for Miko's image
     description: (
       <>
-        A permanent 5% fee on all MIKO token transactions provides a continuous
+        A permanent 6% fee on all MIKO token transactions provides a continuous
         stream of funding for rewards and development, powering the ecosystem.
       </>
     ),

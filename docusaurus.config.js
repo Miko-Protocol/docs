@@ -84,7 +84,7 @@ const config = {
             label: 'Whitepaper',
           },
           {
-            href: 'https://miko-protocol',
+            href: 'https://mikoprotocol.com',
             label: 'Website',
             position: 'right',
           },
@@ -98,7 +98,7 @@ const config = {
             items: [
               {
                 label: 'Whitepaper',
-                to: '/introduction',
+                to: '/docs/introduction',
               },
             ],
           },
@@ -111,21 +111,21 @@ const config = {
               },
               {
                 label: 'Telegram',
-                href: 'https://tg/',
+                href: 'https://t.me/mikoprotocol',
               },
             ],
           },
           {
             title: 'More',
             items: [
-              {
-                label: 'GitHub',
-                href: 'https://github.com/your-org/miko-protocol',
-              },
 	      {
 		label: 'HuggingFace',
-		href: 'https://hugingface/',
+		href: 'https://huggingface.co/projectmiko/miko-x-multibase-lora-ensemble',
 	      },
+              {
+                label: 'Youtube',
+                href: 'https://www.youtube.com/@miko-sound-stage',
+              },
             ],
           },
         ],
