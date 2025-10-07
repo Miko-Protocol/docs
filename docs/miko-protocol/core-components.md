@@ -12,7 +12,7 @@ The Miko AI Agent is not a simple automation script. It is designed as an autono
 
 ### 1.1 Miko Character Profile: The Crypto-Native Explorer
 
-![miko_profile](./images/miko_profile.png)
+![miko_profile](./images/miko_profile_size.png)
 
 At the heart of the MIKO Protocol's appeal is the 'Miko' persona itself. This persona is clearly defined as a sort of 'character bible' for the AI and consists of the following core elements:
 
@@ -35,5 +35,5 @@ The flow of funds collected from the tax drives an automated 'Reward Flywheel' a
 
 1.  **Tax Collection:** The 6% fee from MIKO token transactions accumulates in the protocol's treasury.
 2.  **Reward Funding:** 75% of the collected tax (equivalent to 4.5% of the total transaction value) is allocated to the reward pool.
-3.  **Dynamic Asset Purchase:** This 4/5% fund is used to programmatically buy the weekly reward token, selected by the Miko AI, from a Solana-based decentralized exchange (DEX).
+3.  **Dynamic Asset Purchase:** This 4.5% fund is used to programmatically buy the weekly reward token, selected by the Miko AI, from a Solana-based decentralized exchange (DEX).
 4.  **Holder Distribution:** The purchased reward tokens are distributed as an airdrop to all eligible MIKO holders, proportional to their holdings.

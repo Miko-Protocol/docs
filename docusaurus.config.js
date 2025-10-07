@@ -113,6 +113,10 @@ const config = {
                 label: 'Telegram',
                 href: 'https://t.me/mikoprotocol',
               },
+	      {
+		label: "Miko's Cicle",
+		href: 'https://circle.mikoprotocol.com',
+	      },
             ],
           },
           {

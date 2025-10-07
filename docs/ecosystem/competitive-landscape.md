@@ -10,13 +10,17 @@ The MIKO Protocol occupies a unique position within Solana's vibrant AI and rewa
 
 Solana is home to AI projects with various purposes and technologies. MIKO has a unique value proposition that clearly distinguishes it from them.
 
-| Feature | MIKO Protocol | ElizaOS | Zerebro | Hive AI | Neur | TETSUO |
+| Feature | MIKO Protocol | Kaito AI | ElizaOS | Zerebro | Hive AI | TETSUO |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Core Function** | Dynamic Yield Curation | AI Agent Operating System | Narrative & Culture Generation | Personalized DeFi Automation | Intelligent UI Copilot | AI-Powered Dev Infra |
-| **AI Methodology** | Hybrid ML/Statistical Analysis | Modular AI Dev Framework | RAG/Hyperstition | Event-Triggered Automation | LLM-Based Interface | Low-Level System Opt. AI |
-| **User Interaction** | Passive Holding (Receive Rewards) | For Developers (Build Agents) | Content Consumption | Active Strategy Setting | Natural Language Prompts | Dev Tools & APIs |
-| **Primary Token Utility** | Right to Receive Dynamic Rewards | Network Fees, Governance | N/A | Feature Access & Staking | Utility | Platform Access, Staking |
-| **Key Differentiator** | AI-Curated Dynamic Yield | Infrastructure for AI Agents | AI-Generated Culture | Codeless DeFi Automation | Open-Source Agent Framework | Developer-Centric AI Infra |
+| **Core Function** | Dynamic Yield Curation | AI-Powered Cyrpto Search | AI Agent Operating System | Narrative & Culture Generation | Personalized DeFi Automation | AI-Powered Dev Infra |
+| **AI Methodology** | Hybrid ML/Statistical Analysis | LLM-Based Info. Retrieval | Modular AI Dev Framework | RAG/Hyperstition | Event-Triggered Automation | Low-Level System Opt. AI |
+| **User Interaction** | Passive Holding & Social Engagement | Active Research & Sharing | For Developers (Build Agents) | Content Consumption | Active Strategy Setting | Dev Tools & APIs |
+| **Primary Token Utility** | Right to Receive Dynamic Rewards | Gamified Rewards (Yaps) | Network Fees, Governance | N/A | Feature Access & Staking | Platform Access, Staking |
+| **Key Differentiator** | AI-Curated Dynamic Yield | Gamified Info. Discovery | Infrastructure for AI Agents | AI-Generated Culture | Codeless DeFi Automation | Developer-Centric AI Infra |
+
+### MIKO vs. Kaito AI: Direct Yield vs. Gamified Research
+
+Kaito AI operates as an AI-powered search engine for crypto, using a gamified point system called "Yaps" to incentivize user research. While MIKO also features a point-based system [("Miko's Circle")](https://circle.mikoprotocol.com), its function is different. MIKO's core product is direct, tax-funded weekly yield, not a research tool. "Miko's Circle" is a complementary engagement layer to foster community interaction, providing the AI with richer data for long-term improvement and paving the way for future "Participate-to-Earn" rewards.
 
 ### MIKO vs. ElizaOS: Application vs. Framework
 
@@ -30,19 +34,15 @@ Zerebro uses RAG technology to generate 'hyperstition' content that blends fact 
 
 Hive AI provides tools for users to build their own DeFi automation strategies (e.g., staking, liquidity management) through natural language commands without coding. It is a 'Do-It-Yourself' platform. In contrast, MIKO's AI operates for the benefit of all holders, selecting a single reward token for the collective. MIKO is a 'Do-It-For-Me' protocol, suitable for users who wish to delegate complex analysis and execution to an AI.
 
-### MIKO vs. Neur: Backend Intelligence vs. Frontend Assistance
-
-Neur.sh is an 'intelligent copilot' that helps users interact easily with the Solana blockchain through a natural language interface, utilizing LLMs. It acts as a frontend assistant that executes user commands. MIKO's AI, on the other hand, independently analyzes data and makes its own decisions in the backend, invisible to the user. The result of its decisions is a financial reward. If Neur's AI 'executes commands' for the user, MIKO's AI 'makes decisions'.
-
 ### MIKO vs. TETSUO: Social-Financial Application vs. Developer Infrastructure
 
 TETSUO is an infrastructure project focused on AI-powered developer tools and low-level systems to aid in high-performance app development on Solana. Unlike MIKO, it has no user-facing persona and helps developers optimize smart contracts or build trading systems with AI assistance. Consequently, TETSUO's community is developer-centric, and its token ($TETSUO) functions as a utility token for platform access or governance, not for reward distribution. MIKO is clearly distinguished by offering entertainment and direct financial rewards to general investors through an AI persona, whereas TETSUO provides system-building tools for a technical developer community.
 
 ### Synthesis: MIKO's Unique Synergy
 
-In conclusion, MIKO creates its differentiation by uniquely integrating elements that other projects pursue individually. It has aspects of a social AI that generates content like Zerebro or Hive AI, and it connects AI activity to token value like ElizaOS or TETSUO. It also utilizes a knowledge base and community input like Neur or Hive AI.
+In conclusion, MIKO creates its differentiation by uniquely integrating elements that other projects pursue individually. It has the content-generating social aspect of Zerebro, connects AI activity to token value like ElizaOS, and incorporates gamified community engagement like Kaito AI. 
 
-However, MIKO's core differentiator is that it is the **first attempt to directly link the social activities of an AI agent (content creation and analysis) with the economic mechanism of a token (dynamic rewards)**. This model, on one hand, encourages active community participation (like a content-based agent) and, on the other, provides direct financial rewards to that community (like an investment-based agent). It is at this intersection that MIKO's unique synergy arises.
+However, MIKO's core differentiator is that it is the __first to directly link the analytical output of an AI agent with a direct, collective financial mechanism (dynamic tax-based rewards)__. While other platforms reward user _activity_ or provide research _tools_, MIKO's AI acts as an autonomous asset manager for the entire community. It is at this intersection of AI-driven financial decisions and direct on-chain value distribution that MIKO's unique synergy arises.
 
 ## 2. The Evolution of Solana Reward Tokens
 
