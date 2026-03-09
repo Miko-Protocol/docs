@@ -93,7 +93,7 @@ This is not a theoretical model. It is a production system. The AI's performance
 -   **AI-to-Value Pipeline:** The first protocol where an AI agent's analytical output is directly converted into on-chain token purchases and distributed to holders. Miko doesn't recommend — Miko acts.
 -   **Multi-Source Fact Verification:** Before any information influences a reward selection, it passes through an adaptive fact-checking pipeline that consults multiple independent sources and requires evidence convergence. In a market where misinformation moves millions, MIKO's AI verifies before it acts.
 -   **Self-Improving Reward Intelligence:** The Reward Selection Algorithm evolves through three statistical phases, automatically transitioning as data accumulates and rolling back if performance degrades. Every selection feeds back into the model, making future selections more precise.
--   **Sustainable On-Chain Funding:** A permanent transfer tax on all \$MIKO transactions, implemented via Solana's Token-2022 standard, provides a continuous and immutable funding stream for holder rewards. As long as \$MIKO is traded, the reward pool is funded.
+-   **Sustainable On-Chain Funding:** A permanent 6% transfer tax on all \$MIKO transactions, implemented via Solana's Token-2022 standard, provides a continuous and immutable funding stream for holder rewards. As long as \$MIKO is traded, the reward pool is funded.
 </div>
 
 ## 4. The Information Problem MIKO Solves

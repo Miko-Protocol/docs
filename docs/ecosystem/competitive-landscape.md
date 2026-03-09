@@ -79,7 +79,7 @@ $$
 \text{Holder Return}_{\text{week}} = \frac{\text{Holder Balance}}{\text{Total Eligible Supply}} \times \text{Reward Pool}_{\text{week}}
 $$
 
-Every \$MIKO transaction generates a transfer tax. The majority of that tax flows into the reward pool. The reward pool purchases the AI-selected token. The purchased tokens are distributed pro-rata to eligible holders. There is no platform intermediary, no staking requirement, no governance vote needed. Hold the token, receive the reward.
+Every \$MIKO transaction generates a 6% transfer tax. The majority of that tax flows into the reward pool. The reward pool purchases the AI-selected token. The purchased tokens are distributed pro-rata to eligible holders. There is no platform intermediary, no staking requirement, no governance vote needed. Hold the token, receive the reward.
 
 ### MIKO vs. Autonomous Trading Agents
 

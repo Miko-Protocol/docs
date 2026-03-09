@@ -137,6 +137,6 @@ graph LR
     style F fill:#86efac,stroke:#16a34a
 ```
 
-The tax-funded reward mechanism ensures this is not dependent on external revenue or voluntary distribution. It is a protocol-level, immutable funding stream built into every \$MIKO transaction via Token-2022. As long as \$MIKO is traded, rewards are funded. As long as Miko's AI operates, rewards are intelligently allocated.
+The 6% transfer tax built into every \$MIKO transaction via Token-2022 ensures this is not dependent on external revenue or voluntary distribution. It is a protocol-level, immutable funding stream. As long as \$MIKO is traded, rewards are funded. As long as Miko's AI operates, rewards are intelligently allocated.
 
 **In a market where AI agents are becoming extraordinarily capable, MIKO asks a simple question: capable for whom?** If the answer isn't "for the token holder," then the capability, however impressive, is economically irrelevant to the person holding the token.
