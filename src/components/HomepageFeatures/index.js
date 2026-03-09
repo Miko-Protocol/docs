@@ -6,22 +6,20 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 const FeatureList = [
   {
-    title: 'Synergy of AI and Tokenomics',
-    img: '/img/feature_ai_miko.png', // Placeholder path for Miko's image
+    title: 'AI-Driven Weekly Rewards',
+    img: '/img/feature_tax_miko.png', // Placeholder path for Miko's image
     description: (
       <>
-        An AI agent analyzes crypto social sentiment to select weekly reward tokens, 
-        creating a feedback loop between community trends and holder rewards.
+        Every week, Miko's AI analyzes the Solana ecosystem, selects an optimal reward token, and distributes it directly to eligible holders — automatically.
       </>
     ),
   },
   {
-    title: 'Sustainable Funding Through Taxation',
-    img: '/img/feature_tax_miko.png', // Placeholder path for Miko's image
+    title: 'Fact-Checked, Self-Improving AI',
+    img: '/img/feature_ai_miko.png', // Placeholder path for Miko's image
     description: (
       <>
-        A permanent 6% fee on all MIKO token transactions provides a continuous
-        stream of funding for rewards and development, powering the ecosystem.
+        A multi-source verification pipeline ensures decisions are grounded in verified data. A 3-phase ML system evolves with every selection, getting sharper over time.
       </>
     ),
   },
@@ -30,8 +28,7 @@ const FeatureList = [
     img: '/img/feature_community_miko.png', // Placeholder path for Miko's image
     description: (
       <>
-        The 'Miko' AI agent acts as a public-facing persona on X (Twitter), 
-        sharing insights, memes, and reward announcements to engage the community.
+        The 'Miko' AI agent acts as a public-facing persona on X (Twitter), sharing insights, memes, and reward announcements to engage the community.
       </>
     ),
   },

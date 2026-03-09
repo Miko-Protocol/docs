@@ -2,138 +2,345 @@
 title: AI Architecture
 ---
 
-# Technical Architecture: The Inner Workings of the MIKO Protocol
+# Technical Architecture: The Intelligence Stack
 
-The innovation of the MIKO Protocol is based on the combination of a sophisticated AI agent architecture and smart contracts that leverage the latest technologies of the Solana blockchain.
+Miko's intelligence is not a single model responding to prompts. It is a production system composed of specialized layers, each engineered for a specific function in the pipeline from raw data to on-chain execution. This section details each layer — what it does, how it works, and why it matters for holders.
 
-## Miko AI Agent: A Multi-Layered Intelligence Stack
-
-The Miko AI Agent is not a single model but a complex intelligence system composed of several functional layers. Each layer performs a specific task and interacts organically to arrive at a final decision.
+## Architecture Overview
 
 ```mermaid
 graph TD
     subgraph D["Data Sources"]
         direction LR
-        DS1>"KOL Tweets"]
-        DS2>"Community Interactions"]
-        DS3>"On-Chain Data"]
+        DS1>"KOL Tweets<br/>(400+ monitored)"]
+        DS2>"Community Mentions<br/>& Recommendations"]
+        DS3>"On-Chain Data<br/>(CoinGecko/Dexscreener/Birdeye API)"]
     end
-    subgraph M["Miko AI Agent"]
+    subgraph M["Miko AI Agent — Intelligence Stack"]
         direction TB
-        L1["Layer 1#46; Data Ingestion &<br/>Semantic Filtering"]
-        L2["Layer 2#46; Proprietary Knowledge Graph &<br/>Fact-Checking Engine"]
-        L3["Layer 3#46; Persona-Driven<br/>Generation Core (PGC)"]
-        L4["Layer 4#46; Reward Selection Algorithm (RSA)"]
+        L1["Layer 1: Data Ingestion<br/>& Semantic Filtering"]
+        L2["Layer 2: Knowledge Graph<br/>& Fact-Checking Engine"]
+        L3["Layer 3: Persona-Driven<br/>Generation Core"]
+        L4["Layer 4: Reward Selection<br/>Algorithm (RSA)"]
         L1 --> L2
         L2 --> L3
         L2 --> L4
     end
-    subgraph O["Outputs"]
+    subgraph X["Execution Layer"]
         direction LR
-        O1>"Social Media<br/>(Tweet Generation)"]
-        O2>"On-Chain Execution<br/>(Reward Distribution)"]
+        X1>"Social Output<br/>(X/Twitter)"]
+        X2>"On-Chain Module<br/>(Purchase & Distribute)"]
     end
     DS1 --> L1
     DS2 --> L1
     DS3 --> L1
-    L3 --> O1
-    L4 --> O2
+    L3 --> X1
+    L4 --> X2
     style L1 fill:#bfdbfe,stroke:#60a5fa
     style L2 fill:#bfdbfe,stroke:#60a5fa
     style L3 fill:#bfdbfe,stroke:#60a5fa
     style L4 fill:#bfdbfe,stroke:#60a5fa
+    style X2 fill:#6ee7b7,stroke:#047857
 ```
 
-### Layer 1: Data Ingestion and Semantic Filtering Pipeline
+## Layer 1: Data Ingestion and Semantic Filtering
 
-This layer is at the forefront of information gathering. It connects to various data sources like the Twitter API to collect raw data in real-time. The collected data is not simply stored but refined through an analysis engine that uses Natural Language Processing (NLP) and heuristic rules. This process filters out irrelevant 'noise' and identifies only discourses directly related to cryptocurrency. Furthermore, each piece of information is scored based on factors like uniqueness, relevance to the blockchain community, and likely engagement, and is finally categorized by topic (e.g., DeFi, NFT, Memecoin) and sentiment (positive, negative, neutral).
+The first layer is the system's sensory apparatus. It connects to the Twitter API and on-chain data sources to collect raw information in real-time.
 
-### Layer 2: Proprietary Knowledge Graph and Fact-Checking Engine
+Raw data is not useful data. This layer applies NLP-based analysis and heuristic rules to:
 
-This is the key element that differentiates Miko from other AI agents. Miko does not simply react to individual tweets; it integrates collected information into a structured 'Knowledge Graph'. This graph maps the complex relationships between tokens, KOLs, market events, and related projects. Important facts and contexts are encoded and stored as vector embeddings for efficient similarity searches. This semantic search capability allows the AI to quickly find past, similar insights for a given query, providing 'background knowledge' in the prompts for generated content, thereby increasing the depth and accuracy of its responses.
+1.  **Filter noise** — remove irrelevant content (non-crypto, spam, duplicate information)
+2.  **Score relevance** — evaluate each data point for uniqueness, community relevance, and potential engagement
+3.  **Classify content** — categorize by topic (DeFi, memecoin, infrastructure, etc.) and sentiment (positive, negative, neutral)
+4.  **Cluster related discussions** — identify when multiple KOLs are discussing the same topic independently, using HDBSCAN clustering on TF-IDF vectors and embedding similarity
 
-Furthermore, a "fact-checking" engine evaluates the credibility of information entering the knowledge graph. It cross-verifies claims on social media with reliable external data sources such as on-chain data, major news APIs, and official project announcements, assigning a weight to the information. The verification result is attached to the knowledge base with a 'truthfulness flag'. This acts as a crucial safeguard against decisions based on false information or manipulated narratives, positioning MIKO as a trusted source of information in a speculation-rampant environment.
+The clustering is critical for the fact-checking pipeline downstream. When three independent KOLs make the same claim, it carries different weight than a single source making a claim that nobody corroborates:
 
-### Layer 3: Persona-Driven Generation Core (PGC)
+$$
+\text{Source Weight}(claim) = \log\left(1 + \frac{n_{\text{distinct\_authors}}}{\alpha}\right) \times \text{avg\_persuasion\_score}
+$$
 
-This layer is the generation engine that creates Miko's 'voice'. It focuses on embodying a living personality rather than just generating text. It runs a highly-tuned Large Language Model (LLM) based on the refined and verified knowledge and insights from Layer 2, expressing Miko's diverse persona through sophisticated prompt engineering.
+Where $n_{\text{distinct\_authors}}$ is the count of independent sources making the claim and $\alpha = 0.8$ is the power law exponent derived from social media attention distribution (Newman, 2005).
 
-The key is to move away from mechanical responses that maintain a single tone and manner. To achieve this, various **"reaction modes"** are designed. For example, it expresses pure curiosity in a *'Cheerful Explorer'* mode for friendly questions, adds wit in a *'Witty Friend'* mode for humorous interactions, and presents unexpected insights in a *'Sudden Philosopher'* mode for in-depth questions. These Tone Guidelines form the basis of every generated tweet, guiding the LLM to select the most appropriate emotion and style for the situation while maintaining the overall character. This multi-layered approach makes Miko respond dynamically to various situations as if she were a real person, playing a key role in forming a deep bond with the community.
+## Layer 2: Knowledge Graph and Multi-Source Fact-Checking Engine
 
-### Layer 4: Reward Selection Algorithm (RSA) - A Hybrid ML and Statistical Approach
+This is the layer that most fundamentally differentiates Miko from other AI agents.
 
-This layer is the 'brain' of the reward system, adopting a hybrid approach that starts with a clear rule-based system and gradually evolves into a sophisticated machine learning model as data accumulates. This evolutionary design ensures the system's stability while equipping it with the self-improving ability to adapt optimally to market changes over the long term.
+### Knowledge Graph
+
+Miko does not treat each piece of information as isolated. Instead, it integrates data into a structured **Knowledge Graph** stored in PostgreSQL with vector embeddings for semantic search. This graph maps relationships between tokens, KOLs, market events, and projects. When Miko encounters new information about a token, it retrieves all relevant context — past performance, associated KOLs, historical claims, and verification status — enabling informed decisions rather than reactive responses.
+
+The semantic search capability uses cosine similarity on embedding vectors:
+
+$$
+\text{relevance}(q, d) = \frac{\vec{q} \cdot \vec{d}}{||\vec{q}|| \times ||\vec{d}||}
+$$
+
+Results above the configured importance threshold ($\tau = 0.4$ by default) are surfaced as contextual grounding for both content generation and reward selection.
+
+### The Fact-Checking Pipeline
+
+Most AI agents in the crypto space process LLM output directly — what the model generates is what gets published or acted upon, with no independent verification step. When such agents control financial actions (trading, liquidity provision, token deployment), the cost of unverified information becomes real capital loss.
+
+Miko's Fact-Checking Engine is a four-stage adaptive pipeline that consults **six independent verification providers**:
 
 ```mermaid
 graph TD
-    subgraph "1#46; Data Ingestion & Preprocessing"
-        A>"Community Suggestions<br/>(Mentions/Replies)"] --> C
-        B>"KOL Tweets"] --> C
-        C["Token Candidate Extraction & Filtering"]
-        C --> D["PostAnalyzer<br>Sentiment/Persuasion Analysis"]
+    A["Claim enters pipeline<br/>(from KOL tweet, community mention,<br/>or trending topic)"] --> B
+
+    subgraph "Stage 1: Strategy Planning"
+        B["AI evaluates claim characteristics:<br/>• Importance score (0.0–1.0)<br/>• Independent source count<br/>• Claim specificity (names, numbers, dates)"]
+        B --> B1{"Verification Level?"}
+        B1 -->|"Widely referenced,<br/>low risk"| BL["Light: 1 provider"]
+        B1 -->|"Important claim,<br/>few sources"| BS["Standard: 2 providers"]
+        B1 -->|"High-importance, specific<br/>numbers/dates, breaking news"| BI["Intensive: 3+ providers"]
     end
-    subgraph "2#46; Winning Token Selection (Hybrid System)"
-        D --> E{"ML System Active?"}
-        E -- "No (Initial/Fallback)" --> F["Rule-Based Scoring<br>(Source/Criteria/On-chain data)"]
-        E -- "Yes" --> G[["ML System (RSA)"]]
-        subgraph G_sub["ML System"]
-            direction TB
-            G1["Feature Engineering"]
-            G2{"Phased Model Selection<br>(Phase 1, 2, 3)"}
-            G3["Model Prediction<br>(CatBoost/Thompson, etc.)"]
-            G1 --> G2 --> G3
-        end
-        F --> H["Final Candidate Ranking"]
-        G3 --> H
+
+    BL --> C
+    BS --> C
+    BI --> C
+
+    subgraph "Stage 2: Evidence Collection"
+        C["Execute selected providers"]
+        C --> C1["Perplexity<br/>(AI-powered synthesis)"]
+        C --> C2["Tavily<br/>(Structured + scoring)"]
+        C --> C3["Kagi<br/>(Curated quality)"]
+        C --> C4["Google CSE<br/>(Broad web)"]
+        C --> C5["Jina<br/>(Fact grounding)"]
+        C --> C6["Exa<br/>(Neural search)"]
     end
-    subgraph "3#46; Execution & Feedback"
-        H --> I>"🏆 Weekly Reward Token Announcement"]
-        I --> J["Outcome Collector<br>(Collects Price, Engagement, etc.)"]
-        J --> K["Composite Outcome Score Calculation"]
-        K --> L>"Update Training Data<br>(Features + Outcome)"]
+
+    C1 --> D
+    C2 --> D
+    C3 --> D
+    C4 --> D
+    C5 --> D
+    C6 --> D
+
+    subgraph "Stage 3: Adaptive Fallback"
+        D{"All providers<br/>succeeded?"}
+        D -->|"No"| E["Exclude failed providers,<br/>re-plan strategy"]
+        E -->|"Retry ≤ 2x"| C
+        D -->|"Yes"| F
     end
-    subgraph "4#46; Self-Improvement Loop"
-       L --> M["Retrain / Update Model"]
-       M --> G2
+
+    subgraph "Stage 4: Evidence Synthesis"
+        F["AI evaluates ALL evidence:<br/>• Do sources converge or diverge?<br/>• Do specific details match?<br/>• Is evidence sufficient?"]
+        F --> G{"Verdict"}
+        G -->|"Evidence converges"| H["✅ VERIFIED"]
+        G -->|"Sources diverge or<br/>evidence insufficient"| I["❌ NOT VERIFIED"]
     end
-    style A fill:#f5d0fe,stroke:#d946ef
-    style B fill:#f5d0fe,stroke:#d946ef
-    style C fill:#fae8ff,stroke:#d946ef
-    style D fill:#fae8ff,stroke:#d946ef
-    style E fill:#fef08a,stroke:#facc15
-    style F fill:#fef9c3,stroke:#facc15
-    style G fill:#bbf7d0,stroke:#22c55e
-    style H fill:#86efac,stroke:#15803d
-    style I fill:#4ade80,stroke:#15803d,color:#fff
-    style J fill:#bae6fd,stroke:#0284c7
-    style K fill:#bae6fd,stroke:#0284c7
-    style L fill:#93c5fd,stroke:#2563eb
-    style M fill:#fbcfe8,stroke:#be185d
+
+    style B fill:#fef08a,stroke:#facc15
+    style F fill:#bbf7d0,stroke:#22c55e
+    style H fill:#86efac,stroke:#16a34a
+    style I fill:#fca5a5,stroke:#dc2626
 ```
 
-This layer is the 'brain' of the reward system and the core of AI governance, selecting a single token each week. The RSA combines rule-based filtering and multi-stage machine learning strategies to optimize holder value. The process begins by comprehensively tracking token mentions from KOLs and the community, associated sentiment, and on-chain data (e.g., trading volume, price momentum).
+**Key design decisions:**
 
-Initially, it uses exploratory approaches like Thompson Sampling to learn market reactions to various tokens. As data accumulates, it transitions to sophisticated 'Learning-to-Rank' models like CatBoost. This model predicts which candidate token will achieve the highest 'Composite Outcome Score', a combination of tweet engagement, token price changes, and impact on the MIKO token market.
+-   **AI-driven strategy selection:** The verification level is not hardcoded. The AI evaluates each claim's characteristics (specificity, importance, independent source count) and decides *how* to verify it, selecting both the intensity and the specific providers whose strengths match the claim type.
+-   **Adaptive fallback:** If a provider fails (API error, timeout), the system excludes it and re-plans the strategy with remaining providers. Up to 2 additional attempts. Temporary outages never block verification.
+-   **Evidence convergence requirement:** A claim is verified **only** when evidence from independent sources converges on the same conclusion. Divergent evidence or insufficient data results in a "not verified" verdict.
+-   **Specificity-aware evaluation:** The synthesis stage checks whether specific details (names, numbers, dates, amounts) match the evidence, not just the general topic.
 
-Most importantly, the 'Engagement Feedback Loop' is crucial. The actual market reaction after a reward token announcement (tweet engagement, price performance, etc.) is fed back into the model. Signals that led to successful selections are reinforced, while patterns from underperforming selections are learned from and avoided. This self-improving learning process ensures that MIKO makes data-driven, rational decisions that become more precisely synchronized with community preferences and market trends over time, going beyond a simple popularity contest.
+### Where Fact-Checking Is Applied
 
-#### Community Suggestions and Persuasion Analysis
+The pipeline operates at three independent checkpoints:
 
-MIKO's reward selection goes beyond passively analyzing data; it is achieved through active interaction with the community. Users can recommend their desired tokens as weekly reward candidates by directly mentioning Miko (`@project_miko`) on X (Twitter) or by including the `$SYMBOL` format in replies to Miko's tweets.
+```mermaid
+graph LR
+    subgraph "Checkpoint 1: Proactive Content"
+        A["Trending topic identified"] --> B{"Fact-check score<br/>≥ 0.7?"}
+        B -->|"Yes"| C["Run fact-check pipeline"]
+        C --> D{"Verified?"}
+        D -->|"No + Authors < 3"| E["❌ Topic BLOCKED"]
+        D -->|"Yes"| F["✅ Safe to tweet"]
+        D -->|"No + Authors ≥ 3"| G["⚠️ Proceed with<br/>multi-author corroboration"]
+    end
 
-However, MIKO does not rely on simple mention counts or spammy recommendations. The PostAnalyzer module evaluates the content of each recommendation tweet to calculate a *'persuasion_score'*. This score goes beyond simple positive/negative sentiment to analyze, from Miko's persona perspective, how genuine the recommendation is, how well it aligns with the community spirit, and its relevance to the Solana ecosystem. Therefore, repeatedly mentioning the same symbol in a spam-like fashion is ineffective. Instead, well-reasoned and persuasive recommendations have a greater influence on the AI's final decision. This is MIKO's unique method of reflecting the community's voice while quantitatively assessing its quality to make higher-level decisions.
+    subgraph "Checkpoint 2: Mention Responses"
+        H["User asks about<br/>specific claim"] --> I["Fact-check full context"]
+        I --> J{"Verified?"}
+        J -->|"No"| K["Cautious response"]
+        J -->|"Yes"| L["Confident response"]
+    end
+
+    subgraph "Checkpoint 3: Reward Selection"
+        M["Token candidate<br/>evaluation"] --> N["Verification status<br/>influences scoring"]
+        N --> O["Verified data weighted<br/>higher in RSA"]
+    end
+
+    style E fill:#fca5a5,stroke:#dc2626
+    style F fill:#86efac,stroke:#16a34a
+```
+
+**For holders, this means:** Information that feeds into Miko's reward selection has been subjected to multi-source verification. In a market where a single fabricated announcement can move a token's price dramatically, this verification layer is what stands between the holder's weekly reward and a selection based on false information.
+
+## Layer 3: Persona-Driven Generation Core
+
+This layer creates Miko's voice — the public-facing content on X (Twitter) that drives community engagement and growth.
+
+The Generation Core runs on a multi-model architecture (Gemini and Claude) with automatic failover. If the primary model experiences rate limiting or downtime, the system seamlessly switches to the fallback provider, ensuring continuous operation.
+
+Multiple **reaction modes** allow Miko to respond dynamically to different situations — from cheerful curiosity for friendly exchanges to sharp wit for provocative interactions to analytical depth for market discussions. These modes are not random; the system evaluates the conversational context and selects the most appropriate response style.
+
+Every response Miko generates is verified for originality before posting. The system ensures content is genuinely Miko's own expression, not a mechanical repetition of source material. This is enforced through multiple independent verification layers at the code level.
+
+**For holders, this matters because:** Miko's social presence is the primary driver of community growth. Community growth drives trading volume. Trading volume generates tax revenue. Tax revenue funds rewards. The quality and authenticity of Miko's social output directly impacts the size of the weekly reward pool.
+
+## Layer 4: Reward Selection Algorithm (RSA)
+
+This is the financial brain of the protocol — the system that determines which token holders will receive each week. It is the most critical component for holder value and the most technically sophisticated.
+
+### Three-Phase ML Evolution
+
+The RSA evolves through three distinct statistical phases, each requiring more data and delivering higher precision. Phase transitions are automatic (based on statistical significance thresholds) and reversible (automatic rollback on performance degradation).
+
+```mermaid
+graph LR
+    subgraph P1["Phase 1: Exploration"]
+        P1A["Bayesian Optimization<br/>(Optuna, 100 trials)"]
+        P1B["Min: 6 weeks data<br/>Confidence: 80%<br/>Threshold: ρ ≥ 0.65"]
+    end
+    subgraph P2["Phase 2: Exploitation"]
+        P2A["Thompson Sampling<br/>+ ε-greedy (ε = 0.10)"]
+        P2B["Min: 16 weeks data<br/>Confidence: 85%<br/>Threshold: ρ ≥ 0.70"]
+    end
+    subgraph P3["Phase 3: Precision"]
+        P3A["CatBoost<br/>Learning-to-Rank<br/>(YetiRank loss)"]
+        P3B["Min: 26 weeks data<br/>Confidence: 90%<br/>Threshold: ρ ≥ 0.75"]
+    end
+    P1 -->|"Performance<br/>threshold met"| P2
+    P2 -->|"Performance<br/>threshold met"| P3
+    P3 -.->|"Performance drop ≥ 15%<br/>or 3 consecutive failures"| P2
+    P2 -.->|"Rollback"| P1
+    style P1 fill:#fef08a,stroke:#facc15
+    style P2 fill:#bbf7d0,stroke:#22c55e
+    style P3 fill:#93c5fd,stroke:#2563eb
+```
+
+**Phase 1 — Bayesian Optimization:** With limited historical data (first 6+ weeks), the system uses Bayesian optimization via Optuna to explore which features and weight combinations best predict successful token selections. This phase is exploratory — the model is learning what matters.
+
+**Phase 2 — Thompson Sampling:** With 16+ weeks of accumulated data, the system transitions to Thompson Sampling with 10% epsilon-greedy exploration. This balances exploiting known successful patterns with continued exploration of new opportunities. The transition requires a Spearman correlation coefficient $\rho \geq 0.7$ between predicted and actual outcomes.
+
+**Phase 3 — CatBoost Learning-to-Rank:** With 26+ weeks of data, a full machine learning model using CatBoost's YetiRank loss function takes over. This model predicts which candidate token will achieve the highest Composite Outcome Score.
+
+### Composite Outcome Score
+
+Each selection is evaluated against a multi-metric composite score. The weights are derived from empirical research on cryptocurrency success factors:
+
+$$
+S_{\text{composite}} = \sum_{i=1}^{n} w_i \cdot x_i
+$$
+
+| Metric ($x_i$) | Weight ($w_i$) | Research Basis |
+| :--- | :---: | :--- |
+| Reward token price performance | 0.40 | Chen et al. (2023): 45-55% range midpoint |
+| $MIKO holder growth rate | 0.22 | Liu & Tsyvinski (2021): network effects |
+| $MIKO token price performance | 0.20 | Eisenmann et al. (2006): indirect effects ≈ 50% of direct |
+| Community sentiment | 0.10 | Kraaijeveld & De Smedt (2020): 8-12% range |
+| Tweet engagement | 0.05 | DeFi Alliance (2024): indirect indicator |
+| $MIKO volume growth | 0.03 | Brandvold et al. (2015): 3-7% range lower bound |
+
+$$
+\sum_{i=1}^{6} w_i = 1.00
+$$
+
+### Automatic Rollback Mechanism
+
+The system includes hard-coded safeguards against model degradation:
+
+$$
+\text{Rollback triggers if:} \begin{cases}
+\Delta_{\text{performance}} \geq 0.15 & \text{(15\% drop from baseline)} \\
+n_{\text{consecutive\_failures}} \geq 3 & \text{(3 sequential underperformances)} \\
+\Delta_{\text{confidence}} \geq 0.10 & \text{(10\% confidence degradation)}
+\end{cases}
+$$
+
+When triggered, the system reverts to the previous phase and continues collecting data until the transition threshold is met again. This ensures that a poorly calibrated model never persists in making selections with real capital.
+
+### Token Quality Filters
+
+Before any token can be considered as a reward candidate, it must pass a two-tier quality assessment.
+
+**Tier 1: Hard Threshold Filters**
+
+| Filter | Threshold | Rationale |
+| :--- | :--- | :--- |
+| Minimum Market Cap | $3,000,000 | Below this, manipulation risk is elevated (Kaiko Research, 2025) |
+| Minimum 24h Volume | $1,000,000 | Ensures sufficient liquidity for purchase execution |
+| Excluded Tokens | $MIKO | Prevents conflict-of-interest in self-selection |
+| Exempt Tokens | $SOL | Native asset exempted from quality filters |
+
+**Tier 2: DEX Market Structure Assessment**
+
+Candidates that pass the hard filters are then evaluated through a multi-factor market structure analysis using real-time DEX data. This assessment produces a market bonus score that incorporates:
+
+-   **Order flow analysis:** Buy/sell pressure ratio — measures whether a token is under net accumulation or distribution
+-   **Transaction velocity:** Rate of on-chain transactions — accelerating velocity suggests growing organic interest
+-   **Breakout readiness:** Technical positioning relative to recent price range — identifies tokens at potential inflection points
+-   **Relative strength:** Performance relative to the broader Solana market — filters for tokens showing independent momentum
+-   **Holder breadth:** Distribution of token holders — wider distribution suggests healthier, less manipulable markets
+
+**Risk-Based Safety Penalties:**
+
+The market bonus is subject to multiplicative safety penalties:
+-   **Severe risk flags** (e.g., concentrated ownership, suspicious contract patterns) → 75% penalty
+-   **Fast decay detection** (rapid price decline pattern) → 50% penalty
+-   **Elevated risk score** → proportional discount based on severity
+
+This two-tier system ensures that reward tokens are not only above minimum quality thresholds, but are also evaluated for market health and manipulation risk before being considered by the ML selection algorithm.
+
+### Community Suggestions and Persuasion Analysis
+
+Community members can recommend tokens by mentioning Miko (`@project_miko`) with a `$SYMBOL` tag. Unlike simple vote-counting systems, each recommendation is evaluated by the PostAnalyzer's persuasion scoring:
+
+$$
+\text{persuasion\_score}(tweet) = f(\text{authenticity}, \text{reasoning\_depth}, \text{community\_alignment}, \text{ecosystem\_relevance})
+$$
 
 ```mermaid
 graph TD
-    A>"User tweets to @project_miko<br/>including '$SYMBOL'"] --> B["Collect Mentions/Replies"];
-    B --> C["Filter Spam & Abuse"];
-    C --> D["PostAnalyzer's<br/>'Persuasion Score' Analysis"];
-    D -- "Authenticity, Relevance, Community Spirit, etc." --> E["Input to RSA as<br/>Weighted Data"];
-    E --> F["Final Reward Token Selection"];
+    A>"User tweets @project_miko<br/>with $SYMBOL"] --> B["Spam & Abuse Filter"]
+    B --> C["PostAnalyzer:<br/>Persuasion Score (0.0 – 1.0)"]
+    C --> D{"Score ≥ 0.3?"}
+    D -->|"Yes"| E["Weighted input to RSA"]
+    D -->|"No"| F["Filtered out"]
+    E --> G["Combined with KOL data<br/>+ on-chain metrics"]
+    G --> H["Final Reward Selection"]
     style A fill:#E9D5FF,stroke:#8B5CF6
-    style F fill:#A78BFA,stroke:#5B21B6,color:#fff
+    style F fill:#fca5a5,stroke:#dc2626
+    style H fill:#A78BFA,stroke:#5B21B6,color:#fff
 ```
 
-### Summary: Miko as a Living, Autonomous Entity
+Spamming the same $SYMBOL repeatedly is ineffective — the minimum persuasion threshold of 0.3 (lower 30th percentile cutoff) and the minimum of 3 total mentions ensure that only reasoned, authentic community input influences the selection.
 
-In summary, if the AI tech stack provides Miko with tools and technology, the persona breathes soul into it. This combination creates an agent that not only processes data and makes decisions but also interacts in a way that humans find relatable and trustworthy. While many crypto projects struggle to maintain continuous community interest, Miko's human-like social presence solves this problem by constantly fulfilling the community's demand for content and interaction.
+### The Self-Improvement Loop
+
+Every selection generates outcome data that feeds back into the model:
+
+```mermaid
+graph TD
+    A["Weekly Reward Token<br/>Selected & Announced"] --> B["Outcome Collector:<br/>24h & 7d Performance"]
+    B --> C["Calculate Composite<br/>Outcome Score"]
+    C --> D["Update Training Dataset:<br/>Features + Outcome"]
+    D --> E["Retrain / Update<br/>ML Model"]
+    E --> F["Next Week's Selection<br/>(Improved Model)"]
+    F --> A
+    style A fill:#a78bfa,stroke:#7c3aed,color:#fff
+    style E fill:#86efac,stroke:#16a34a
+```
+
+This creates a closed-loop system where the AI's selections become progressively more refined over time. Early selections (Phase 1) are exploratory; later selections (Phase 3) are informed by months of accumulated outcome data and a fully trained ranking model.
+
+## Verifiable Track Record
+
+Most AI agent projects ask holders to trust their intelligence based on narrative — follower counts, ecosystem metrics, or team credentials. MIKO's system is designed to be **measurable by default**.
+
+Every reward selection is automatically recorded with its full context: the token selected, the ML phase and model version that made the decision, whether it was an exploration pick, and — critically — the selected token's price performance at 24 hours and 7 days after announcement. Each selection receives a Composite Outcome Score that quantifies its success, and this score feeds directly back into the ML model's training data.
+
+Phase transitions and rollbacks are logged with their trigger metrics, creating a complete, queryable history of how the AI's decision-making has evolved over time.
+
+This means MIKO's AI does not simply claim to be intelligent — it accumulates a track record that can be audited against objective outcomes. The Reward Hall of Fame and MIKO's Insight Dashboard will make this data publicly accessible, allowing holders and prospective investors to evaluate the AI's performance for themselves rather than taking it on trust.

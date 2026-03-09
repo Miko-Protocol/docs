@@ -34,7 +34,7 @@ export default function Home() {
   return (
     <Layout
       title={`Welcome to ${siteConfig.title}`}
-      description="The Dawn of Dynamic, Intelligence-Based Yield on Solana">
+      description="Where AI Intelligence Pays Token Holders">
       <HomepageHeader />
       <main>
         <HomepageFeatures />

@@ -6,6 +6,8 @@
 // Learn more at https://docusaurus.io/docs/api/docusaurus-config
 
 import {themes as prismThemes} from 'prism-react-renderer';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -42,6 +44,14 @@ const config = {
   
   themes: ['@docusaurus/theme-mermaid'],
 
+  stylesheets: [
+    {
+      href: 'https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css',
+      type: 'text/css',
+      crossorigin: 'anonymous',
+    },
+  ],
+
   presets: [
     [
       'classic',
@@ -49,8 +59,9 @@ const config = {
       ({
         docs: {
           sidebarPath: './sidebars.js',
-	  routeBasePath:'/docs',
-          // Please change this to your repo.
+     routeBasePath:'/docs',
+	  remarkPlugins: [remarkMath],
+          rehypePlugins: [rehypeKatex],
         },
         blog: false, // Disabled blog functionality
         theme: {

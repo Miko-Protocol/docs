@@ -11,6 +11,15 @@ const sidebars = {
     'introduction',
     {
       type: 'category',
+      label: 'The AI Agent Market',
+      items: [
+        'ecosystem/the-ai-agent-era',
+        'ecosystem/competitive-landscape',
+      ],
+    },
+
+    {
+      type: 'category',
       label: 'The MIKO Protocol',
       items: [
         'miko-protocol/core-components',
@@ -29,7 +38,6 @@ const sidebars = {
         type: 'category',
         label: 'Ecosystem & Vision',
         items: [
-            'ecosystem/competitive-landscape',
             'ecosystem/tokenomics-and-distribution',
             'ecosystem/roadmap',
         ],
