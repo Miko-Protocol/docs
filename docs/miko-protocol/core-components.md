@@ -12,7 +12,7 @@ The Miko AI Agent is not a simple automation script. It is designed as an autono
 
 ### 1.1 Miko Character Profile: The Crypto-Native Explorer
 
-![miko_profile](./images/miko_profile_size.png)
+![miko_profile](./images/miko_introduce.png)
 
 At the heart of the MIKO Protocol's appeal is the 'Miko' persona itself. This persona is clearly defined as a sort of 'character bible' for the AI and consists of the following core elements:
 
