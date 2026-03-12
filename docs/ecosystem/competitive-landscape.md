@@ -121,7 +121,6 @@ Within the narrower category of Solana tax-funded reward tokens:
 | **Reward Asset** | Fixed (e.g., SOL) | Dynamic (AI-selected weekly) |
 | **Selection Mechanism** | Hardcoded | Self-improving ML pipeline |
 | **Market Adaptability** | None | Tracks narrative rotation weekly |
-| **Fact Verification** | None | 6-provider adaptive pipeline |
 | **Value Proposition** | Predictable but stagnant yield | Trend-capturing alpha + diversification |
 
 PRINT abandoned its reward model. IMG's market cap declined significantly from its peak. The pattern is clear: **static rewards decay because the market doesn't stand still**. MIKO's dynamic selection turns narrative rotation — the force that kills static models — into the source of its value.

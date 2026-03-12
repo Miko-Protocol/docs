@@ -154,9 +154,8 @@ graph LR
         A["Trending topic identified"] --> B{"Fact-check score<br/>≥ 0.7?"}
         B -->|"Yes"| C["Run fact-check pipeline"]
         C --> D{"Verified?"}
-        D -->|"No + Authors < 3"| E["❌ Topic BLOCKED"]
+        D -->|"No"| E["❌ Topic BLOCKED"]
         D -->|"Yes"| F["✅ Safe to tweet"]
-        D -->|"No + Authors ≥ 3"| G["⚠️ Proceed with<br/>multi-author corroboration"]
     end
 
     subgraph "Checkpoint 2: Mention Responses"
