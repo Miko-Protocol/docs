@@ -45,7 +45,7 @@ The ripple effect into crypto was immediate and massive. Projects like **Moltboo
 
 Separately, speculative tokens like \$MOLT and \$CLAWD emerged around the OpenClaw phenomenon. These are community-driven memecoins without official affiliation to OpenClaw itself, but their explosive price action (\$MOLT surged 7,000% in its discovery phase) demonstrated the intensity of market interest in the AI agent narrative.
 
-## 2. Where We Are Now (March 2026)
+## 2. Where We Are Now (2026)
 
 The AI agent space in crypto has matured beyond social media bots and speculative tokens. The current landscape includes genuinely capable autonomous systems:
 
