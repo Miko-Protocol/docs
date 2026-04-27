@@ -104,7 +104,7 @@ graph TD
         C["Execute selected providers"]
         C --> C1["Perplexity<br/>(AI-powered synthesis)"]
         C --> C2["Tavily<br/>(Structured + scoring)"]
-        C --> C3["Kagi<br/>(Curated quality)"]
+        C --> C3["Brave Search<br/>(Independent web + LLM grounding)"]
         C --> C4["Google CSE<br/>(Broad web)"]
         C --> C5["Jina<br/>(Fact grounding)"]
         C --> C6["Exa<br/>(Neural search)"]
