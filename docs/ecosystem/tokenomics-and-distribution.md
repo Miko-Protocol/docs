@@ -27,7 +27,7 @@ pie
     "Reserve" : 10
 ```
 
--   **Liquidity Poll: 80%**
+-   **Liquidity Pool: 80%**
     - At the moment of launch, 80% of the total supply will be permanently locked into the liquidity pool to ensure a deep and stable market.
 -   **Community Airdrop: 10%**
     - This allocation is dedicated to fostering a vibrant and active community. These tokens will be distributed as rewards for meaningful engagement, such as creating valuable content, and contributing to the growth of the MIKO ecosystem. It serves as a direct incentive for our most dedicated supporters and ambassadors.

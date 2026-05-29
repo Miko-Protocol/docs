@@ -21,7 +21,7 @@ graph TD
         L1["Layer 1: Data Ingestion<br/>& Semantic Filtering"]
         L2["Layer 2: Knowledge Graph<br/>& Fact-Checking Engine"]
         L3["Layer 3: Persona-Driven<br/>Generation Core"]
-        L4["Layer 4: Reward Selection<br/>Algorithm (RSA)"]
+        L4["Layer 4: Selection Algorithm"]
         L1 --> L2
         L2 --> L3
         L2 --> L4
@@ -76,7 +76,7 @@ $$
 \text{relevance}(q, d) = \frac{\vec{q} \cdot \vec{d}}{||\vec{q}|| \times ||\vec{d}||}
 $$
 
-Results above the configured importance threshold ($\tau = 0.4$ by default) are surfaced as contextual grounding for both content generation and reward selection.
+Results above the configured importance threshold ($\tau = 0.4$ by default) are surfaced as contextual grounding for both content generation and asset selection.
 
 ### The Fact-Checking Pipeline
 
@@ -165,20 +165,20 @@ graph LR
         J -->|"Yes"| L["Confident response"]
     end
 
-    subgraph "Checkpoint 3: Reward Selection"
+    subgraph "Checkpoint 3: Asset Selection"
         M["Token candidate<br/>evaluation"] --> N["Verification status<br/>influences scoring"]
-        N --> O["Verified data weighted<br/>higher in RSA"]
+        N --> O["Verified data weighted<br/>higher in selection"]
     end
 
     style E fill:#fca5a5,stroke:#dc2626
     style F fill:#86efac,stroke:#16a34a
 ```
 
-**For holders, this means:** Information that feeds into Miko's reward selection has been subjected to multi-source verification. In a market where a single fabricated announcement can move a token's price dramatically, this verification layer is what stands between the holder's weekly reward and a selection based on false information.
+**For holders, this means:** Information that feeds into Miko's asset selection has been subjected to multi-source verification. In a market where a single fabricated announcement can move a token's price dramatically, this verification layer is what stands between the holder's weekly allocation and a selection based on false information.
 
 ## Layer 3: Persona-Driven Generation Core
 
-This layer creates Miko's voice — the public-facing content on X (Twitter) that drives community engagement and growth.
+This layer creates Miko's voice: the public-facing content on X (Twitter) that drives community engagement and growth.
 
 The Generation Core runs on a multi-model architecture (Gemini and Claude) with automatic failover. If the primary model experiences rate limiting or downtime, the system seamlessly switches to the fallback provider, ensuring continuous operation.
 
@@ -186,15 +186,15 @@ Multiple **reaction modes** allow Miko to respond dynamically to different situa
 
 Every response Miko generates is verified for originality before posting. The system ensures content is genuinely Miko's own expression, not a mechanical repetition of source material. This is enforced through multiple independent verification layers at the code level.
 
-**For holders, this matters because:** Miko's social presence is the primary driver of community growth. Community growth drives trading volume. Trading volume generates tax revenue. Tax revenue funds rewards. The quality and authenticity of Miko's social output directly impacts the size of the weekly reward pool.
+**For holders, this matters because:** Miko's social presence is the primary driver of community growth. Community growth drives trading volume. Trading volume generates tax revenue. Tax revenue funds the weekly acquisitions. The quality and authenticity of Miko's social output directly impacts the size of the weekly acquisition treasury.
 
-## Layer 4: Reward Selection Algorithm (RSA)
+## Layer 4: Selection Algorithm
 
-This is the financial brain of the protocol — the system that determines which token holders will receive each week. It is the most critical component for holder value and the most technically sophisticated.
+This is the financial brain of the protocol. It is the system that determines which asset holders will receive each week. It is the most critical component for holder allocations and the most technically sophisticated.
 
 ### Three-Phase ML Evolution
 
-The RSA evolves through three distinct statistical phases, each requiring more data and delivering higher precision. Phase transitions are automatic (based on statistical significance thresholds) and reversible (automatic rollback on performance degradation).
+The Selection Algorithm evolves through three distinct statistical phases, each requiring more data and delivering higher precision. Phase transitions are automatic (based on statistical significance thresholds) and reversible (automatic rollback on performance degradation).
 
 ```mermaid
 graph LR
@@ -219,11 +219,11 @@ graph LR
     style P3 fill:#93c5fd,stroke:#2563eb
 ```
 
-**Phase 1 — Bayesian Optimization:** With limited historical data (first 6+ weeks), the system uses Bayesian optimization via Optuna to explore which features and weight combinations best predict successful token selections. This phase is exploratory — the model is learning what matters.
+**Phase 1 — Bayesian Optimization:** With limited historical data (first 6+ weeks), the system uses Bayesian optimization via Optuna to explore which features and weight combinations best predict successful asset selections. This phase is exploratory. The model is learning what matters.
 
 **Phase 2 — Thompson Sampling:** With 16+ weeks of accumulated data, the system transitions to Thompson Sampling with 10% epsilon-greedy exploration. This balances exploiting known successful patterns with continued exploration of new opportunities. The transition requires a Spearman correlation coefficient $\rho \geq 0.7$ between predicted and actual outcomes.
 
-**Phase 3 — CatBoost Learning-to-Rank:** With 26+ weeks of data, a full machine learning model using CatBoost's YetiRank loss function takes over. This model predicts which candidate token will achieve the highest Composite Outcome Score.
+**Phase 3 — CatBoost Learning-to-Rank:** With 26+ weeks of data, a full machine learning model using CatBoost's YetiRank loss function takes over. This model predicts which candidate asset will achieve the highest Composite Outcome Score.
 
 ### Composite Outcome Score
 
@@ -235,7 +235,7 @@ $$
 
 | Metric ($x_i$) | Weight ($w_i$) | Research Basis |
 | :--- | :---: | :--- |
-| Reward token price performance | 0.40 | Chen et al. (2023): 45-55% range midpoint |
+| Selected asset price performance | 0.40 | Chen et al. (2023): 45-55% range midpoint |
 | $MIKO holder growth rate | 0.22 | Liu & Tsyvinski (2021): network effects |
 | $MIKO token price performance | 0.20 | Eisenmann et al. (2006): indirect effects ≈ 50% of direct |
 | Community sentiment | 0.10 | Kraaijeveld & De Smedt (2020): 8-12% range |
@@ -262,7 +262,7 @@ When triggered, the system reverts to the previous phase and continues collectin
 
 ### Token Quality Filters
 
-Before any token can be considered as a reward candidate, it must pass a two-tier quality assessment.
+Before any token can be considered as a selection candidate, it must pass a two-tier quality assessment.
 
 **Tier 1: Hard Threshold Filters**
 
@@ -290,7 +290,7 @@ The market bonus is subject to multiplicative safety penalties:
 -   **Fast decay detection** (rapid price decline pattern) → 50% penalty
 -   **Elevated risk score** → proportional discount based on severity
 
-This two-tier system ensures that reward tokens are not only above minimum quality thresholds, but are also evaluated for market health and manipulation risk before being considered by the ML selection algorithm.
+This two-tier system ensures that candidate assets both clear minimum quality thresholds and are also evaluated for market health and manipulation risk before being considered by the ML selection algorithm.
 
 ### Community Suggestions and Persuasion Analysis
 
@@ -305,7 +305,7 @@ graph TD
     A>"User tweets @project_miko<br/>with $SYMBOL"] --> B["Spam & Abuse Filter"]
     B --> C["PostAnalyzer:<br/>Persuasion Score (0.0 – 1.0)"]
     C --> D{"Score ≥ 0.3?"}
-    D -->|"Yes"| E["Weighted input to RSA"]
+    D -->|"Yes"| E["Weighted input to Selection"]
     D -->|"No"| F["Filtered out"]
     E --> G["Combined with KOL data<br/>+ on-chain metrics"]
     G --> H["Final Reward Selection"]
@@ -322,7 +322,7 @@ Every selection generates outcome data that feeds back into the model:
 
 ```mermaid
 graph TD
-    A["Weekly Reward Token<br/>Selected & Announced"] --> B["Outcome Collector:<br/>24h & 7d Performance"]
+    A["Weekly Asset<br/>Selected & Announced"] --> B["Outcome Collector:<br/>24h & 7d Performance"]
     B --> C["Calculate Composite<br/>Outcome Score"]
     C --> D["Update Training Dataset:<br/>Features + Outcome"]
     D --> E["Retrain / Update<br/>ML Model"]
@@ -342,4 +342,4 @@ Every reward selection is automatically recorded with its full context: the toke
 
 Phase transitions and rollbacks are logged with their trigger metrics, creating a complete, queryable history of how the AI's decision-making has evolved over time.
 
-This means MIKO's AI does not simply claim to be intelligent — it accumulates a track record that can be audited against objective outcomes. The Reward Hall of Fame and MIKO's Insight Dashboard will make this data publicly accessible, allowing holders and prospective investors to evaluate the AI's performance for themselves rather than taking it on trust.
+This means MIKO's AI's intelligence is grounded in an auditable track record against objective outcomes. The Selection Track Record and MIKO's Insight Dashboard will make this data publicly accessible, allowing holders and prospective investors to evaluate the AI's performance directly from the data.

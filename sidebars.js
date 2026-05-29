@@ -27,20 +27,13 @@ const sidebars = {
       ],
     },
     {
-	type: 'category',
-	label: 'Build with MIKO',
-	items: [
-	  'miko-protocol/rest-api',
-	  'miko-protocol/mcp-server',
-	  'miko-protocol/alpha-leaderboard',
-	],
-    },
-    {
         type: 'category',
         label: 'Technical Architecture',
         items: [
             'technical-architecture/ai-architecture',
             'technical-architecture/smart-contracts',
+	    'technical-architecture/rest-api',
+	    'technical-architecture/mcp-server',
         ],
     },
     {

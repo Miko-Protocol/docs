@@ -6,11 +6,11 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 const FeatureList = [
   {
-    title: 'AI-Driven Weekly Rewards',
+    title: 'Weekly AI-Curated Solana Asset',
     img: '/img/feature_tax_miko.png', // Placeholder path for Miko's image
     description: (
       <>
-        Every week, Miko's AI analyzes the Solana ecosystem, selects an optimal reward token, and distributes it directly to eligible holders — automatically.
+        Every week, Miko's AI analyzes the Solana ecosystem, selects the week's asset, and the on-chain module allocates it pro-rata to eligible holders.
       </>
     ),
   },

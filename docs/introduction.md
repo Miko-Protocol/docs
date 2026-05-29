@@ -5,7 +5,7 @@ title: Introduction
 
 Welcome to the documentation of the **MIKO Protocol**, a Solana-native token ecosystem where an AI agent's intelligence is structurally converted into weekly asset selection, acquisition, and allocation for its token holders. Every week, the Miko AI Agent analyzes the Solana ecosystem, selects the week's asset, and its on-chain module autonomously acquires it and allocates it to all eligible \$MIKO holders pro-rata.
 
-## 1. The Holder Value Gap
+## 1. The Holder Outcome Gap
 
 The AI agent narrative captured 22.39% of crypto investor mindshare in 2025. AI-related tokens averaged **-50.18%** returns over the same period, one of the worst-performing categories despite being among the most popular (CoinGecko Annual Crypto Industry Report 2025).
 
@@ -61,10 +61,10 @@ graph TD
 ### Core Innovations
 
 <div className="callout">
--   **AI-to-Value Pipeline:** The first protocol where an AI agent's analytical output is directly converted into on-chain token purchases and distributed to holders. Miko doesn't recommend. Miko acts.
--   **Multi-Source Fact Verification:** Before any information influences a reward selection, it passes through an adaptive fact-checking pipeline that consults multiple independent sources and requires evidence convergence. In a market where misinformation moves millions, MIKO's AI verifies before it acts.
--   **Self-Improving Reward Intelligence:** The Reward Selection Algorithm evolves through three statistical phases, automatically transitioning as data accumulates and rolling back if performance degrades. Every selection feeds back into the model, making future selections more precise.
--   **Sustainable On-Chain Funding:** A permanent 6% transfer tax on all \$MIKO transactions, implemented via Solana's Token-2022 standard, provides a continuous and immutable funding stream for holder rewards. As long as \$MIKO is traded, the reward pool is funded.
+-   **AI-to-Allocation Pipeline:** The first protocol where an AI agent's analytical output is directly converted into on-chain acquisitions and allocations to holders. Miko doesn't recommend. Miko acts.
+-   **Multi-Source Fact Verification:** Before any information influences a weekly selection, it passes through an adaptive fact-checking pipeline that consults multiple independent sources and requires evidence convergence. In a market where misinformation moves millions, MIKO's AI verifies before it acts.
+-   **Self-Improving Selection Intelligence:** The Selection Algorithm evolves through three statistical phases, automatically transitioning as data accumulates and rolling back if performance degrades. Every selection feeds back into the model, making future selections more precise.
+-   **Sustainable On-Chain Funding:** A permanent 6% transfer tax on all \$MIKO transactions, implemented via Solana's Token-2022 standard, provides a continuous and immutable funding stream for weekly acquisitions. As long as \$MIKO is traded, the acquisition treasury is funded.
 </div>
 
 ## 3. The Trust Layer

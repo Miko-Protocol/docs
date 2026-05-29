@@ -4,21 +4,13 @@ title: Competitive Landscape
 
 # Competitive Landscape
 
-The AI agent crypto market has grown into a multi-billion dollar vertical. MIKO Protocol occupies a specific niche within this landscape — not as a platform, framework, or autonomous trading agent, but as a **structured value transfer system** that converts AI intelligence into holder returns.
+The AI agent crypto market has grown into a multi-billion dollar vertical, spanning platforms, agent frameworks, and autonomous trading agents. MIKO Protocol occupies a distinct position within this landscape as an AI-curated Solana index whose weekly selection is acquired on-chain allocated pro-rata to eligible holders. 
 
-## 1. The Value Transfer Test
+## 1. The Landscape
 
-For every AI agent project, we apply a single test:
-
-$$
-\text{Holder Value} = f(\text{Agent Activity}) \times \text{Transfer Mechanism}
-$$
-
-If the **Transfer Mechanism** is zero — meaning there is no structural link between what the agent does and what the holder receives — then no matter how impressive the Agent Activity, the Holder Value from agent performance is zero. The holder is left with pure price speculation.
-
-| Project | Agent Capability | Transfer Mechanism | Holder Receives |
+| Project | Agent Capability | Mechanism | Holder Receives |
 | :--- | :--- | :--- | :--- |
-| **MIKO Protocol** | Market analysis, fact-verified token selection | Transaction tax → AI-selected token purchase → pro-rata airdrop | **Weekly reward tokens** |
+| **MIKO Protocol** | Weekly AI-curated asset selection | Transaction tax → on-chain acquisition → pro-rata allocation | **Allocated asset position** |
 | **AIXBT** | 400+ KOL monitoring, real-time insights | None | Analysis to read |
 | **Virtuals Protocol** | 18,000+ agents, \$479M aGDP | Protocol-level revenue capture | Staking rewards (indirect) |
 | **Theoriq** | \$25M TVL autonomous vault management | Vault depositor returns | Yield (for depositors, not token holders) |
@@ -43,9 +35,9 @@ graph TD
     end
     subgraph "MIKO Flow"
         M1["Monitor KOLs +<br/>Community + On-Chain"] --> M2["Analyze & Fact-Check<br/>(6-Provider Pipeline)"]
-        M2 --> M3["ML-Driven<br/>Token Selection"]
-        M3 --> M4["On-Chain Module<br/>Purchases Token"]
-        M4 --> M5["Automatic Airdrop<br/>to All Holders"]
+        M2 --> M3["ML-Driven<br/>Asset Selection"]
+        M3 --> M4["On-Chain Module<br/>Acquires Asset"]
+        M4 --> M5["Weekly Allocation<br/>to All Holders"]
     end
     style A6 fill:#fca5a5,stroke:#dc2626
     style M5 fill:#86efac,stroke:#16a34a
@@ -53,7 +45,7 @@ graph TD
 
 AIXBT provides intelligence. MIKO provides intelligence **and execution**. The holder doesn't need to interpret the analysis, decide whether to act, time their entry, or manage their trade. Miko's system handles the entire pipeline from analysis to distribution.
 
-Additionally, MIKO's analysis pipeline includes a multi-source fact-checking system that AIXBT lacks. AIXBT aggregates and reports what KOLs are saying. Miko verifies whether what they're saying is accurate before acting on it. When analysis drives real capital allocation, the cost of amplifying misinformation is not a misleading tweet — it's a bad investment of holder funds.
+Additionally, MIKO's analysis pipeline includes a multi-source fact-checking system that AIXBT lacks. AIXBT aggregates and reports what KOLs are saying. Miko verifies whether what they're saying is accurate before acting on it. When analysis drives real capital allocation, amplifying misinformation translates directly into a bad investment of holder funds.
 
 ### MIKO vs. Virtuals Protocol: Holder Value vs. Platform Value
 
@@ -76,23 +68,23 @@ The Agent Commerce Protocol (ACP) enables agents to discover, hire, and pay each
 MIKO's model is fundamentally different in structure:
 
 $$
-\text{Holder Return}_{\text{week}} = \frac{\text{Holder Balance}}{\text{Total Eligible Supply}} \times \text{Reward Pool}_{\text{week}}
+\text{Holder Allocation}_{\text{week}} = \frac{\text{Holder Balance}}{\text{Total Eligible Supply}} \times \text{Acquisition Treasury}_{\text{week}}
 $$
 
-Every \$MIKO transaction generates a 6% transfer tax. The majority of that tax flows into the reward pool. The reward pool purchases the AI-selected token. The purchased tokens are distributed pro-rata to eligible holders. There is no platform intermediary, no staking requirement, no governance vote needed. Hold the token, receive the reward.
+Every \$MIKO transaction generates a 6% transfer tax. The majority of that tax flows into the acquisition treasury. The treasury acquires the AI-selected asset on-chain. The acquired asset is allocated pro-rata to eligible holders. There is no platform intermediary, no staking requirement, no governance vote needed. Hold the token, receive your weekly allocation.
 
 ### MIKO vs. Autonomous Trading Agents
 
 The most advanced AI agents in 2026 can hold wallets, execute DEX trades, manage liquidity, and even deploy smart contracts autonomously. Projects like \$CLAWD feature agents that write their own code and build dApps. Theoriq's Alpha Vault manages \$25M in TVL through autonomous strategies.
 
-**MIKO does not compete on autonomy.** MIKO's agent does not hold its own wallet or execute arbitrary trades. This is a deliberate architectural choice, not a limitation.
+**MIKO does not compete on autonomy.** MIKO's agent does not hold its own wallet or execute arbitrary trades. This is a deliberate architectural choice.
 
-The reason is the **alignment problem of autonomous trading agents**: an agent optimized to maximize its own returns does not necessarily maximize *holder* returns. An autonomous agent managing its own treasury can:
+The reason is the **alignment problem of autonomous trading agents**: an agent optimized to maximize its own returns does not necessarily maximize what *holder* receive. An autonomous agent managing its own treasury can:
 -   Accumulate profits without distributing them
 -   Take risks that benefit the agent's performance metrics but expose holders to losses
--   Prioritize strategies that grow the treasury over strategies that grow holder value
+-   Prioritize strategies that grow the treasury over strategies that benefit holders directly
 
-MIKO solves this by **separating intelligence from execution with enforced distribution**:
+MIKO solves this by **separating intelligence from execution with structurally enforced allocation**:
 
 ```mermaid
 graph TD
@@ -102,25 +94,25 @@ graph TD
         T3 --> T4["Holder hopes for<br/>price appreciation"]
     end
     subgraph "MIKO Protocol"
-        M1["Miko Analyzes Market"] --> M2["ML System Selects<br/>Optimal Reward Token"]
-        M2 --> M3["On-Chain Module<br/>Purchases Token"]
-        M3 --> M4["Purchased tokens<br/>distributed to holders<br/>(pro-rata)"]
+        M1["Miko Analyzes Market"] --> M2["ML System Selects<br/>Optimal Asset"]
+        M2 --> M3["On-Chain Module<br/>Acquires Asset"]
+        M3 --> M4["Acquired asset<br/>allocated to holders<br/>(pro-rata)"]
     end
     style T4 fill:#fef08a,stroke:#facc15
     style M4 fill:#86efac,stroke:#16a34a
 ```
 
-The distinction is structural. In autonomous trading agents, the agent accumulates value in its own treasury and the holder's only exposure is through token price speculation. In MIKO, the reward pool is used to purchase the selected token and distribute it directly to holders on a pro-rata basis. **The alignment between agent performance and holder returns is enforced by the protocol's architecture, not by the agent's goodwill.**
+The distinction is structural. In autonomous trading agents, the agent accumulates value in its own treasury and the holder's only exposure is through token price speculation. In MIKO, the acquisition treasury is used to acquire the selected asset on-chain and allocate it directly to holders on a pro-rata basis. **The alignment between agent performance and holder allocations is structurally enforced.**
 
 ### MIKO vs. Static Reward Tokens (PRINT, IMG)
 
-Within the narrower category of Solana tax-funded reward tokens:
+PRINT and IMG are Solana tax-funded reward tokens that MIKO is most often compared against:
 
 | Feature | Static Models (PRINT, IMG) | MIKO Protocol |
 | :--- | :--- | :--- |
-| **Reward Asset** | Fixed (e.g., SOL) | Dynamic (AI-selected weekly) |
+| **Distributed Asset** | Fixed (e.g., SOL) | AI-curated weekly selection |
 | **Selection Mechanism** | Hardcoded | Self-improving ML pipeline |
 | **Market Adaptability** | None | Tracks narrative rotation weekly |
 | **Value Proposition** | Predictable but stagnant yield | Trend-capturing alpha + diversification |
 
-PRINT abandoned its reward model. IMG's market cap declined significantly from its peak. The pattern is clear: **static rewards decay because the market doesn't stand still**. MIKO's dynamic selection turns narrative rotation — the force that kills static models — into the source of its value.
+PRINT abandoned its reward model. IMG's market cap declined significantly from its peak. The pattern is clear: **static rewards decay because the market doesn't stand still**. MIKO's AI-curated weekly selection takes narrative rotation as its driving input. The force that kills static models becomes the source of MIKO's value.
