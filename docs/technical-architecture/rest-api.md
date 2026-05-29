@@ -92,12 +92,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
 
 The JWT is scoped to the holder's current tier. Tiers are evaluated at JWT issuance based on \$MIKO holdings.
 
-| Tier | Holdings | Daily Limit |
-|---|---|---|
-| Public | 0 | 5 |
-| Holder | ≥ \$100 | 50 |
-| Pro | ≥ \$1,000 | 300 |
-| Whale | ≥ \$10,000 | Capped unlimited |
+| Tier | Holdings | Daily Limit | Per-minute Limit |
+|---|---|---|---|
+| Holder | ≥ \$100 | 5 requests | 1 RPM |
+| Pro | ≥ \$1,000 | 100 requests | 3 RPM |
+| Whale | ≥ \$2,000 | 300 requests | 10 RPM |
 
 Tier and remaining quota are returned in every response under the `X-Tier` and `X-Quota-Remaining` headers.
 
