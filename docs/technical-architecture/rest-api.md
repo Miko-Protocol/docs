@@ -302,10 +302,6 @@ Common errors:
 | 400 | `invalid_request` | malformed request body |
 | 503 | `provider_unavailable` | upstream provider down, retry suggested |
 
-## Rate Limiting
-
-In addition to the daily tier quota, all endpoints have a per-wallet burst cap of 5 requests per second.
-
 ## Caching
 
 Identical requests within a 5-minute window return cached responses. Cache hits do not count against the daily quota. Response headers:
