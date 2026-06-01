@@ -115,8 +115,7 @@ curl -X POST https://api.mikoprotocol.com/v1/factcheck \
   -H "Authorization: Bearer <jwt>" \
   -H "Content-Type: application/json" \
   -d '{
-    "claim": "$BONK is announcing a Visa partnership next week",
-    "context": "optional surrounding text from the original source"
+    "claim": "$BONK is announcing a Visa partnership next week"
   }'
 ```
 
