@@ -219,7 +219,7 @@ curl "https://api.mikoprotocol.com/v1/narratives/trending?window=7d" \
   -H "Authorization: Bearer <jwt>"
 ```
 
-Query parameters: `window` = `24h` or `7d` (default `24h`).
+Query parameters: `window` = `1d`, `2d`, `3d`, `4d`, `5d`, `6d`, or `7d` (default `1d`).
 
 Response:
 

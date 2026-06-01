@@ -4,11 +4,11 @@ title: MCP Server
 
 # MCP Server
 
-MIKO is exposed as a Model Context Protocol server. Any MCP-aware client can call MIKO's capabilities as tools directly inside its own conversation context, so a holder can pull MIKO's intelligence into Claude Desktop, Cursor, OpenAI Agents, Gemini, or any other MCP-aware workflow.
+MIKO is exposed as a Model Context Protocol server. Any MCP-aware client can call MIKO's capabilities as tools directly inside its own conversation context, so a holder can pull MIKO's analytical pipeline into Claude Desktop, Cursor, OpenAI Agents, Gemini, or any other MCP-aware workflow.
 
 ## What is MCP
 
-MCP (Model Context Protocol) is an open protocol for connecting AI applications to external data sources and tools. An MCP server exposes a set of tools that an LLM-host client can discover and invoke during conversation. MIKO's MCP server is a thin wrapper around the same backend modules that serve the REST API.
+MCP (Model Context Protocol) is an open protocol for connecting AI applications to external data sources and tools. An MCP server exposes a set of tools that an LLM-host client can discover and invoke during conversation.
 
 ## Server Package
 
@@ -16,7 +16,7 @@ MCP (Model Context Protocol) is an open protocol for connecting AI applications 
 @miko/mcp-server (npm)
 ```
 
-The server runs locally via `npx`. It reads the holder's wallet JWT from an environment variable and connects to MIKO's backend. Each tool invocation goes through the same tier check and quota accounting as the REST API.
+The server runs locally via `npx`. It reads the holder's wallet JWT from an environment variable and connects to MIKO's backend.
 
 ## Authentication
 
@@ -34,49 +34,30 @@ Tier and quota are evaluated at every tool call.
 
 ### miko.factcheck
 
-Run a claim through the 6-provider fact-check pipeline.
+Verify a claim through MIKO's adaptive multi-provider fact-check pipeline.
 
 ```json
 {
   "name": "miko.factcheck",
-  "description": "Verify a factual claim against multi-source web evidence",
+  "description": "Verify a factual claim through MIKO's multi-provider fact-check pipeline.",
   "input_schema": {
     "type": "object",
     "properties": {
-      "claim": { "type": "string", "description": "The claim to verify" },
-      "context": { "type": "string", "description": "Optional surrounding context" }
+      "claim": { "type": "string", "description": "The claim to verify" }
     },
     "required": ["claim"]
   }
 }
 ```
 
-### miko.analyze
+### miko.narrative
 
-Sentiment, persuasion, and topic analysis of arbitrary text.
-
-```json
-{
-  "name": "miko.analyze",
-  "description": "Analyze text for sentiment, persuasion, topic, and mentioned tickers",
-  "input_schema": {
-    "type": "object",
-    "properties": {
-      "text": { "type": "string", "description": "The text to analyze" }
-    },
-    "required": ["text"]
-  }
-}
-```
-
-### miko.scan
-
-Fetch on-chain overview and narrative facts for a Solana mint address.
+Get MIKO's narrative read of a Solana mint address: market snapshot, one-paragraph interpretation, and concrete observations.
 
 ```json
 {
-  "name": "miko.scan",
-  "description": "Get current price, volume, and narrative facts for a Solana token",
+  "name": "miko.narrative",
+  "description": "Get MIKO's narrative read of a Solana token: what is the token doing on-chain right now, expressed as a one-paragraph interpretation plus a list of concrete observations.",
   "input_schema": {
     "type": "object",
     "properties": {
@@ -87,35 +68,57 @@ Fetch on-chain overview and narrative facts for a Solana mint address.
 }
 ```
 
-### miko.alpha
+### miko.insights
 
-Current candidate alpha picks ranked by the selection algorithm.
+Query MIKO's knowledge graph for verified insights about a token or narrative topic.
 
 ```json
 {
-  "name": "miko.alpha",
-  "description": "Get current candidate alpha picks ranked by composite score",
+  "name": "miko.insights",
+  "description": "Query MIKO's knowledge graph for verified insights about a token symbol, mint address, or narrative topic.",
   "input_schema": {
     "type": "object",
-    "properties": {}
+    "properties": {
+      "query": { "type": "string", "description": "Token symbol, mint address, or narrative topic" }
+    },
+    "required": ["query"]
   }
 }
 ```
 
-### miko.picks_history
+### miko.narratives_trending
 
-Weekly selection track record with 24h and 7d performance.
+Aggregated view of the narratives currently dominating MIKO's KOL stream.
 
 ```json
 {
-  "name": "miko.picks_history",
-  "description": "Get past weekly selections with their subsequent on-chain performance",
+  "name": "miko.narratives_trending",
+  "description": "Get the narratives currently dominating MIKO's KOL stream over the requested window. Returns themes with summaries, key tokens, and momentum direction.",
   "input_schema": {
     "type": "object",
     "properties": {
-      "limit": { "type": "integer", "default": 10 },
-      "offset": { "type": "integer", "default": 0 }
+      "window": {
+        "type": "string",
+        "enum": ["1d", "2d", "3d", "4d", "5d", "6d", "7d"],
+        "default": "1d",
+        "description": "Aggregation window"
+      }
     }
+  }
+}
+```
+
+### miko.watchlist
+
+Tokens MIKO is currently paying close attention to, each with a plain-language summary.
+
+```json
+{
+  "name": "miko.watchlist",
+  "description": "Tokens MIKO is currently paying close attention to, each with a plain-language summary.",
+  "input_schema": {
+    "type": "object",
+    "properties": {}
   }
 }
 ```
@@ -155,25 +158,43 @@ User: I saw a claim on X that $BONK is partnering with Visa next week.
 Claude: I'll verify this through MIKO's fact-check pipeline.
         [Tool call: miko.factcheck({"claim": "$BONK partnering with Visa next week"})]
 
-        MIKO returned NOT_VERIFIED:
-        - 3 providers consulted
-        - No Visa press release, no $BONK official mention, no corroborating
-          coverage
-        - The original tweet traces to an unverified account
+        MIKO returned NOT verified:
+        - No Visa press release found
+        - No official $BONK channel has confirmed
+        - The original post traces to an unverified account with a
+          history of similar pump claims
 
-        This is noise. The claim has no corroborating sources.
+        This is noise. Treat it as unverified until a primary source surfaces.
 
 User: What's $BONK actually doing on-chain right now?
 
-Claude: [Tool call: miko.scan({"mint_address": "DezXAZ8z7..."})]
+Claude: [Tool call: miko.narrative({"mint_address": "DezXAZ8z7..."})]
 
-        Current snapshot:
-        - Price $0.000018, MC $1.24B
-        - 24h volume $85M
-        - Narrative regime: accumulation
-        - Breakout score 67/100, exhaustion 41/100
+        MIKO's read:
+        - Accumulation phase with steady buy-side pressure but limited
+          breakout participation
+        - 24h volume up roughly 40% versus the prior 24h
+        - Trade size declining while count rises — distributed
+          accumulation pattern rather than retail-driven move
+        - Price holding above the 4h high with shallow pullbacks
 
-        Solid liquidity, accumulation regime, moderate breakout positioning.
+        Solid structure, but not yet breakout territory.
+
+User: Is BONK worth a position right now given the broader market?
+
+Claude: [Tool call: miko.narratives_trending({"window": "7d"})]
+        [Tool call: miko.insights({"query": "BONK"})]
+
+        Narrative context this week is dominated by AI agent infrastructure
+        (CLAWD, MOLT), with memecoin discussion cooling. BONK sits in the
+        cooling part of the rotation.
+
+        MIKO's verified knowledge on BONK includes confirmed community
+        staking activity from Q1 2026 and a pattern of repeated unverified
+        exchange-listing claims that never materialised.
+
+        So: structurally healthy on-chain, but narrative tailwind is rotating
+        away from memecoins this week. Position sizing should reflect that.
 ```
 
 ## Connecting from Cursor
@@ -202,10 +223,11 @@ The MIKO tools appear in Cursor's chat panel. Useful for in-editor crypto contex
 Cursor user: I'm writing a Jupiter swap script for $BONK. Quick sanity check —
              is $BONK currently in good liquidity for a $5K swap?
 
-Cursor: [Tool call: miko.scan({"mint_address": "..."})]
+Cursor: [Tool call: miko.narrative({"mint_address": "..."})]
 
-        $BONK 24h volume is $85M, market cap $1.24B. A $5K swap is roughly
-        0.006% of 24h volume. Liquidity is more than sufficient for that size.
+        BONK 24h volume is $85M, market cap $1.24B. A $5K swap is roughly
+        0.006% of 24h volume. Liquidity is more than sufficient for that
+        size. MIKO's read: accumulation phase, no concentration warnings.
 ```
 
 ## Connecting from OpenAI Codex / Agents SDK
@@ -219,9 +241,9 @@ from openai.agents import Agent, MCPServer
 agent = Agent(
     model="gpt-5",
     instructions=(
-        "You are a Solana research assistant. Use MIKO tools to verify claims "
-        "and analyze tokens. Always run miko.factcheck before reporting any "
-        "claim as fact."
+        "You are a Solana research assistant. Use MIKO tools to verify "
+        "claims and read tokens. Always run miko.factcheck before reporting "
+        "any claim as fact."
     ),
     tools=[
         MCPServer(
@@ -239,7 +261,7 @@ Verify this claim and tell me if the underlying token is worth tracking:
 print(result.output)
 ```
 
-The agent autonomously decides when to call `miko.factcheck` and `miko.scan` based on the user's query.
+The agent autonomously decides when to call `miko.factcheck` and `miko.narrative` based on the user's query.
 
 ## Connecting from Gemini
 
@@ -272,7 +294,7 @@ model = genai.GenerativeModel(
 
 chat = model.start_chat()
 response = chat.send_message(
-    "Scan $BONK and tell me if it's worth tracking right now"
+    "Read $BONK and tell me if it's worth tracking right now"
 )
 print(response.text)
 ```
@@ -325,7 +347,7 @@ Quota status is reported in tool call metadata:
 {
   "_meta": {
     "tier": "Holder",
-    "quota_remaining": 47,
+    "quota_remaining": 4,
     "cache_status": "HIT"
   }
 }
