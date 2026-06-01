@@ -4,7 +4,7 @@ title: REST API
 
 # REST API
 
-The MIKO REST API exposes the agent's intelligence stack over standard HTTP. Every request is authenticated with a wallet-signed JWT, and every response is JSON.
+The MIKO REST API exposes the agent's analytical pipeline over standard HTTP. Every request is authenticated with a wallet-signed JWT, and every response is JSON.
 
 ## Base URL
 
@@ -78,7 +78,7 @@ Response:
   "jwt": "eyJhbGciOiJIUzI1NiIs...",
   "tier": "Holder",
   "expires_at": "2026-05-28T12:30:00Z",
-  "quota": {"daily_limit": 50, "remaining": 50}
+  "quota": {"daily_limit": 5, "remaining": 5}
 }
 ```
 
@@ -98,13 +98,15 @@ The JWT is scoped to the holder's current tier. Tiers are evaluated at JWT issua
 | Pro | ≥ \$1,000 | 100 requests | 3 RPM |
 | Whale | ≥ \$2,000 | 300 requests | 10 RPM |
 
+Wallets holding less than \$100 of \$MIKO receive `403 tier_insufficient` at `/auth/verify` and cannot obtain a JWT.
+
 Tier and remaining quota are returned in every response under the `X-Tier` and `X-Quota-Remaining` headers.
 
 ## Endpoints
 
 ### POST /v1/factcheck
 
-Verify a claim through the 6-provider fact-check pipeline.
+Verify a claim through MIKO's multi-provider fact-check pipeline.
 
 Request:
 
@@ -113,7 +115,7 @@ curl -X POST https://api.mikoprotocol.com/v1/factcheck \
   -H "Authorization: Bearer <jwt>" \
   -H "Content-Type: application/json" \
   -d '{
-    "claim": "$BONK is launching a new validator next week",
+    "claim": "$BONK is announcing a Visa partnership next week",
     "context": "optional surrounding text from the original source"
   }'
 ```
@@ -122,63 +124,22 @@ Response:
 
 ```json
 {
-  "verdict": "NOT_VERIFIED",
-  "confidence": 0.87,
-  "evidence": [
-    {
-      "provider": "perplexity",
-      "url": "https://...",
-      "snippet": "No official $BONK announcement matches this claim..."
-    },
-    {
-      "provider": "tavily",
-      "url": "https://...",
-      "snippet": "Original claim traces to an unverified account..."
-    }
-  ],
-  "providers_consulted": 3,
-  "verification_strategy": "intensive"
+  "is_verified": false,
+  "verdict_summary": "No corroborating evidence for the claimed Visa partnership.",
+  "reasoning": "No Visa press release matches the claim. No official $BONK channel has announced the partnership. The original post traces to an unverified account with a recent history of similar pump-and-dump claims. Independent sources do not converge on this claim."
 }
 ```
 
-Verdict values: `VERIFIED`, `NOT_VERIFIED`, `INSUFFICIENT_EVIDENCE`.
+`is_verified` is `true`, `false`, or `null` (insufficient evidence).
 
-### POST /v1/analyze
+### POST /v1/narrative
 
-Analyze arbitrary text for sentiment, persuasion, and topic.
+Get MIKO's narrative read of a Solana mint address.
 
 Request:
 
 ```bash
-curl -X POST https://api.mikoprotocol.com/v1/analyze \
-  -H "Authorization: Bearer <jwt>" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "text": "Just bought more $BONK after seeing the announcement, this is going to moon!"
-  }'
-```
-
-Response:
-
-```json
-{
-  "sentiment": "positive",
-  "sentiment_score": 0.84,
-  "persuasion_score": 0.42,
-  "topic": "memecoin_speculation",
-  "tickers_mentioned": ["BONK"],
-  "noise_flags": []
-}
-```
-
-### POST /v1/scan
-
-Fetch on-chain overview and derived narrative facts for a Solana mint address.
-
-Request:
-
-```bash
-curl -X POST https://api.mikoprotocol.com/v1/scan \
+curl -X POST https://api.mikoprotocol.com/v1/narrative \
   -H "Authorization: Bearer <jwt>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -190,29 +151,121 @@ Response:
 
 ```json
 {
-  "mint_address": "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263",
   "symbol": "BONK",
-  "price_usd": 0.000018,
-  "market_cap_usd": 1240000000,
-  "volume_24h_usd": 85000000,
-  "narrative_facts": {
-    "regime": "accumulation",
-    "breakout_0_100": 67,
-    "stealth_0_100": 23,
-    "exhaustion_0_100": 41,
-    "buy_sell_pressure_ratio": 1.32,
-    "transaction_velocity_4h": 4.7,
-    "holder_distribution_gini": 0.71
-  }
+  "mint_address": "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263",
+  "market_snapshot": {
+    "price_usd": 0.000018,
+    "market_cap_usd": 1240000000,
+    "volume_24h_usd": 85000000
+  },
+  "narrative_summary": "BONK is in an accumulation phase with steady buy-side pressure but limited breakout participation. Volume is elevated against the prior 24h period, but trade size shifts suggest larger wallets are accumulating quietly rather than retail driving the move.",
+  "observations": [
+    "Buy pressure dominant on 1h timeframe with rising trade count",
+    "24h volume up roughly 40% versus prior 24h period",
+    "Average trade size declining while trade count rises, consistent with distributed accumulation",
+    "Price holding above the 4h high with shallow pullbacks",
+    "Wallet inflow steady, no concentration warnings"
+  ],
+  "snapshot_at": "2026-05-27T12:00:00Z"
 }
 ```
 
-### GET /v1/alpha
+### POST /v1/insights
 
-Current candidate alpha picks ranked by the selection algorithm.
+Query MIKO's knowledge graph.
+
+Request:
 
 ```bash
-curl https://api.mikoprotocol.com/v1/alpha \
+curl -X POST https://api.mikoprotocol.com/v1/insights \
+  -H "Authorization: Bearer <jwt>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "BONK"
+  }'
+```
+
+`query` accepts a token symbol (`"BONK"`), a mint address, or a narrative topic (`"Solana DePIN"`, `"AI agent infrastructure"`).
+
+Response:
+
+```json
+{
+  "query": "BONK",
+  "insights": [
+    {
+      "text": "BONK community staked 1.2B tokens in the dao validator launch (Q1 2026), with no insider unlocks tied to the staking pool. Verified through the official BONK Foundation announcement and corroborating on-chain transaction data.",
+      "first_observed_at": "2026-02-14T08:30:00Z",
+      "last_confirmed_at": "2026-04-22T16:00:00Z",
+      "related_tokens": ["BONK"]
+    },
+    {
+      "text": "Repeated unverified claims of major exchange listings for BONK have circulated since mid-2025; none of the named exchanges (Coinbase, Kraken) have confirmed any listing through their official channels.",
+      "first_observed_at": "2025-08-03T14:20:00Z",
+      "last_confirmed_at": "2026-05-20T09:00:00Z",
+      "related_tokens": ["BONK"]
+    }
+  ],
+  "total_insights": 8,
+  "knowledge_freshness": "2026-05-20T09:00:00Z"
+}
+```
+
+### GET /v1/narratives/trending
+
+Narratives currently dominating MIKO's KOL stream.
+
+```bash
+curl "https://api.mikoprotocol.com/v1/narratives/trending?window=7d" \
+  -H "Authorization: Bearer <jwt>"
+```
+
+Query parameters: `window` = `24h` or `7d` (default `24h`).
+
+Response:
+
+```json
+{
+  "window": "7d",
+  "evaluated_at": "2026-05-27T12:00:00Z",
+  "trending_narratives": [
+    {
+      "theme": "AI agent infrastructure",
+      "summary": "AI agent frameworks and on-chain agent execution dominated KOL discussion this week, anchored by OpenClaw's continued growth and new on-chain agent deployments on Solana.",
+      "key_tokens": [
+        {"symbol": "CLAWD", "mint_address": "..."},
+        {"symbol": "MOLT", "mint_address": "..."}
+      ],
+      "momentum": "dominant"
+    },
+    {
+      "theme": "Solana DePIN",
+      "summary": "DePIN narrative gaining steady KOL coverage with new physical-infrastructure tokens entering trading pairs. Discussion shifting from speculative framing to use-case-driven framing.",
+      "key_tokens": [
+        {"symbol": "HONEY", "mint_address": "..."}
+      ],
+      "momentum": "rising"
+    },
+    {
+      "theme": "Memecoin rotation",
+      "summary": "Memecoin discussion cooled mid-week as attention rotated toward infrastructure plays. Existing leaders held volume but new launches saw weaker KOL pickup.",
+      "key_tokens": [
+        {"symbol": "WIF", "mint_address": "..."}
+      ],
+      "momentum": "cooling"
+    }
+  ]
+}
+```
+
+`momentum` is one of `rising`, `dominant`, or `cooling`.
+
+### GET /v1/watchlist
+
+Tokens MIKO is currently paying close attention to, with a plain-language summary of why each token is on the list.
+
+```bash
+curl https://api.mikoprotocol.com/v1/watchlist \
   -H "Authorization: Bearer <jwt>"
 ```
 
@@ -221,64 +274,33 @@ Response:
 ```json
 {
   "evaluated_at": "2026-05-27T12:00:00Z",
-  "ml_phase": "phase_3",
-  "candidates": [
+  "watching": [
     {
-      "rank": 1,
-      "symbol": "WIF",
-      "mint_address": "...",
-      "composite_score": 0.87,
-      "factcheck_passed": true
-    },
-    {
-      "rank": 2,
       "symbol": "POPCAT",
       "mint_address": "...",
-      "composite_score": 0.81,
-      "factcheck_passed": true
+      "attention_level": "rising",
+      "summary": "Building KOL momentum over the last 48h with multiple independent sources flagging accumulation. Narrative anchored on a memecoin recovery wave.",
+      "first_appeared_at": "2026-05-25T10:00:00Z"
+    },
+    {
+      "symbol": "WIF",
+      "mint_address": "...",
+      "attention_level": "high",
+      "summary": "Sustained attention across the full week with steady mention volume. Coverage tone is neutral-to-positive; no breakout catalyst surfaced yet.",
+      "first_appeared_at": "2026-05-20T08:00:00Z"
+    },
+    {
+      "symbol": "CLAWD",
+      "mint_address": "...",
+      "attention_level": "high",
+      "summary": "Strong recurring mentions tied to AI agent narrative dominance. Multiple KOLs framing as a core position for the current rotation.",
+      "first_appeared_at": "2026-05-18T11:30:00Z"
     }
   ]
 }
 ```
 
-### GET /v1/picks/history
-
-Track record of weekly selections with subsequent performance.
-
-```bash
-curl "https://api.mikoprotocol.com/v1/picks/history?limit=10&offset=0" \
-  -H "Authorization: Bearer <jwt>"
-```
-
-Response:
-
-```json
-{
-  "picks": [
-    {
-      "selected_at": "2026-05-20T18:00:00Z",
-      "display_symbol": "WIF",
-      "mint_address": "...",
-      "selection_method": "phase_3_catboost",
-      "outcome_24h_change_pct": 14.3,
-      "outcome_7d_change_pct": 22.1,
-      "composite_outcome_score": 0.78
-    },
-    {
-      "selected_at": "2026-05-13T18:00:00Z",
-      "display_symbol": "MEW",
-      "mint_address": "...",
-      "selection_method": "phase_3_catboost",
-      "outcome_24h_change_pct": -3.2,
-      "outcome_7d_change_pct": 5.8,
-      "composite_outcome_score": 0.41
-    }
-  ],
-  "total": 26,
-  "limit": 10,
-  "offset": 0
-}
-```
+`attention_level` is one of `high`, `rising`, or `steady`.
 
 ## Error Responses
 
@@ -286,8 +308,8 @@ All errors return JSON with an `error` field and HTTP status:
 
 ```json
 {
-  "error": "tier_quota_exceeded",
-  "message": "Daily quota of 50 reached for Holder tier",
+  "error": "quota_exceeded",
+  "message": "Daily quota of 5 reached for Holder tier",
   "retry_after": "2026-05-28T00:00:00Z"
 }
 ```
@@ -297,10 +319,15 @@ Common errors:
 | Status | Code | Meaning |
 |---|---|---|
 | 401 | `unauthorized` | missing or invalid JWT |
-| 403 | `tier_insufficient` | tier does not have access to this endpoint |
-| 429 | `quota_exceeded` | daily quota exhausted |
+| 403 | `tier_insufficient` | wallet does not hold the minimum \$MIKO required to obtain a JWT, or current tier lacks access to the endpoint |
+| 429 | `quota_exceeded` | daily or per-minute quota exhausted |
+| 429 | `rate_limit_burst` | per-second burst cap exceeded |
 | 400 | `invalid_request` | malformed request body |
-| 503 | `provider_unavailable` | upstream provider down, retry suggested |
+| 503 | `provider_unavailable` | upstream provider unavailable, retry suggested |
+
+## Rate Limiting
+
+In addition to the daily and per-minute tier quotas, all endpoints have a per-wallet burst cap of 5 requests per second.
 
 ## Caching
 
