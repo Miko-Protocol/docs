@@ -70,12 +70,12 @@ Get MIKO's narrative read of a Solana mint address: market snapshot, one-paragra
 
 ### miko.insights
 
-Query MIKO's knowledge graph for verified insights about a token or narrative topic.
+Query MIKO's knowledge graph for insights about a token or narrative topic.
 
 ```json
 {
   "name": "miko.insights",
-  "description": "Query MIKO's knowledge graph for verified insights about a token symbol, mint address, or narrative topic.",
+  "description": "Query MIKO's knowledge graph for insights about a token symbol, mint address, or narrative topic.",
   "input_schema": {
     "type": "object",
     "properties": {
@@ -88,12 +88,12 @@ Query MIKO's knowledge graph for verified insights about a token or narrative to
 
 ### miko.narratives_trending
 
-Aggregated view of the narratives currently dominating MIKO's KOL stream.
+Top narratives MIKO has surfaced in the requested window, ranked by importance and uniqueness.
 
 ```json
 {
   "name": "miko.narratives_trending",
-  "description": "Get the narratives currently dominating MIKO's KOL stream over the requested window. Returns themes with summaries, key tokens, and momentum direction.",
+  "description": "Get the top narratives MIKO has surfaced in the requested window, ranked by importance and uniqueness. Returns each narrative's summary, key entities, key token symbols, observation timestamps, momentum direction, and fact-check status.",
   "input_schema": {
     "type": "object",
     "properties": {
@@ -189,9 +189,10 @@ Claude: [Tool call: miko.narratives_trending({"window": "7d"})]
         (CLAWD, MOLT), with memecoin discussion cooling. BONK sits in the
         cooling part of the rotation.
 
-        MIKO's verified knowledge on BONK includes confirmed community
-        staking activity from Q1 2026 and a pattern of repeated unverified
-        exchange-listing claims that never materialised.
+        MIKO's knowledge graph on BONK includes a verified entry on
+        community staking activity from Q1 2026 and a longstanding
+        observation of repeated unverified exchange-listing claims that
+        never materialised.
 
         So: structurally healthy on-chain, but narrative tailwind is rotating
         away from memecoins this week. Position sizing should reflect that.

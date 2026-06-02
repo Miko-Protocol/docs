@@ -196,13 +196,15 @@ Response:
       "text": "BONK community staked 1.2B tokens in the dao validator launch (Q1 2026), with no insider unlocks tied to the staking pool. Verified through the official BONK Foundation announcement and corroborating on-chain transaction data.",
       "first_observed_at": "2026-02-14T08:30:00Z",
       "last_confirmed_at": "2026-04-22T16:00:00Z",
-      "related_tokens": ["BONK"]
+      "related_tokens": ["BONK"],
+      "fact_check": "verified"
     },
     {
       "text": "Repeated unverified claims of major exchange listings for BONK have circulated since mid-2025; none of the named exchanges (Coinbase, Kraken) have confirmed any listing through their official channels.",
       "first_observed_at": "2025-08-03T14:20:00Z",
       "last_confirmed_at": "2026-05-20T09:00:00Z",
-      "related_tokens": ["BONK"]
+      "related_tokens": ["BONK"],
+      "fact_check": "not_required"
     }
   ],
   "total_insights": 8,
@@ -210,9 +212,11 @@ Response:
 }
 ```
 
+`fact_check` is one of `verified` or `not_required`.
+
 ### GET /v1/narratives/trending
 
-Narratives currently dominating MIKO's KOL stream.
+Top narratives MIKO has surfaced in the requested window, ranked by importance and uniqueness.
 
 ```bash
 curl "https://api.mikoprotocol.com/v1/narratives/trending?window=7d" \
@@ -227,37 +231,43 @@ Response:
 {
   "window": "7d",
   "evaluated_at": "2026-05-27T12:00:00Z",
-  "trending_narratives": [
+  "narratives": [
     {
-      "theme": "AI agent infrastructure",
-      "summary": "AI agent frameworks and on-chain agent execution dominated KOL discussion this week, anchored by OpenClaw's continued growth and new on-chain agent deployments on Solana.",
-      "key_tokens": [
-        {"symbol": "CLAWD", "mint_address": "..."},
-        {"symbol": "MOLT", "mint_address": "..."}
-      ],
-      "momentum": "dominant"
+      "summary": "AI agent frameworks and on-chain agent execution have driven sustained KOL discussion this week, anchored by OpenClaw's continued growth and new on-chain agent deployments on Solana.",
+      "key_entities": ["AI agents", "OpenClaw", "on-chain agents"],
+      "key_tokens": ["CLAWD", "MOLT"],
+      "first_observed_at": "2026-05-20T09:00:00Z",
+      "last_confirmed_at": "2026-05-27T08:00:00Z",
+      "momentum": "dominant",
+      "fact_check": "verified"
     },
     {
-      "theme": "Solana DePIN",
       "summary": "DePIN narrative gaining steady KOL coverage with new physical-infrastructure tokens entering trading pairs. Discussion shifting from speculative framing to use-case-driven framing.",
-      "key_tokens": [
-        {"symbol": "HONEY", "mint_address": "..."}
-      ],
-      "momentum": "rising"
+      "key_entities": ["DePIN", "physical infrastructure"],
+      "key_tokens": ["HONEY"],
+      "first_observed_at": "2026-05-22T14:30:00Z",
+      "last_confirmed_at": "2026-05-27T07:00:00Z",
+      "momentum": "rising",
+      "fact_check": "not_required"
     },
     {
-      "theme": "Memecoin rotation",
       "summary": "Memecoin discussion cooled mid-week as attention rotated toward infrastructure plays. Existing leaders held volume but new launches saw weaker KOL pickup.",
-      "key_tokens": [
-        {"symbol": "WIF", "mint_address": "..."}
-      ],
-      "momentum": "cooling"
+      "key_entities": ["memecoin rotation"],
+      "key_tokens": ["WIF"],
+      "first_observed_at": "2026-05-21T11:00:00Z",
+      "last_confirmed_at": "2026-05-26T18:00:00Z",
+      "momentum": "cooling",
+      "fact_check": "not_required"
     }
   ]
 }
 ```
 
 `momentum` is one of `rising`, `dominant`, or `cooling`.
+
+`fact_check` is one of `verified` or `not_required`.
+
+Up to 5 narratives are returned. `key_tokens` lists token symbols only. Empty arrays are valid responses.
 
 ### GET /v1/watchlist
 
