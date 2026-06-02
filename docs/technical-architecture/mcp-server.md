@@ -4,7 +4,7 @@ title: MCP Server
 
 # MCP Server
 
-MIKO is exposed as a Model Context Protocol server. Any MCP-aware client can call MIKO's capabilities as tools directly inside its own conversation context, so a holder can pull MIKO's analytical pipeline into Claude Desktop, Cursor, OpenAI Agents, Gemini, or any other MCP-aware workflow.
+MIKO is exposed as a Model Context Protocol server. Any MCP-aware client can call MIKO's capabilities as tools directly inside its own conversation context, so a holder can use MIKO from Claude Desktop, Cursor, OpenAI Agents, Gemini, or any other MCP-aware workflow.
 
 ## What is MCP
 
@@ -16,7 +16,7 @@ MCP (Model Context Protocol) is an open protocol for connecting AI applications 
 @miko/mcp-server (npm)
 ```
 
-The server runs locally via `npx`. It reads the holder's wallet JWT from an environment variable and connects to MIKO's backend.
+The server runs locally via `npx`. It reads the holder's wallet JWT from an environment variable and connects to the MIKO API.
 
 ## Authentication
 
@@ -30,16 +30,28 @@ MIKO_JWT=<wallet_signed_jwt>
 
 Tier and quota are evaluated at every tool call.
 
+### Tool Access by Tier
+
+| Tool | Minimum Tier |
+|---|---|
+| `miko.factcheck` | Pro |
+| `miko.narrative` | Pro |
+| `miko.watchlist` | Pro |
+| `miko.insights` | Holder |
+| `miko.narratives_trending` | Holder |
+
+Calls to a tool above the caller's tier return `403 tier_insufficient`.
+
 ## Tools
 
 ### miko.factcheck
 
-Verify a claim through MIKO's adaptive multi-provider fact-check pipeline.
+Verify a claim through MIKO's multi-provider fact-check.
 
 ```json
 {
   "name": "miko.factcheck",
-  "description": "Verify a factual claim through MIKO's multi-provider fact-check pipeline.",
+  "description": "Verify a factual claim through MIKO's multi-provider fact-check.",
   "input_schema": {
     "type": "object",
     "properties": {
@@ -70,12 +82,12 @@ Get MIKO's narrative read of a Solana mint address: market snapshot, one-paragra
 
 ### miko.insights
 
-Query MIKO's knowledge graph for insights about a token or narrative topic.
+Get MIKO's insights on a token or narrative topic.
 
 ```json
 {
   "name": "miko.insights",
-  "description": "Query MIKO's knowledge graph for insights about a token symbol, mint address, or narrative topic.",
+  "description": "Get MIKO's insights on a token symbol, mint address, or narrative topic.",
   "input_schema": {
     "type": "object",
     "properties": {
@@ -88,12 +100,12 @@ Query MIKO's knowledge graph for insights about a token or narrative topic.
 
 ### miko.narratives_trending
 
-Top narratives MIKO has surfaced in the requested window, ranked by importance and uniqueness.
+Top narratives in the requested window, ranked by importance and uniqueness.
 
 ```json
 {
   "name": "miko.narratives_trending",
-  "description": "Get the top narratives MIKO has surfaced in the requested window, ranked by importance and uniqueness. Returns each narrative's summary, key entities, key token symbols, observation timestamps, momentum direction, and fact-check status.",
+  "description": "Get the top narratives in the requested window, ranked by importance and uniqueness. Returns each narrative's summary, key entities, key token symbols, observation timestamps, momentum direction, and fact-check status.",
   "input_schema": {
     "type": "object",
     "properties": {
@@ -110,12 +122,12 @@ Top narratives MIKO has surfaced in the requested window, ranked by importance a
 
 ### miko.watchlist
 
-Tokens MIKO is currently paying close attention to, each with a plain-language summary.
+Tokens currently on the watchlist, each with a plain-language summary.
 
 ```json
 {
   "name": "miko.watchlist",
-  "description": "Tokens MIKO is currently paying close attention to, each with a plain-language summary.",
+  "description": "Tokens currently on the watchlist, each with a plain-language summary.",
   "input_schema": {
     "type": "object",
     "properties": {}
@@ -155,7 +167,7 @@ Save the file and restart Claude Desktop. The MIKO tools appear in the tools pan
 User: I saw a claim on X that $BONK is partnering with Visa next week.
       Worth tracking, or just noise?
 
-Claude: I'll verify this through MIKO's fact-check pipeline.
+Claude: I'll verify this through MIKO.
         [Tool call: miko.factcheck({"claim": "$BONK partnering with Visa next week"})]
 
         MIKO returned NOT verified:
@@ -189,10 +201,10 @@ Claude: [Tool call: miko.narratives_trending({"window": "7d"})]
         (CLAWD, MOLT), with memecoin discussion cooling. BONK sits in the
         cooling part of the rotation.
 
-        MIKO's knowledge graph on BONK includes a verified entry on
-        community staking activity from Q1 2026 and a longstanding
-        observation of repeated unverified exchange-listing claims that
-        never materialised.
+        MIKO's insights on BONK include a verified entry on community
+        staking activity from Q1 2026 and a longstanding observation of
+        repeated unverified exchange-listing claims that never
+        materialised.
 
         So: structurally healthy on-chain, but narrative tailwind is rotating
         away from memecoins this week. Position sizing should reflect that.

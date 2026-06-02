@@ -4,7 +4,7 @@ title: REST API
 
 # REST API
 
-The MIKO REST API exposes the agent's analytical pipeline over standard HTTP. Every request is authenticated with a wallet-signed JWT, and every response is JSON.
+The MIKO REST API exposes MIKO's capabilities over standard HTTP. Every request is authenticated with a wallet-signed JWT, and every response is JSON.
 
 ## Base URL
 
@@ -102,11 +102,23 @@ Wallets holding less than \$100 of \$MIKO receive `403 tier_insufficient` at `/a
 
 Tier and remaining quota are returned in every response under the `X-Tier` and `X-Quota-Remaining` headers.
 
+### Endpoint Access by Tier
+
+| Endpoint | Minimum Tier |
+|---|---|
+| `POST /v1/factcheck` | Pro |
+| `POST /v1/narrative` | Pro |
+| `GET /v1/watchlist` | Pro |
+| `POST /v1/insights` | Holder |
+| `GET /v1/narratives/trending` | Holder |
+
+Calls to an endpoint above the caller's tier return `403 tier_insufficient`.
+
 ## Endpoints
 
 ### POST /v1/factcheck
 
-Verify a claim through MIKO's multi-provider fact-check pipeline.
+Verify a claim through MIKO's multi-provider fact-check.
 
 Request:
 
@@ -171,7 +183,7 @@ Response:
 
 ### POST /v1/insights
 
-Query MIKO's knowledge graph.
+Get MIKO's insights on a token or narrative topic.
 
 Request:
 
@@ -208,7 +220,7 @@ Response:
     }
   ],
   "total_insights": 8,
-  "knowledge_freshness": "2026-05-20T09:00:00Z"
+  "insights_updated_at": "2026-05-20T09:00:00Z"
 }
 ```
 
@@ -216,7 +228,7 @@ Response:
 
 ### GET /v1/narratives/trending
 
-Top narratives MIKO has surfaced in the requested window, ranked by importance and uniqueness.
+Top narratives in the requested window, ranked by importance and uniqueness.
 
 ```bash
 curl "https://api.mikoprotocol.com/v1/narratives/trending?window=7d" \
@@ -271,7 +283,7 @@ Up to 5 narratives are returned. `key_tokens` lists token symbols only. Empty ar
 
 ### GET /v1/watchlist
 
-Tokens MIKO is currently paying close attention to, with a plain-language summary of why each token is on the list.
+Tokens currently on the watchlist, each with a plain-language summary.
 
 ```bash
 curl https://api.mikoprotocol.com/v1/watchlist \
