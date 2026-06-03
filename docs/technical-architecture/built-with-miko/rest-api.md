@@ -136,12 +136,26 @@ Response:
 ```json
 {
   "is_verified": false,
-  "verdict_summary": "No corroborating evidence for the claimed Visa partnership.",
+  "verdict_summary": "No Visa press release matches the claim. No official $BONK channel has announced the partnership. The original post traces to an unverified account with a recent history of similar pump-and-dump claims. Independent sources do not converge on this claim.",
   "reasoning": "No Visa press release matches the claim. No official $BONK channel has announced the partnership. The original post traces to an unverified account with a recent history of similar pump-and-dump claims. Independent sources do not converge on this claim."
 }
 ```
 
-`is_verified` is `true`, `false`, or `null` (insufficient evidence).
+`is_verified` is `true`, `false`, or `null`.
+
+Example — block a Pump.fun mint preflight when the narrative claim fails verification:
+
+```ts
+const { is_verified, verdict_summary, reasoning } = await fetch('/v1/factcheck', {
+  method: 'POST',
+  headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
+  body: JSON.stringify({ claim: form.narrativeClaim }),
+}).then(r => r.json());
+
+if (is_verified === false) {
+  return { allowMint: false, modal: { body: verdict_summary, evidence: reasoning } };
+}
+```
 
 ### POST /v1/narrative
 
@@ -179,6 +193,22 @@ Response:
   ],
   "snapshot_at": "2026-05-27T12:00:00Z"
 }
+```
+
+Example — render a pre-swap context card in a wallet UI:
+
+```ts
+const data = await fetch('/v1/narrative', {
+  method: 'POST', headers,
+  body: JSON.stringify({ mint_address: mint }),
+}).then(r => r.json());
+
+return <SwapCard
+  price={data.market_snapshot.price_usd}
+  marketCap={data.market_snapshot.market_cap_usd}
+  summary={data.narrative_summary}
+  observations={data.observations}
+/>;
 ```
 
 ### POST /v1/insights
@@ -225,6 +255,17 @@ Response:
 ```
 
 `fact_check` is one of `verified` or `not_required`.
+
+Example — feed verified insights into an LLM trading agent as grounding context:
+
+```python
+data = requests.post('/v1/insights', headers=h, json={'query': symbol}).json()
+verified = [i['text'] for i in data['insights'] if i['fact_check'] == 'verified']
+prompt = (
+    f"Verified knowledge about {symbol}:\n" + "\n".join(verified)
+    + f"\n\nLast confirmed: {data['insights_updated_at']}\n---\n{user_question}"
+)
+```
 
 ### GET /v1/narratives/trending
 
@@ -281,6 +322,18 @@ Response:
 
 Up to 5 narratives are returned. `key_tokens` lists token symbols only. Empty arrays are valid responses.
 
+Example — daily Discord briefing bot driven by a 9am cron:
+
+```python
+data = requests.get('/v1/narratives/trending?window=1d', headers=h).json()
+msg = f"🗓️ {data['evaluated_at'][:10]} narratives\n"
+for n in data['narratives']:
+    arrow = {'rising': '↗', 'dominant': '●', 'cooling': '↘'}[n['momentum']]
+    tokens = ' '.join(f"${t}" for t in n['key_tokens'])
+    msg += f"\n{arrow} {n['summary']}\n   tokens: {tokens}"
+webhook.send(msg)
+```
+
 ### GET /v1/watchlist
 
 Tokens currently on the watchlist, each with a plain-language summary.
@@ -322,6 +375,20 @@ Response:
 ```
 
 `attention_level` is one of `high`, `rising`, or `steady`.
+
+Example — track MIKO's pre-curation candidate pool to compare with later weekly picks:
+
+```python
+data = requests.get('/v1/watchlist', headers=h).json()
+for w in data['watching']:
+    db.shadow_track.insert(
+        ts=data['evaluated_at'],
+        symbol=w['symbol'],
+        mint=w['mint_address'],
+        attention=w['attention_level'],
+        first_seen=w['first_appeared_at'],
+    )
+```
 
 ## Error Responses
 

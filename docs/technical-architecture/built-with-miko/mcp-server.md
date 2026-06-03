@@ -62,6 +62,8 @@ Verify a claim through MIKO's multi-provider fact-check.
 }
 ```
 
+In an agent chain: the verdict's tri-state (`true` / `false` / `null`) typically gates the next tool call — for example, abort code generation that depends on a false claim, or surface the reasoning text in the final answer.
+
 ### miko.narrative
 
 Get MIKO's narrative read of a Solana mint address: market snapshot, one-paragraph interpretation, and concrete observations.
@@ -80,6 +82,8 @@ Get MIKO's narrative read of a Solana mint address: market snapshot, one-paragra
 }
 ```
 
+In an agent chain: the agent reads `narrative_summary` and `observations` to brief the user before suggesting any action, or to enrich subsequent on-chain queries before recommending a swap.
+
 ### miko.insights
 
 Get MIKO's insights on a token or narrative topic.
@@ -97,6 +101,8 @@ Get MIKO's insights on a token or narrative topic.
   }
 }
 ```
+
+In an agent chain: the agent picks `verified` items as grounding context for its own reasoning, citing `last_confirmed_at` timestamps when responding to the user.
 
 ### miko.narratives_trending
 
@@ -120,6 +126,8 @@ Top narratives in the requested window, ranked by importance and uniqueness.
 }
 ```
 
+In an agent chain: the agent skips downstream tool calls on topics whose `momentum` is `cooling`, or batches further research on `rising` themes.
+
 ### miko.watchlist
 
 Tokens currently on the watchlist, each with a plain-language summary.
@@ -134,6 +142,8 @@ Tokens currently on the watchlist, each with a plain-language summary.
   }
 }
 ```
+
+In an agent chain: the agent uses the watchlist as a starter set for deeper per-token research (`miko.narrative`, `miko.insights`) before producing its final answer.
 
 ## Connecting from Claude Desktop
 

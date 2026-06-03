@@ -32,8 +32,14 @@ const sidebars = {
         items: [
             'technical-architecture/ai-architecture',
             'technical-architecture/smart-contracts',
-	    'technical-architecture/rest-api',
-	    'technical-architecture/mcp-server',
+	    {
+		type: 'category',
+		label: 'Built with MIKO',
+		items: [
+	 	    'technical-architecture/built-with-miko/rest-api',
+	            'technical-architecture/built-with-miko/mcp-server',
+		]
+	     },	
         ],
     },
     {
