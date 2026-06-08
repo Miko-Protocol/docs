@@ -28,6 +28,8 @@ The JWT is passed via environment variable:
 MIKO_JWT=<wallet_signed_jwt>
 ```
 
+>The JWT can be obtained either through the REST `/auth/nonce` + `/auth/verify/` flow ro by signing in at [https://api.mikoprotocol.com/dashboard](https://api.mikoprotocol.com/dashboard) and copying the bearer toekn.
+
 Tier and quota are evaluated at every tool call.
 
 ### Tool Access by Tier

@@ -16,6 +16,8 @@ https://api.mikoprotocol.com
 
 Every endpoint requires a Bearer token in the `Authorization` header. The token is obtained by signing a server-issued nonce with the holder's Solana wallet.
 
+>To obtain a JWT through the browser without writing signing code, visit [https://api.mikoprotocol.com/dashboard](https://api.mikoprotocol.com/dashboard), connect a wallet, sign in, and copy the bearer token. The steps below describe the same flow at the wire level.
+
 ### Step 1: Request a nonce
 
 ```bash
