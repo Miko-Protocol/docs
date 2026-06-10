@@ -1,8 +1,8 @@
 ---
-title: MCP Server
+title: MCP Server (Coming Soon)
 ---
 
-# MCP Server
+# MCP Server (Coming Soon)
 
 MIKO is exposed as a Model Context Protocol server. Any MCP-aware client can call MIKO's capabilities as tools directly inside its own conversation context, so a holder can use MIKO from Claude Desktop, Cursor, OpenAI Agents, Gemini, or any other MCP-aware workflow.
 
