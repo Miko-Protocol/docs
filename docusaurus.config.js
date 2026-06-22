@@ -111,6 +111,10 @@ const config = {
                 label: 'Whitepaper',
                 to: '/docs/introduction',
               },
+	      {
+		label: 'Litepaper',
+		href: '/litepaper.pdf',
+	      },
             ],
           },
           {
