@@ -113,7 +113,7 @@ const config = {
               },
 	      {
 		label: 'Litepaper',
-		href: '/litepaper.pdf',
+		to: 'pathname:///litepaper.pdf',
 	      },
             ],
           },
