@@ -38,6 +38,7 @@ const sidebars = {
 		items: [
 	 	    'technical-architecture/built-with-miko/rest-api',
 	            'technical-architecture/built-with-miko/mcp-server',
+		    'technical-architecture/built-with-miko/open-model',
 		]
 	     },	
         ],

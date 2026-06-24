@@ -110,6 +110,7 @@ Tier and remaining quota are returned in every response under the `X-Tier` and `
 |---|---|
 | `POST /v1/factcheck` | Pro |
 | `POST /v1/narrative` | Pro |
+| `POST /v1/persona` | Pro |
 | `GET /v1/watchlist` | Pro |
 | `POST /v1/insights` | Holder |
 | `GET /v1/narratives/trending` | Holder |
@@ -390,6 +391,38 @@ for w in data['watching']:
         attention=w['attention_level'],
         first_seen=w['first_appeared_at'],
     )
+```
+
+### POST /v1/persona (Coming Soon)
+
+Generate a response in Miko's voice. Pass the content to react to or the topic to write about; the persona is built in to the model, so no system prompt is sent.
+
+Request:
+
+```bash
+curl -X POST https://api.mikoprotocol.com/v1/persona \
+  -H "Authorization: Bearer <jwt>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "prompt": "write a Miko take on why low fees matter for onchain culture"
+  }'
+```
+
+Response:
+
+```json
+{
+  "text": "..."
+}
+```
+
+The model writes from the prompt you supply; see [Open Model](open-model) for what it is and how to run the same model locally or over MCP.
+
+Example — power a community bot reply in Miko's voice:
+
+```python
+data = requests.post('/v1/persona', headers=h, json={'prompt': user_message}).json()
+bot.reply(data['text'])
 ```
 
 ## Error Responses

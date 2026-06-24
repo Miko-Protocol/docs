@@ -38,6 +38,7 @@ Tier and quota are evaluated at every tool call.
 |---|---|
 | `miko.factcheck` | Pro |
 | `miko.narrative` | Pro |
+| `miko.persona` | Pro |
 | `miko.watchlist` | Pro |
 | `miko.insights` | Holder |
 | `miko.narratives_trending` | Holder |
@@ -146,6 +147,26 @@ Tokens currently on the watchlist, each with a plain-language summary.
 ```
 
 In an agent chain: the agent uses the watchlist as a starter set for deeper per-token research (`miko.narrative`, `miko.insights`) before producing its final answer.
+
+### miko.persona (Coming Soon)
+
+Generate a response in Miko's voice.
+
+```json
+{
+  "name": "miko.persona",
+  "description": "Generate a short response in Miko's voice. Pass the content to react to or the topic to write about; the persona is built into the model.",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "prompt": { "type": "string", "description": "What Miko should respond to or write about" }
+    },
+    "required": ["prompt"]
+  }
+}
+```
+
+In an agent chain: the agent uses `miko.persona` to phrase its final answer in Miko's voice, or to draft an in-character reply for a downstream channel. See [Open Model](open-model) for the same model run locally or over the REST API.
 
 ## Connecting from Claude Desktop
 
