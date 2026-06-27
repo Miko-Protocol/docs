@@ -1,8 +1,8 @@
 ---
-title: Open Model (Coming Soon)
+title: Open Model
 ---
 
-# Open Model (Coming Soon)
+# Open Model
 
 You've met Miko on X. The open model brings her everywhere else too — her persona, packaged as open weights you can download and run. She isn't only someone you follow now; she's someone you can host. On your own machine, in your community, inside your apps — the same Miko, wherever you want her.
 
@@ -39,7 +39,7 @@ https://huggingface.co/projectmiko
 - **GGUF** (q4_k_m) for Ollama / llama.cpp
 - **Safetensors** (4-bit AWQ) for vLLM / Vertex serving
 
-## Call via REST API
+## Call via REST API (Coming Soon)
 
 ```
 POST /v1/persona
@@ -55,6 +55,6 @@ POST /v1/persona
 
 Authentication and tiers follow the standard flow (see [REST API → Authentication](rest-api#authentication)). Minimum tier: Pro.
 
-## Call via MCP
+## Call via MCP (Coming Soon)
 
 The `miko.persona` tool is exposed through the [MCP Server](mcp-server), so any MCP-aware client (Claude Desktop, Cursor, OpenAI Agents, Gemini) can generate in Miko's voice as a tool call.

@@ -1,8 +1,8 @@
 ---
-title: MCP Server (Coming Soon)
+title: MCP Server
 ---
 
-# MCP Server (Coming Soon)
+# MCP Server
 
 MIKO is exposed as a Model Context Protocol server. Any MCP-aware client can call MIKO's capabilities as tools directly inside its own conversation context, so a holder can use MIKO from Claude Desktop, Cursor, OpenAI Agents, Gemini, or any other MCP-aware workflow.
 
@@ -13,7 +13,7 @@ MCP (Model Context Protocol) is an open protocol for connecting AI applications 
 ## Server Package
 
 ```
-@miko/mcp-server (npm)
+@project/mcp-server (npm)
 ```
 
 The server runs locally via `npx`. It reads the holder's wallet JWT from an environment variable and connects to the MIKO API.
@@ -183,7 +183,7 @@ Add a `miko` entry under `mcpServers`:
   "mcpServers": {
     "miko": {
       "command": "npx",
-      "args": ["-y", "@miko/mcp-server"],
+      "args": ["-y", "@projectmiko/mcp-server"],
       "env": {
         "MIKO_JWT": "<your_wallet_jwt>"
       }
@@ -252,7 +252,7 @@ Open Cursor Settings → Features → Model Context Protocol. Add:
   "mcpServers": {
     "miko": {
       "command": "npx",
-      "args": ["-y", "@miko/mcp-server"],
+      "args": ["-y", "@projectmiko/mcp-server"],
       "env": {
         "MIKO_JWT": "<your_wallet_jwt>"
       }
@@ -294,7 +294,7 @@ agent = Agent(
     tools=[
         MCPServer(
             command="npx",
-            args=["-y", "@miko/mcp-server"],
+            args=["-y", "@projectmiko/mcp-server"],
             env={"MIKO_JWT": "<your_wallet_jwt>"}
         )
     ]
@@ -322,7 +322,7 @@ genai.configure(api_key="<gemini_api_key>")
 # Spin up MCP session connected to MIKO
 mcp = MCPSession.connect_stdio(
     command="npx",
-    args=["-y", "@miko/mcp-server"],
+    args=["-y", "@projectmiko/mcp-server"],
     env={"MIKO_JWT": "<your_wallet_jwt>"}
 )
 
@@ -355,7 +355,7 @@ from mcp.client.stdio import stdio_client
 
 server_params = StdioServerParameters(
     command="npx",
-    args=["-y", "@miko/mcp-server"],
+    args=["-y", "@projectmiko/mcp-server"],
     env={"MIKO_JWT": "<your_wallet_jwt>"}
 )
 

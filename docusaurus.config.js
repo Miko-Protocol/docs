@@ -139,7 +139,7 @@ const config = {
             items: [
 	      {
 		label: 'HuggingFace',
-		href: 'https://huggingface.co/projectmiko/miko-x-multibase-lora-ensemble',
+		href: 'https://huggingface.co/projectmiko/miko-persona-31b',
 	      },
               {
                 label: 'Youtube',
