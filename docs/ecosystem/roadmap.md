@@ -30,7 +30,7 @@ graph LR
 -   **Launch 'MIKO's Insight' Dashboard:** Release an analytics dashboard that transparently provides the community with data collected and analyzed by the AI.
 -   **Selection Track Record:** Transparently track and record the performance of all assets selected weekly to demonstrate the AI's analytical capabilities.
 -   **KOL Spotlight:** Based on the analysis of 400+ KOL tweets, highlight the individual who provided the most narrative inspiration for the week, offering new perspectives to the community.
--   **Formalize Ecosystem Partnership Program:** Establish official partnerships with projects selected as weekly reward assets. Position MIKO as a hub of collaboration within the Solana ecosystem through joint AMAs, cross-promotions, and more.
+-   **Formalize Ecosystem Partnership Program:** Establish official partnerships with projects selected as weekly allocation assets. Position MIKO as a hub of collaboration within the Solana ecosystem through joint AMAs, cross-promotions, and more.
 
 ## Phase 3: Community Web3 Integration and Participation Rewards
 

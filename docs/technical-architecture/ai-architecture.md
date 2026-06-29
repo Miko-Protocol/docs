@@ -29,7 +29,7 @@ graph TD
     subgraph X["Execution Layer"]
         direction LR
         X1>"Social Output<br/>(X/Twitter)"]
-        X2>"On-Chain Module<br/>(Purchase & Distribute)"]
+        X2>"On-Chain Module<br/>(Acquire & Allocate)"]
     end
     DS1 --> L1
     DS2 --> L1
@@ -308,7 +308,7 @@ graph TD
     D -->|"Yes"| E["Weighted input to Selection"]
     D -->|"No"| F["Filtered out"]
     E --> G["Combined with KOL data<br/>+ on-chain metrics"]
-    G --> H["Final Reward Selection"]
+    G --> H["Final Asset Selection"]
     style A fill:#E9D5FF,stroke:#8B5CF6
     style F fill:#fca5a5,stroke:#dc2626
     style H fill:#A78BFA,stroke:#5B21B6,color:#fff
@@ -338,7 +338,7 @@ This creates a closed-loop system where the AI's selections become progressively
 
 Most AI agent projects ask holders to trust their intelligence based on narrative — follower counts, ecosystem metrics, or team credentials. MIKO's system is designed to be **measurable by default**.
 
-Every reward selection is automatically recorded with its full context: the token selected, the ML phase and model version that made the decision, whether it was an exploration pick, and — critically — the selected token's price performance at 24 hours and 7 days after announcement. Each selection receives a Composite Outcome Score that quantifies its success, and this score feeds directly back into the ML model's training data.
+Every asset selection is automatically recorded with its full context: the asset selected, the ML phase and model version that made the decision, whether it was an exploration pick, and — critically — the selected asset's price performance at 24 hours and 7 days after announcement. Each selection receives a Composite Outcome Score that quantifies its success, and this score feeds directly back into the ML model's training data.
 
 Phase transitions and rollbacks are logged with their trigger metrics, creating a complete, queryable history of how the AI's decision-making has evolved over time.
 
