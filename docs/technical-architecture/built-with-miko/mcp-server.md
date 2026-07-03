@@ -148,7 +148,7 @@ Tokens currently on the watchlist, each with a plain-language summary.
 
 In an agent chain: the agent uses the watchlist as a starter set for deeper per-token research (`miko.narrative`, `miko.insights`) before producing its final answer.
 
-### miko.persona (Coming Soon)
+### miko.persona
 
 Generate a response in Miko's voice.
 
@@ -375,13 +375,13 @@ async with stdio_client(server_params) as (read, write):
 
 ## HTTP Transport
 
-For deployments that cannot run a local MCP process (web-only environments, hosted agents), the MCP server is also available over HTTP/SSE:
+For deployments that cannot run a local MCP process (web-only environments, hosted agents), the MCP server is also available over Streamble HTTP:
 
 ```
-https://mcp.mikoprotocol.com
+https://mcp.mikoprotocol.com/mcp
 ```
 
-Authentication via the same wallet-signed JWT as the stdio transport, passed in the `Authorization: Bearer <jwt>` header on the initial SSE connection.
+Authentication via the same wallet-signed JWT as the stdio transport, passed in the `Authorization: Bearer <jwt>` header on each request to the endpoint.
 
 ## Caching and Quota
 

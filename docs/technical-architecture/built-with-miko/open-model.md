@@ -37,9 +37,9 @@ https://huggingface.co/projectmiko
 ```
 
 - **GGUF** (q4_k_m) for Ollama / llama.cpp
-- **Safetensors** (4-bit AWQ) for vLLM / Vertex serving
+- **Safetensors** (4-bit W4A16) for vLLM serving
 
-## Call via REST API (Coming Soon)
+## Call via REST API
 
 ```
 POST /v1/persona
@@ -55,6 +55,6 @@ POST /v1/persona
 
 Authentication and tiers follow the standard flow (see [REST API → Authentication](rest-api#authentication)). Minimum tier: Pro.
 
-## Call via MCP (Coming Soon)
+## Call via MCP
 
 The `miko.persona` tool is exposed through the [MCP Server](mcp-server), so any MCP-aware client (Claude Desktop, Cursor, OpenAI Agents, Gemini) can generate in Miko's voice as a tool call.

@@ -393,7 +393,7 @@ for w in data['watching']:
     )
 ```
 
-### POST /v1/persona (Coming Soon)
+### POST /v1/persona
 
 Generate a response in Miko's voice. Pass the content to react to or the topic to write about; the persona is built in to the model, so no system prompt is sent.
 
