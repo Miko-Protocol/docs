@@ -4,7 +4,7 @@ title: Smart Contracts
 
 # On-Chain Implementation on Solana
 
-Miko's intelligence stack produces analytical decisions off-chain. These decisions are executed on the Solana blockchain through the organic collaboration of immutable smart contracts and Miko's on-chain execution module. This hybrid architecture maximizes off-chain analytical flexibility while ensuring on-chain transparency and immutability.
+Miko's intelligence stack produces analytical decisions off-chain. These decisions are executed on the Solana blockchain through the organic collaboration of verified smart contracts and Miko's on-chain execution module. This hybrid architecture maximizes off-chain analytical flexibility while ensuring on-chain transparency: every deployed program is verifiable against its published source code, so any change to on-chain logic is itself public.
 
 ```mermaid
 graph TD

@@ -16,33 +16,41 @@ MIKO Protocol’s tokenomics are designed with fairness, long-term sustainabilit
 
 ## 2. Initial Distribution
 
-MIKO is committed to a 100% fair launch, ensuring equal opportunity for all participants. There will be **no presales, private sales, or bundled launches.** This approach fosters a strong, organic community from day one.
+MIKO is committed to a 100% fair launch, ensuring equal opportunity for all participants. There will be **no presales, private sales, or bundled launches.** No one, including the team, acquires tokens below the market price, and every allocation outside the liquidity pool starts inside an on-chain vesting escrow.
 
 
 ```mermaid
 pie
     title MIKO Token Distribution
-    "Liquidity" : 80
-    "Airdrop" : 10
-    "Reserve" : 10
+    "Liquidity" : 55
+    "Community" : 13
+    "Growth & Partnerships" : 10
+    "Ecosystem Reserve" : 10
+    "CEX Listings" : 7
+    "On-Chain Migration Reserve" : 5
 ```
 
--   **Liquidity Pool: 80%**
-    - At the moment of launch, 80% of the total supply will be permanently locked into the liquidity pool to ensure a deep and stable market.
--   **Community Airdrop: 10%**
-    - This allocation is dedicated to fostering a vibrant and active community. These tokens will be distributed as rewards for meaningful engagement, such as creating valuable content, and contributing to the growth of the MIKO ecosystem. It serves as a direct incentive for our most dedicated supporters and ambassadors.
--   **Ecosystem Reserve: 10%** 
-    - This portion is reserved for the protocol's growth, including marketing initiatives, exchange listings, and other ecosystem developments.
+-   **Liquidity Pool: 55%**
+    - Deposited into the liquidity pool at the moment of launch to anchor the market. The LP position is locked for 12 months.
+-   **Community: 13%**
+    - Airdrop seasons, events, and quests. Season 1, the Miko's Circle leaderboard airdrop, is distributed at launch from this allocation. The remainder is held in an on-chain vesting escrow that releases 0.3% of the total supply every Tuesday at 00:00 UTC for community programs. Any weekly tranche left unused at the end of its week is burned or added to protocol liquidity.
+-   **Growth & Partnerships: 10%**
+    - Marketing campaigns, KOL collaborations, and ecosystem integrations. Vests 1% of the total supply every 30 days across ten tranches. Unused tranches are burned or added to protocol liquidity at each cycle.
+-   **Ecosystem Reserve: 10%**
+    - The protocol's operational reserve: day-to-day operations, marketing support, liquidity injections, and topping up the other allocations when they run short. Vests 2% of the total supply every 30 days across five tranches, under the same discipline: whatever goes unused is burned or added to protocol liquidity.
+-   **CEX Listings: 7%**
+    - Inventory reserved for centralized exchange listings and the market operations they require. Locked for 3 months as a growth milestone. If no listing is in motion when the escrow matures, the allocation is locked again for another 3 months.
+-   **On-Chain Migration Reserve: 5%**
+    - Reserved to subsidize the 6% transfer fee for users moving MIKO from exchanges into self-custody, so exchange buyers can join on-chain allocations without penalty. Locked for 3 months alongside the listings inventory; program terms are published when a listing goes live.
 
-## 3. Reserve Management and Team Allocation
+## 3. Locked Allocations and Team Exposure
 
-To ensure full transparency and align the team's interests with the community's, the Ecosystem Reserve is managed through a strict, publicly verifiable process.
+Every allocation outside the liquidity pool is held in its own vesting escrow on Jupiter Lock, an audited open-source locker. Cancellation and recipient changes are permanently disabled at escrow creation, so not even the team can accelerate, redirect, or cancel a schedule. Each escrow address is published, and the entire release plan can be verified on-chain at any time.
 
-- **Transparent Team Holdings:** The team's allocation is drawn exclusively from the 10% Ecosystem Reserve and will **never exceed 2% of the total supply at any given time.** All team tokens are held in a single, publicly disclosed wallet for complete transparency. This structure provides assurance to the community regarding the low risk of team-initiated token dumping.
+- **Team liquid holdings are capped by the schedule itself.** At any given time, the team holds at most about 3.3% of the total supply in liquid form: the current Ecosystem Reserve tranche (2%), the current Growth tranche (1%), and the current weekly Community tranche (0.3%). The CEX Listings and On-Chain Migration Reserve allocations unlock only at their 3-month milestone and are locked again if unused, so they never add to day-to-day float. The escrow schedule itself removes the inventory that large-scale selling would require.
 
-- **Cyclical Lock and Burn Mechanism:** The reserve is managed over a 5-month cycle to ensure gradual and responsible use:
-    - **Month 1:** At launch, the team may utilize up to 2% of the total supply for initial operations. The remaining portion of the reserve is locked for one month.
-    - **Month 2-5:** At the end of each month, the reserve unlocks. Any unused portion of the team's allocation from the previous month is **immediately burned.** The team may then draw a new allocation of up to 2% of the total supply for the upcoming month's operations, and the remainder of the reserve is locked again.
-    - **Conclusion:** Through this monthly cycle of use, burning, and re-locking, the entire 10% reserve is projected to be fully utilized for growth or burned within five months, ensuring no long-term overhang of tokens.
+- **Unused tokens return to the ecosystem.** At the end of each vesting cycle, whatever remains unspent in the team wallet is burned or added to protocol liquidity, and both actions are visible on-chain. Nothing accumulates quietly in a team wallet between cycles.
 
-This disciplined approach to token management ensures that the team is consistently incentivized to foster the protocol's success while providing the community with unparalleled transparency and security.
+- **Growth first, then consolidation.** These allocations exist to fuel the project's early growth: community programs, partnerships, and market expansion. As the protocol matures, the same discipline converts any surplus into ecosystem health, through a permanently smaller supply or deeper liquidity.
+
+This structure keeps the team consistently incentivized to grow the protocol while giving the community a verifiable, on-chain guarantee of how every non-liquidity token is handled.
