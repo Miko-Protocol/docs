@@ -121,9 +121,13 @@ const config = {
             title: 'Community',
             items: [
               {
-                label: 'X (Twitter)',
-                href: 'https://twitter.com/project_miko',
+                label: 'Miko X',
+                href: 'https://x.com/mikorithm',
               },
+	      {
+		label: 'Official X',
+		href: 'https://x.com/project_miko',
+	      },	
               {
                 label: 'Telegram',
                 href: 'https://t.me/mikoprotocol',
