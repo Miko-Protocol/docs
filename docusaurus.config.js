@@ -12,7 +12,7 @@ import rehypeKatex from 'rehype-katex';
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'MIKO Protocol',
-  tagline: "Solana's AI-Curated Index of Weekly Assets", // <-- Updated Tagline
+  tagline: "An AI Curation Protocol on Robinhood Chain", // <-- Updated Tagline
   favicon: 'img/logo_2.png',
 
   // Set the production url of your site here

@@ -13,7 +13,7 @@ MCP (Model Context Protocol) is an open protocol for connecting AI applications 
 ## Server Package
 
 ```
-@project/mcp-server (npm)
+@projectmiko/mcp-server (npm)
 ```
 
 The server runs locally via `npx`. It reads the holder's wallet JWT from an environment variable and connects to the MIKO API.
@@ -28,7 +28,7 @@ The JWT is passed via environment variable:
 MIKO_JWT=<wallet_signed_jwt>
 ```
 
->The JWT can be obtained either through the REST `/auth/nonce` + `/auth/verify/` flow ro by signing in at [https://api.mikoprotocol.com/dashboard](https://api.mikoprotocol.com/dashboard) and copying the bearer toekn.
+The JWT can be obtained either through the REST `/auth/nonce` + `/auth/verify` flow or by signing in at [https://api.mikoprotocol.com/dashboard](https://api.mikoprotocol.com/dashboard) and copying the bearer token.
 
 Tier and quota are evaluated at every tool call.
 
@@ -69,18 +69,18 @@ In an agent chain: the verdict's tri-state (`true` / `false` / `null`) typically
 
 ### miko.narrative
 
-Get MIKO's narrative read of a Solana mint address: market snapshot, one-paragraph interpretation, and concrete observations.
+Get MIKO's narrative read of a Robinhood Chain token address: market snapshot, one-paragraph interpretation, and concrete observations.
 
 ```json
 {
   "name": "miko.narrative",
-  "description": "Get MIKO's narrative read of a Solana token: what is the token doing on-chain right now, expressed as a one-paragraph interpretation plus a list of concrete observations.",
+  "description": "Get MIKO's narrative read of a Robinhood Chain token: what is the token doing on-chain right now, expressed as a one-paragraph interpretation plus a list of concrete observations.",
   "input_schema": {
     "type": "object",
     "properties": {
-      "mint_address": { "type": "string", "description": "Solana mint address" }
+      "token_address": { "type": "string", "description": "Robinhood Chain token address" }
     },
-    "required": ["mint_address"]
+    "required": ["token_address"]
   }
 }
 ```
@@ -213,7 +213,7 @@ Claude: I'll verify this through MIKO.
 
 User: What's $BONK actually doing on-chain right now?
 
-Claude: [Tool call: miko.narrative({"mint_address": "DezXAZ8z7..."})]
+Claude: [Tool call: miko.narrative({"token_address": "DezXAZ8z7..."})]
 
         MIKO's read:
         - Accumulation phase with steady buy-side pressure but limited
@@ -225,19 +225,18 @@ Claude: [Tool call: miko.narrative({"mint_address": "DezXAZ8z7..."})]
 
         Solid structure, but not yet breakout territory.
 
-User: Is BONK worth a position right now given the broader market?
+User: Is CASHCAT worth a position right now given the broader market?
 
 Claude: [Tool call: miko.narratives_trending({"window": "7d"})]
-        [Tool call: miko.insights({"query": "BONK"})]
+        [Tool call: miko.insights({"query": "CASHCAT"})]
 
         Narrative context this week is dominated by AI agent infrastructure
-        (CLAWD, MOLT), with memecoin discussion cooling. BONK sits in the
+        (CLAWD, MOLT), with memecoin discussion cooling. CASHCAT sits in the
         cooling part of the rotation.
 
-        MIKO's insights on BONK include a verified entry on community
-        staking activity from Q1 2026 and a longstanding observation of
-        repeated unverified exchange-listing claims that never
-        materialised.
+        MIKO's insights on CASHCAT include a verified entry on its
+        launch-week holder growth and an observation of repeated
+        unverified exchange-listing claims that never materialised.
 
         So: structurally healthy on-chain, but narrative tailwind is rotating
         away from memecoins this week. Position sizing should reflect that.
@@ -261,18 +260,18 @@ Open Cursor Settings → Features → Model Context Protocol. Add:
 }
 ```
 
-The MIKO tools appear in Cursor's chat panel. Useful for in-editor crypto context lookups while writing code that touches Solana.
+The MIKO tools appear in Cursor's chat panel. Useful for in-editor crypto context lookups while writing code that touches Robinhood Chain.
 
 ### Usage example
 
 ```
-Cursor user: I'm writing a Jupiter swap script for $BONK. Quick sanity check —
-             is $BONK currently in good liquidity for a $5K swap?
+Cursor user: I'm writing a Uniswap v4 swap script for $CASHCAT. Quick sanity
+             check — is $CASHCAT currently in good liquidity for a $5K swap?
 
-Cursor: [Tool call: miko.narrative({"mint_address": "..."})]
+Cursor: [Tool call: miko.narrative({"token_address": "..."})]
 
-        BONK 24h volume is $85M, market cap $1.24B. A $5K swap is roughly
-        0.006% of 24h volume. Liquidity is more than sufficient for that
+        CASHCAT 24h volume is $32M, market cap $140M. A $5K swap is roughly
+        0.016% of 24h volume. Liquidity is more than sufficient for that
         size. MIKO's read: accumulation phase, no concentration warnings.
 ```
 
@@ -287,7 +286,7 @@ from openai.agents import Agent, MCPServer
 agent = Agent(
     model="gpt-5",
     instructions=(
-        "You are a Solana research assistant. Use MIKO tools to verify "
+        "You are a Robinhood Chain research assistant. Use MIKO tools to verify "
         "claims and read tokens. Always run miko.factcheck before reporting "
         "any claim as fact."
     ),
@@ -333,7 +332,7 @@ model = genai.GenerativeModel(
     "gemini-2.5-pro",
     tools=miko_tools,
     system_instruction=(
-        "You are a Solana research assistant. Verify claims through "
+        "You are a Robinhood Chain research assistant. Verify claims through "
         "miko.factcheck before treating them as fact."
     )
 )
@@ -375,7 +374,7 @@ async with stdio_client(server_params) as (read, write):
 
 ## HTTP Transport
 
-For deployments that cannot run a local MCP process (web-only environments, hosted agents), the MCP server is also available over Streamble HTTP:
+For deployments that cannot run a local MCP process (web-only environments, hosted agents), the MCP server is also available over Streamable HTTP:
 
 ```
 https://mcp.mikoprotocol.com/mcp

@@ -8,48 +8,41 @@ The MIKO Protocol will continuously grow and evolve through a clear, phased deve
 
 ```mermaid
 graph LR
-    P1["Phase 1<br/>Genesis"] --> P2["Phase 2<br/>Ecosystem<br/>Tools"]
-    P2 --> P3["Phase 3<br/>Community<br/>Integration"]
-    P3 --> P4["Phase 4<br/>Intelligence<br/>Infrastructure"]
+    P1["Phase 1<br/>Genesis"] --> P2["Phase 2<br/>Community &<br/>Ecosystem"]
+    P2 --> P3["Phase 3<br/>Intelligence<br/>Infrastructure"]
     style P1 fill:#86efac,stroke:#16a34a
     style P2 fill:#fef08a,stroke:#facc15
     style P3 fill:#bfdbfe,stroke:#60a5fa
-    style P4 fill:#e9d5ff,stroke:#8b5cf6
 ```
 
 ## Phase 1: Genesis and Protocol Launch (Current)
 
--   **Launch Miko AI Agent v1.0:** Activate the initial version of the AI agent with features for collecting KOL tweets, building a knowledge base, multi-source fact-checking, and selecting the weekly asset via the Selection Algorithm.
--   **Deploy MIKO Token Smart Contract:** Deploy the MIKO token and allocation contracts using the `Token-2022` standard on the Solana mainnet.
--   **Initial Liquidity Provision and Trading Start:** Provide initial liquidity on major Solana DEXs and commence trading of the \$MIKO token.
--   **Commence Weekly Allocation Cycle:** Start the regular weekly asset selection and allocation cycle, beginning with the selection of the first weekly asset.
--   **Build REST API and MCP Server:** Expose Miko's intelligence stack (fact-checking, asset analysis, narrative facts, selection candidates) through a wallet-authenticated REST API and MCP server, allowing holders to consume MIKO's capabilities from their own agents and clients.
+-   **Miko AI Agent:** KOL tweet collection, knowledge base construction, multi-source fact-checking, and weekly asset selection via the Selection Algorithm.
+-   **MIKO Token and Protocol Contracts:** Deployment on the Robinhood Chain mainnet.
+-   **Initial Liquidity and Trading:** Initial liquidity in the canonical MIKO/ETH pool and the start of \$MIKO trading.
+-   **Weekly Allocation Cycle:** Weekly selection, acquisition, and allocation to holders, with the acquisition treasury split between the core selection and the attention satellite sleeve.
+-   **'MIKO's Insight' Dashboard and Selection Track Record:** Public analytics covering the data Miko collects and the recorded performance of every weekly selection.
+-   **'Miko's Circle' Leaderboard:** The platform connecting users' X activity with their on-chain wallets, opening with the Season 1 airdrop.
+-   **REST API, MCP Server, and Open Model:** Wallet-authenticated access to fact-checking, narrative reads, insights, watchlist, and persona, with the persona model published as open weights on Hugging Face and Ollama.
 
-## Phase 2: Ecosystem Tools and Insight Enhancement
+## Phase 2: Community and Ecosystem Expansion
 
--   **Launch 'MIKO's Insight' Dashboard:** Release an analytics dashboard that transparently provides the community with data collected and analyzed by the AI.
--   **Selection Track Record:** Transparently track and record the performance of all assets selected weekly to demonstrate the AI's analytical capabilities.
--   **KOL Spotlight:** Based on the analysis of 400+ KOL tweets, highlight the individual who provided the most narrative inspiration for the week, offering new perspectives to the community.
--   **Formalize Ecosystem Partnership Program:** Establish official partnerships with projects selected as weekly allocation assets. Position MIKO as a hub of collaboration within the Solana ecosystem through joint AMAs, cross-promotions, and more.
+-   **KOL Spotlight:** Weekly recognition of the KOL whose posts provided the most narrative inspiration, drawn from the 500+ accounts Miko analyzes.
+-   **'Miko's Circle' Seasons:** Recurring leaderboard seasons with benefits for the most active contributors, growing into an ambassador group.
+-   **Ecosystem Partnership Program:** Official partnerships with projects selected as weekly allocation assets, including joint AMAs and cross-promotions within the Robinhood Chain ecosystem.
 
-## Phase 3: Community Web3 Integration and Participation Rewards
-
--   **Launch 'MIKO's Circle' Platform:** Build an innovative platform that connects users' social activities (X) with their on-chain activities (wallet).
--   **Introduce Participate-to-Earn Mechanism:** Through the platform, select outstanding community members who have interacted most actively with Miko or created the most inspiring posts during the week, and provide them with differentiated benefits such as \$MIKO token airdrops. This will serve as the foundation for forming an 'ambassador' group that actively contributes to the ecosystem, beyond just being holders.
--   **Multi-Platform Expansion:** Starting with X, gradually expand Miko's sphere of activity to new social platforms like Farcaster.
-
-## Phase 4: Intelligence Infrastructure
+## Phase 3: Intelligence Infrastructure
 
 The long-term vision is to evolve MIKO from a single-application protocol into **intelligence infrastructure** that serves the broader AI agent ecosystem.
 
--   **Intelligence-as-a-Service (IaaS) API:** Expose Miko's fact-checking pipeline and market analysis capabilities as an API that other autonomous agents can consume. As the AI agent ecosystem grows(with agents trading autonomously, deploying contracts, and managing treasuries), the demand for verified, high-quality market intelligence will grow with it. Agents that trade based on unverified information create systemic risk. Miko's multi-source fact-checking and knowledge graph can serve as a **trust layer for other agents**, not just for MIKO holders.
--   **AI-Curation Launchpad:** Leverage the AI's analytical power to assess new projects launching in the Solana ecosystem in real-time, providing an AI-curated filter for investors navigating the overwhelming volume of new token launches. Revenue generated from this launchpad will further fund the acquisition treasury, creating an additional flywheel for the ecosystem.
+-   **Intelligence-as-a-Service (IaaS) API:** Extend the already-live holder REST API and MCP server into infrastructure that external autonomous agents consume at scale. As the AI agent ecosystem grows(with agents trading autonomously, deploying contracts, and managing treasuries), the demand for verified, high-quality market intelligence will grow with it. Agents that trade based on unverified information create systemic risk. Miko's multi-source fact-checking and knowledge graph can serve as a **trust layer for other agents**, not just for MIKO holders.
+-   **AI-Curation Launchpad:** Leverage the AI's analytical power to assess new projects launching in the Robinhood Chain ecosystem in real-time, providing an AI-curated filter for investors navigating the overwhelming volume of new token launches. Revenue generated from this launchpad will further fund the acquisition treasury, creating an additional flywheel for the ecosystem.
 
 ```mermaid
 graph TD
-    subgraph "Phase 4 Vision"
+    subgraph "Phase 3 Vision"
         A["Miko's Intelligence Stack<br/>(Fact-Check + Knowledge Graph<br/>+ ML Analysis)"]
-        A --> B["MIKO Holders<br/>(Weekly Allocations)"]
+        A --> B["MIKO Holders<br/>(Asset Allocations)"]
         A --> C["External AI Agents<br/>(IaaS API)"]
         A --> D["Launchpad Users<br/>(AI-Curated Projects)"]
         C --> E["Revenue → Acquisition Treasury"]

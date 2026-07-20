@@ -17,7 +17,7 @@ The model is open and self-contained, so the same voice and the same instincts c
 ## What makes it Miko, everywhere
 
 - **The voice is in the weights.** The persona is trained into the model itself, not improvised from a system prompt you have to write and maintain. She sounds like Miko from the first token, every time you run her — nothing to configure, nothing to drift.
-- **She brings her own read.** Trained on Miko's curated take on the crypto space, so the perspective that travels with her is hers — her angle, her instincts — not a stock assistant's.
+- **She brings her own read.** Trained on Miko's own curated market knowledge, so the perspective that travels with her is hers — her angle, her instincts — not a stock assistant's.
 - **She's yours to keep.** Open weights: download once and run freely. No API key, no hosted dependency, nothing phoning home. Wherever you take her, she keeps working.
 
 ## Run locally (Ollama)
@@ -27,7 +27,7 @@ ollama run projectmiko/miko
 ```
 
 ```
->>> reply in your voice to: "why is everyone on solana right now?"
+>>> reply in your voice to: "why is everyone on robinhood chain right now?"
 ```
 
 ## Download the weights (Hugging Face)

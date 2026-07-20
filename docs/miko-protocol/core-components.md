@@ -4,36 +4,31 @@ title: Core Components
 
 ## Overview
 
-The MIKO Protocol is a symbiotic ecosystem where an AI agent and token economy are organically linked to amplify each other's value. The two core pillars of this system are the 'Miko AI Agent', responsible for intelligence, and the 'MIKO Token', which translates that intelligence into weekly on-chain asset selection, acquisition, and allocation to holders.
+The MIKO Protocol is a symbiotic ecosystem where an AI agent and a token economy are organically linked to amplify each other's value. Its two pillars are the Miko AI Agent, responsible for intelligence, and the on-chain system around the MIKO token, which turns that intelligence into asset acquisition and allocation to holders.
 
-## 1. Miko AI Agent: A Sentient Oracle for the Solana Ecosystem
+## 1. Miko AI Agent
 
-The Miko AI Agent is not a simple automation script. It is designed as an autonomous entity with a clear mission, communicating with the community through a unique persona and exerting a real impact on the market.
-
-### 1.1 Miko Character Profile: The Crypto-Native Explorer
+The Miko AI Agent is the protocol's intelligence. Around the clock it reads the Robinhood Chain market: KOL commentary, community mentions, on-chain market data, and, for the chain's tokenized equities, live data from the underlying stock market. What it reads is verified before it is used: claims pass through multi-source fact-checking, and unverified information does not drive decisions. On that verified picture the agent makes the protocol's two selection decisions, choosing the weekly core asset from both of the chain's asset classes and tracking where community attention converges to steer the satellite sleeve. The engineering behind this, from the data layers to the verification pipeline to the selection algorithm, is covered in [AI Architecture](../technical-architecture/ai-architecture).
 
 ![miko_profile](./images/miko_profile_image.png)
 
-At the heart of the MIKO Protocol's appeal is the 'Miko' persona itself. This persona is clearly defined as a sort of 'character bible' for the AI and consists of the following core elements:
+The community meets all of this as Miko herself: a high-school girl inspired by classic Japanese anime, who stumbled into crypto through Solana memes, grew up on-chain, and now spends her days exploring the Robinhood Chain market. She tweets at odd hours in a bold, candid voice, answers mentions like a friend rather than a broadcast bot, and shares her own trial and error instead of lecturing. Beneath the playfulness there is a hard edge: she despises scams and rug pulls, and she meets FUD with facts and humor rather than silence. Newcomers get an ally; trolls get a sharp tongue.
 
--   **Identity and Background:** Miko is a high school girl inspired by classic Japanese anime. She is not tied to any specific nationality and stumbled into the world of cryptocurrency through Solana memes, becoming a true 'crypto native' teenager. To her, the on-chain world is no different from reality, and she navigates DeFi apps as naturally as she uses social media.
--   **Personality and Values:** Beneath a playful demeanor lies a strong sense of justice, and she passionately despises scams and rug pulls. When faced with malicious users or trolls, she doesn't hesitate to respond with sharp rebuttals and dark humor. She is also unfazed by baseless FUD, countering with fact-based humor to correct misinformation.
--   **Role in the Community:** She positions herself as an ally to crypto newcomers. Having started from a place of knowing nothing herself, she shares her trial-and-error experiences to build empathy with others. Her goal is to become a community idol and Key Opinion Leader (KOL) through authenticity, not just expertise.
--   **Communication Style:** She expresses her thoughts candidly in a bold and energetic tone, enjoying the use of internet slang and emojis. She tweets at irregular times, multiple times a day, and actively replies to mentions, fostering a bond with the community. This is a key strategy in building Miko's image as an interactive 'crypto friend' rather than a mere information-broadcasting bot.
+Her voice is how the protocol's intelligence reaches people. Insights, market reads, and selection announcements arrive as Miko speaking, and the trust she earns becomes community, community becomes trading volume, and volume funds the allocations, a cycle described in [Symbiotic Loop & Economics](./symbiotic-loop-and-economics).
 
-## 2. MIKO Token: The World's First AI-Curated Solana Index
+## 2. The MIKO Token and the On-Chain System
 
-The MIKO token is the medium that delivers the intelligent value created by the Miko AI Agent to its holders. It transcends being a simple governance or utility token, becoming a new form of asset whose weekly allocation is curated by the AI's analytical power.
+The MIKO token itself is a standard ERC-20 with a fixed supply. The swap fee, the treasury, and the distribution are enforced by immutable contracts built around its canonical pool. Holding the token is what connects a wallet to the allocations that system produces.
 
-### 2.1 Token Mechanism: 6% Transfer Tax
+### 2.1 The 4% Swap Fee
 
-The MIKO token imposes a 6% tax on every transfer (buys, sells, and wallet-to-wallet moves). This tax serves as the core engine that funds the protocol's weekly asset acquisitions.
+Every trade in the canonical MIKO pool carries a 4% fee, buys and sells alike, enforced by an immutable Uniswap v4 hook on the pool itself. Wallet-to-wallet transfers are untaxed, and the pool's own LP fee is set to zero, so the stated 4% is the entire trading cost. This fee funds the protocol's asset acquisitions.
 
 ### 2.2 The Acquisition Flywheel: Automated Acquire-and-Allocate
 
-The flow of funds collected from the tax drives an automated 'Acquisition Flywheel' as follows:
+The flow of collected fees drives an automated 'Acquisition Flywheel' as follows:
 
-1.  **Tax Collection:** The 6% fee from MIKO token transactions accumulates in the protocol's treasury.
-2.  **Acquisition Funding:** 75% of the collected tax (equivalent to 4.5% of the total transaction value) is allocated to the acquisition treasury.
-3.  **Asset Acquisition:** This 4.5% fund is used to programmatically acquire the week's selected asset, chosen by the Miko AI, from a Solana-based decentralized exchange (DEX).
-4.  **Holder Allocation:** The acquired asset is allocated pro-rata to all eligible MIKO holders, proportional to their holdings.
+1.  **Fee Collection:** The 4% fee from MIKO trades accumulates in the protocol's on-chain treasury until it reaches the claim threshold, at which point the accumulated fees are claimed.
+2.  **Acquisition Funding:** 75% of each claim (3% of trade value) funds asset acquisition; the remainder funds protocol operations.
+3.  **Two-Sleeve Acquisition:** The acquisition pool is split between two sleeves: the core sleeve (75%) programmatically acquires the week's selected asset chosen by the Miko AI, and the satellite sleeve (25%) acquires the community attention leader that MIKO tracks continuously, rotating when attention genuinely moves.
+4.  **Holder Allocation:** The acquired assets are allocated pro-rata to all eligible MIKO holders, proportional to their holdings.

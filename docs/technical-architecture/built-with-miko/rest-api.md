@@ -14,16 +14,16 @@ https://api.mikoprotocol.com
 
 ## Authentication
 
-Every endpoint requires a Bearer token in the `Authorization` header. The token is obtained by signing a server-issued nonce with the holder's Solana wallet.
+Every endpoint requires a Bearer token in the `Authorization` header. The token is obtained by signing a server-issued nonce with the holder's wallet (an EIP-191 personal signature from the EVM wallet holding \$MIKO on Robinhood Chain).
 
->To obtain a JWT through the browser without writing signing code, visit [https://api.mikoprotocol.com/dashboard](https://api.mikoprotocol.com/dashboard), connect a wallet, sign in, and copy the bearer token. The steps below describe the same flow at the wire level.
+To obtain a JWT through the browser without writing signing code, visit [https://api.mikoprotocol.com/dashboard](https://api.mikoprotocol.com/dashboard), connect a wallet, sign in, and copy the bearer token. The steps below describe the same flow at the wire level.
 
 ### Step 1: Request a nonce
 
 ```bash
 curl -X POST https://api.mikoprotocol.com/auth/nonce \
   -H "Content-Type: application/json" \
-  -d '{"wallet": "<solana_address>"}'
+  -d '{"wallet": "<wallet_address>"}'
 ```
 
 Response:
@@ -37,28 +37,23 @@ Response:
 
 ### Step 2: Sign the nonce
 
-Sign the nonce string with the wallet's secret key.
+Sign the nonce string with the wallet (a standard EIP-191 personal message signature; MetaMask's `personal_sign` produces exactly this).
 
 ```javascript
 // JavaScript / TypeScript
-import { Keypair } from "@solana/web3.js";
-import bs58 from "bs58";
-import nacl from "tweetnacl";
+import { Wallet } from "ethers";
 
-const message = new TextEncoder().encode(nonce);
-const signature = nacl.sign.detached(message, keypair.secretKey);
-const signatureB58 = bs58.encode(signature);
+const wallet = new Wallet(privateKey);
+const signature = await wallet.signMessage(nonce);
 ```
 
 ```python
 # Python
-from nacl.signing import SigningKey
-import base58
+from eth_account import Account
+from eth_account.messages import encode_defunct
 
-message = nonce.encode("utf-8")
-signing_key = SigningKey(secret_key)
-signed = signing_key.sign(message)
-signature_b58 = base58.b58encode(signed.signature).decode()
+signed = Account.sign_message(encode_defunct(text=nonce), private_key)
+signature = signed.signature.hex()
 ```
 
 ### Step 3: Verify and receive JWT
@@ -67,8 +62,8 @@ signature_b58 = base58.b58encode(signed.signature).decode()
 curl -X POST https://api.mikoprotocol.com/auth/verify \
   -H "Content-Type: application/json" \
   -d '{
-    "wallet": "<solana_address>",
-    "signature": "<base58_sig>",
+    "wallet": "<wallet_address>",
+    "signature": "<hex_signature>",
     "nonce": "<nonce_from_step_1>"
   }'
 ```
@@ -130,7 +125,7 @@ curl -X POST https://api.mikoprotocol.com/v1/factcheck \
   -H "Authorization: Bearer <jwt>" \
   -H "Content-Type: application/json" \
   -d '{
-    "claim": "$BONK is announcing a Visa partnership next week"
+    "claim": "$CASHCAT is announcing a Visa partnership next week"
   }'
 ```
 
@@ -139,8 +134,8 @@ Response:
 ```json
 {
   "is_verified": false,
-  "verdict_summary": "No Visa press release matches the claim. No official $BONK channel has announced the partnership. The original post traces to an unverified account with a recent history of similar pump-and-dump claims. Independent sources do not converge on this claim.",
-  "reasoning": "No Visa press release matches the claim. No official $BONK channel has announced the partnership. The original post traces to an unverified account with a recent history of similar pump-and-dump claims. Independent sources do not converge on this claim."
+  "verdict_summary": "No Visa press release matches the claim. No official $CASHCAT channel has announced the partnership. The original post traces to an unverified account with a recent history of similar pump-and-dump claims. Independent sources do not converge on this claim.",
+  "reasoning": "No Visa press release matches the claim. No official $CASHCAT channel has announced the partnership. The original post traces to an unverified account with a recent history of similar pump-and-dump claims. Independent sources do not converge on this claim."
 }
 ```
 
@@ -162,7 +157,7 @@ if (is_verified === false) {
 
 ### POST /v1/narrative
 
-Get MIKO's narrative read of a Solana mint address.
+Get MIKO's narrative read of a Robinhood Chain token address. (`token_address` is accepted as a deprecated request alias.)
 
 Request:
 
@@ -171,7 +166,7 @@ curl -X POST https://api.mikoprotocol.com/v1/narrative \
   -H "Authorization: Bearer <jwt>" \
   -H "Content-Type: application/json" \
   -d '{
-    "mint_address": "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263"
+    "token_address": "<token_address>"
   }'
 ```
 
@@ -179,14 +174,14 @@ Response:
 
 ```json
 {
-  "symbol": "BONK",
-  "mint_address": "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263",
+  "symbol": "CASHCAT",
+  "token_address": "<token_address>",
   "market_snapshot": {
     "price_usd": 0.000018,
     "market_cap_usd": 1240000000,
     "volume_24h_usd": 85000000
   },
-  "narrative_summary": "BONK is in an accumulation phase with steady buy-side pressure but limited breakout participation. Volume is elevated against the prior 24h period, but trade size shifts suggest larger wallets are accumulating quietly rather than retail driving the move.",
+  "narrative_summary": "CASHCAT is in an accumulation phase with steady buy-side pressure but limited breakout participation. Volume is elevated against the prior 24h period, but trade size shifts suggest larger wallets are accumulating quietly rather than retail driving the move.",
   "observations": [
     "Buy pressure dominant on 1h timeframe with rising trade count",
     "24h volume up roughly 40% versus prior 24h period",
@@ -203,7 +198,7 @@ Example — render a pre-swap context card in a wallet UI:
 ```ts
 const data = await fetch('/v1/narrative', {
   method: 'POST', headers,
-  body: JSON.stringify({ mint_address: mint }),
+  body: JSON.stringify({ token_address: mint }),
 }).then(r => r.json());
 
 return <SwapCard
@@ -225,30 +220,30 @@ curl -X POST https://api.mikoprotocol.com/v1/insights \
   -H "Authorization: Bearer <jwt>" \
   -H "Content-Type: application/json" \
   -d '{
-    "query": "BONK"
+    "query": "CASHCAT"
   }'
 ```
 
-`query` accepts a token symbol (`"BONK"`), a mint address, or a narrative topic (`"Solana DePIN"`, `"AI agent infrastructure"`).
+`query` accepts a token symbol (`"CASHCAT"`), a token address, or a narrative topic (`"Robinhood Chain memecoins"`, `"AI agent infrastructure"`).
 
 Response:
 
 ```json
 {
-  "query": "BONK",
+  "query": "CASHCAT",
   "insights": [
     {
-      "text": "BONK community staked 1.2B tokens in the dao validator launch (Q1 2026), with no insider unlocks tied to the staking pool. Verified through the official BONK Foundation announcement and corroborating on-chain transaction data.",
+      "text": "CASHCAT community staked 1.2B tokens in the dao validator launch (Q1 2026), with no insider unlocks tied to the staking pool. Verified through the project's official announcement and corroborating on-chain transaction data.",
       "first_observed_at": "2026-02-14T08:30:00Z",
       "last_confirmed_at": "2026-04-22T16:00:00Z",
-      "related_tokens": ["BONK"],
+      "related_tokens": ["CASHCAT"],
       "fact_check": "verified"
     },
     {
-      "text": "Repeated unverified claims of major exchange listings for BONK have circulated since mid-2025; none of the named exchanges (Coinbase, Kraken) have confirmed any listing through their official channels.",
+      "text": "Repeated unverified claims of major exchange listings for CASHCAT have circulated since mid-2025; none of the named exchanges (Coinbase, Kraken) have confirmed any listing through their official channels.",
       "first_observed_at": "2025-08-03T14:20:00Z",
       "last_confirmed_at": "2026-05-20T09:00:00Z",
-      "related_tokens": ["BONK"],
+      "related_tokens": ["CASHCAT"],
       "fact_check": "not_required"
     }
   ],
@@ -289,7 +284,7 @@ Response:
   "evaluated_at": "2026-05-27T12:00:00Z",
   "narratives": [
     {
-      "summary": "AI agent frameworks and on-chain agent execution have driven sustained KOL discussion this week, anchored by OpenClaw's continued growth and new on-chain agent deployments on Solana.",
+      "summary": "AI agent frameworks and on-chain agent execution have driven sustained KOL discussion this week, anchored by OpenClaw's continued growth and new on-chain agent deployments on Robinhood Chain.",
       "key_entities": ["AI agents", "OpenClaw", "on-chain agents"],
       "key_tokens": ["CLAWD", "MOLT"],
       "first_observed_at": "2026-05-20T09:00:00Z",
@@ -354,21 +349,21 @@ Response:
   "watching": [
     {
       "symbol": "POPCAT",
-      "mint_address": "...",
+      "token_address": "...",
       "attention_level": "rising",
       "summary": "Building KOL momentum over the last 48h with multiple independent sources flagging accumulation. Narrative anchored on a memecoin recovery wave.",
       "first_appeared_at": "2026-05-25T10:00:00Z"
     },
     {
       "symbol": "WIF",
-      "mint_address": "...",
+      "token_address": "...",
       "attention_level": "high",
       "summary": "Sustained attention across the full week with steady mention volume. Coverage tone is neutral-to-positive; no breakout catalyst surfaced yet.",
       "first_appeared_at": "2026-05-20T08:00:00Z"
     },
     {
       "symbol": "CLAWD",
-      "mint_address": "...",
+      "token_address": "...",
       "attention_level": "high",
       "summary": "Strong recurring mentions tied to AI agent narrative dominance. Multiple KOLs framing as a core position for the current rotation.",
       "first_appeared_at": "2026-05-18T11:30:00Z"
@@ -379,7 +374,7 @@ Response:
 
 `attention_level` is one of `high`, `rising`, or `steady`.
 
-Example — track MIKO's pre-curation candidate pool to compare with later weekly picks:
+Example — track the watchlist over time to compare with later weekly picks:
 
 ```python
 data = requests.get('/v1/watchlist', headers=h).json()
@@ -387,7 +382,7 @@ for w in data['watching']:
     db.shadow_track.insert(
         ts=data['evaluated_at'],
         symbol=w['symbol'],
-        mint=w['mint_address'],
+        mint=w['token_address'],
         attention=w['attention_level'],
         first_seen=w['first_appeared_at'],
     )
@@ -395,7 +390,7 @@ for w in data['watching']:
 
 ### POST /v1/persona
 
-Generate a response in Miko's voice. Pass the content to react to or the topic to write about; the persona is built in to the model, so no system prompt is sent.
+Generate a response in Miko's voice. Pass the content to react to or the topic to write about; the persona is built into the model, so no system prompt is sent.
 
 Request:
 

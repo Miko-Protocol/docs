@@ -24,6 +24,7 @@ const sidebars = {
       items: [
         'miko-protocol/core-components',
         'miko-protocol/symbiotic-loop-and-economics',
+	'miko-protocol/what-miko-allocates-and-why',
       ],
     },
     {

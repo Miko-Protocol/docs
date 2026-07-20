@@ -6,11 +6,11 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 const FeatureList = [
   {
-    title: 'Weekly AI-Curated Solana Asset',
+    title: 'AI-Curated Allocation at Two Speeds',
     img: '/img/feature_tax_miko.png', // Placeholder path for Miko's image
     description: (
       <>
-        Every week, Miko's AI analyzes the Solana ecosystem, selects the week's asset, and the on-chain module allocates it pro-rata to eligible holders.
+        Every week, Miko's AI Selects the core asset, while a satellite sleeve tracks the market's attention leader. Both are allocated pro-rata to eligible holders.
       </>
     ),
   },

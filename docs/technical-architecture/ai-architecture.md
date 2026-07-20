@@ -15,6 +15,7 @@ graph TD
         DS1>"KOL Tweets<br/>(400+ monitored)"]
         DS2>"Community Mentions<br/>& Recommendations"]
         DS3>"On-Chain Data<br/>(CoinGecko/Dexscreener/Birdeye API)"]
+        DS4>"Equity Market Data<br/>(Finnhub/Yahoo Finance:<br/>Quotes, History, Earnings)"]
     end
     subgraph M["Miko AI Agent — Intelligence Stack"]
         direction TB
@@ -34,6 +35,7 @@ graph TD
     DS1 --> L1
     DS2 --> L1
     DS3 --> L1
+    DS4 --> L1
     L3 --> X1
     L4 --> X2
     style L1 fill:#bfdbfe,stroke:#60a5fa
@@ -45,7 +47,7 @@ graph TD
 
 ## Layer 1: Data Ingestion and Semantic Filtering
 
-The first layer is the system's sensory apparatus. It connects to the Twitter API and on-chain data sources to collect raw information in real-time.
+The first layer is the system's sensory apparatus. It connects to the Twitter API, on-chain data sources, and — for the chain's tokenized equities — traditional equity market data feeds (Finnhub and Yahoo Finance) to collect raw information in real-time.
 
 Raw data is not useful data. This layer applies NLP-based analysis and heuristic rules to:
 
@@ -68,7 +70,7 @@ This is the layer that most fundamentally differentiates Miko from other AI agen
 
 ### Knowledge Graph
 
-Miko does not treat each piece of information as isolated. Instead, it integrates data into a structured **Knowledge Graph** stored in PostgreSQL with vector embeddings for semantic search. This graph maps relationships between tokens, KOLs, market events, and projects. When Miko encounters new information about a token, it retrieves all relevant context — past performance, associated KOLs, historical claims, and verification status — enabling informed decisions rather than reactive responses.
+Miko does not treat each piece of information as isolated. Instead, it integrates data into a structured **Knowledge Graph** stored in proprietary database with vector embeddings for semantic search. This graph maps relationships between tokens, KOLs, market events, and projects. When Miko encounters new information about a token, it retrieves all relevant context — past performance, associated KOLs, historical claims, and verification status — enabling informed decisions rather than reactive responses.
 
 The semantic search capability uses cosine similarity on embedding vectors:
 
@@ -174,23 +176,25 @@ graph LR
     style F fill:#86efac,stroke:#16a34a
 ```
 
-**For holders, this means:** Information that feeds into Miko's asset selection has been subjected to multi-source verification. In a market where a single fabricated announcement can move a token's price dramatically, this verification layer is what stands between the holder's weekly allocation and a selection based on false information.
+**For holders, this means:** Information that feeds into Miko's asset selection has been subjected to multi-source verification. In a market where a single fabricated announcement can move a token's price dramatically, this verification layer is what stands between the holder's allocation and a selection based on false information.
 
 ## Layer 3: Persona-Driven Generation Core
 
 This layer creates Miko's voice: the public-facing content on X (Twitter) that drives community engagement and growth.
 
-The Generation Core runs on a multi-model architecture (Gemini and Claude) with automatic failover. If the primary model experiences rate limiting or downtime, the system seamlessly switches to the fallback provider, ensuring continuous operation.
-
 Multiple **reaction modes** allow Miko to respond dynamically to different situations — from cheerful curiosity for friendly exchanges to sharp wit for provocative interactions to analytical depth for market discussions. These modes are not random; the system evaluates the conversational context and selects the most appropriate response style.
 
+Beyond conversational content, the Generation Core publishes **structured market reads**: when a token takes over the top of MIKO's attention board, Miko posts a curator's read — what is actually carrying the move, what kind of table it is, and the specific on-chain meter that decides where it goes next. These reads are grounded in the analyst layer's measured facts (including observed holder-structure data) and always end on the watch-point, never on a verdict — Miko is a curator, not a trading-signal account.
+
 Every response Miko generates is verified for originality before posting. The system ensures content is genuinely Miko's own expression, not a mechanical repetition of source material. This is enforced through multiple independent verification layers at the code level.
+
+Miko's persona is also **published as an open model**: a fine-tuned open-weights release on Hugging Face and Ollama that carries her voice in the weights themselves, callable through the live REST API and MCP server. See [Open Model](built-with-miko/open-model).
 
 **For holders, this matters because:** Miko's social presence is the primary driver of community growth. Community growth drives trading volume. Trading volume generates tax revenue. Tax revenue funds the weekly acquisitions. The quality and authenticity of Miko's social output directly impacts the size of the weekly acquisition treasury.
 
 ## Layer 4: Selection Algorithm
 
-This is the financial brain of the protocol. It is the system that determines which asset holders will receive each week. It is the most critical component for holder allocations and the most technically sophisticated.
+This is the financial brain of the protocol. It runs **two decision streams** — the weekly core selection that determines what the core sleeve buys, and the continuous attention-leader tracking that steers the satellite sleeve. It is the most critical component for holder allocations and the most technically sophisticated.
 
 ### Three-Phase ML Evolution
 
@@ -236,11 +240,11 @@ $$
 | Metric ($x_i$) | Weight ($w_i$) | Research Basis |
 | :--- | :---: | :--- |
 | Selected asset price performance | 0.40 | Chen et al. (2023): 45-55% range midpoint |
-| $MIKO holder growth rate | 0.22 | Liu & Tsyvinski (2021): network effects |
-| $MIKO token price performance | 0.20 | Eisenmann et al. (2006): indirect effects ≈ 50% of direct |
+| \$MIKO holder growth rate | 0.22 | Liu & Tsyvinski (2021): network effects |
+| \$MIKO token price performance | 0.20 | Eisenmann et al. (2006): indirect effects ≈ 50% of direct |
 | Community sentiment | 0.10 | Kraaijeveld & De Smedt (2020): 8-12% range |
 | Tweet engagement | 0.05 | DeFi Alliance (2024): indirect indicator |
-| $MIKO volume growth | 0.03 | Brandvold et al. (2015): 3-7% range lower bound |
+| \$MIKO volume growth | 0.03 | Brandvold et al. (2015): 3-7% range lower bound |
 
 $$
 \sum_{i=1}^{6} w_i = 1.00
@@ -268,10 +272,10 @@ Before any token can be considered as a selection candidate, it must pass a two-
 
 | Filter | Threshold | Rationale |
 | :--- | :--- | :--- |
-| Minimum Market Cap | $3,000,000 | Below this, manipulation risk is elevated (Kaiko Research, 2025) |
-| Minimum 24h Volume | $1,000,000 | Ensures sufficient liquidity for purchase execution |
-| Excluded Tokens | $MIKO | Prevents conflict-of-interest in self-selection |
-| Exempt Tokens | $SOL | Native asset exempted from quality filters |
+| Minimum Market Cap | \$2,000,000 | Below this, manipulation risk is elevated (Kaiko Research, 2025; calibrated to Robinhood Chain market scale) |
+| Minimum 24h Volume | \$500,000 | Ensures sufficient liquidity for purchase execution |
+| Excluded Tokens | \$MIKO | Prevents conflict-of-interest in self-selection |
+| Exempt Tokens | \$WETH | Benchmark asset exempted from quality filters |
 
 **Tier 2: DEX Market Structure Assessment**
 
@@ -280,7 +284,7 @@ Candidates that pass the hard filters are then evaluated through a multi-factor 
 -   **Order flow analysis:** Buy/sell pressure ratio — measures whether a token is under net accumulation or distribution
 -   **Transaction velocity:** Rate of on-chain transactions — accelerating velocity suggests growing organic interest
 -   **Breakout readiness:** Technical positioning relative to recent price range — identifies tokens at potential inflection points
--   **Relative strength:** Performance relative to the broader Solana market — filters for tokens showing independent momentum
+-   **Relative strength:** Performance relative to the broader Robinhood Chain market — filters for tokens showing independent momentum
 -   **Holder breadth:** Distribution of token holders — wider distribution suggests healthier, less manipulable markets
 
 **Risk-Based Safety Penalties:**
@@ -292,9 +296,29 @@ The market bonus is subject to multiplicative safety penalties:
 
 This two-tier system ensures that candidate assets both clear minimum quality thresholds and are also evaluated for market health and manipulation risk before being considered by the ML selection algorithm.
 
+### Equity Market Context for Stock-Token Candidates
+
+Robinhood Chain's tokenized equities are not evaluated with crypto metrics alone — a stock token's on-chain price is a window onto a real company trading in a real market, and MIKO reads that market natively through a dedicated equity data pipeline:
+
+| Signal | Source | What it tells the model |
+| :--- | :--- | :--- |
+| Real-time quote & day move | Finnhub | Where the underlying equity is trading right now |
+| Week / month price history, multi-window trend | Yahoo Finance | Whether a move is a day event or a developing trend |
+| 52-week range position (0–100) | Yahoo Finance | Whether attention is arriving near highs, lows, or mid-range |
+| Volume anomaly vs. prior-20-session average | Yahoo Finance | Whether the underlying market itself is unusually active |
+| Earnings calendar & proximity flags | Finnhub | Whether a known scheduled catalyst is days away |
+| Nominal NY trading session | Schedule-derived | Whether the underlying market is open, closed, or pre/post — so a flat on-chain price during a closed session is never misread as apathy |
+
+Two further layers calibrate these signals to this chain:
+
+-   **Chain-local size calibration:** "large" and "small" are defined by the measured size distribution of the chain's own tracked equity universe — liquidity, market cap, and volume quantiles computed from live data — not by legacy-market intuitions imported from elsewhere.
+-   **Prior-evaluation loop:** every published stock read is stored and later scored against the equity's subsequent market data on a fixed cadence, so the system's equity judgments accumulate the same measurable track record as its crypto selections.
+
+This is what "reading both engines of the chain" means in practice: community tokens are read through on-chain flow and social verification, and tokenized equities are read through the actual equity market they mirror.
+
 ### Community Suggestions and Persuasion Analysis
 
-Community members can recommend tokens by mentioning Miko (`@project_miko`) with a `$SYMBOL` tag. Unlike simple vote-counting systems, each recommendation is evaluated by the PostAnalyzer's persuasion scoring:
+Community members can recommend tokens by mentioning Miko (`@mikorithm`) with a `$SYMBOL` tag. Unlike simple vote-counting systems, each recommendation is evaluated by the PostAnalyzer's persuasion scoring:
 
 $$
 \text{persuasion\_score}(tweet) = f(\text{authenticity}, \text{reasoning\_depth}, \text{community\_alignment}, \text{ecosystem\_relevance})
@@ -302,7 +326,7 @@ $$
 
 ```mermaid
 graph TD
-    A>"User tweets @project_miko<br/>with $SYMBOL"] --> B["Spam & Abuse Filter"]
+    A>"User tweets @mikorithm<br/>with $SYMBOL"] --> B["Spam & Abuse Filter"]
     B --> C["PostAnalyzer:<br/>Persuasion Score (0.0 – 1.0)"]
     C --> D{"Score ≥ 0.3?"}
     D -->|"Yes"| E["Weighted input to Selection"]
@@ -314,7 +338,18 @@ graph TD
     style H fill:#A78BFA,stroke:#5B21B6,color:#fff
 ```
 
-Spamming the same $SYMBOL repeatedly is ineffective — the minimum persuasion threshold of 0.3 (lower 30th percentile cutoff) and the minimum of 3 total mentions ensure that only reasoned, authentic community input influences the selection.
+Spamming the same \$SYMBOL repeatedly is ineffective — the minimum persuasion threshold of 0.3 (lower 30th percentile cutoff) and the minimum of 3 total mentions ensure that only reasoned, authentic community input influences the selection.
+
+### The Satellite Stream: Gated Attention Tracking
+
+The satellite sleeve's decision stream runs continuously rather than weekly. MIKO's attention board ranks community tokens in real time from verified mentions, KOL activity, and market data; the board's leader is the satellite's target. A leader change does not rotate the sleeve by itself — the rotation must first pass **evidence-based veto gates**:
+
+-   **Spike discipline:** a candidate whose day combines an outsized price move with abnormal volume (both thresholds measured, not guessed — they were selected from an out-of-sample backtest across 404 tokens and 64 candidate rules, of which only this pattern showed consistent directional evidence) is vetoed for that day. The gate exists because such days statistically precede underperformance — the rotation waits rather than buys the hangover.
+-   **Structural safety vetoes:** minimum market cap, DEX market-structure risk flags, and a re-entry cooldown that prevents rotating back into a token the sleeve just exited.
+
+The attention board's reads are further enriched with **observed holder-structure data** from public, parameterized on-chain queries (Dune Analytics): what share of a token's recent buyers are first-time entrants within the scan window, what share of earlier buyers have not sold, and how concentrated the buying is — measured DEX activity only, never inferred "holding" claims.
+
+A vetoed rotation is deferred, never forced: the sleeve simply keeps its current position until a candidate passes. Every gate verdict is recorded with its full input signals, making the satellite's behavior as auditable as the weekly selection's.
 
 ### The Self-Improvement Loop
 
@@ -342,4 +377,4 @@ Every asset selection is automatically recorded with its full context: the asset
 
 Phase transitions and rollbacks are logged with their trigger metrics, creating a complete, queryable history of how the AI's decision-making has evolved over time.
 
-This means MIKO's AI's intelligence is grounded in an auditable track record against objective outcomes. The Selection Track Record and MIKO's Insight Dashboard will make this data publicly accessible, allowing holders and prospective investors to evaluate the AI's performance directly from the data.
+This means MIKO's AI's intelligence is grounded in an auditable track record against objective outcomes. The Selection Track Record and MIKO's Insight Dashboard make this data publicly accessible, allowing holders and prospective investors to evaluate the AI's performance directly from the data.
