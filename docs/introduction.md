@@ -107,4 +107,4 @@ MIKO operates as an **AI curation protocol** for the Robinhood Chain DEX market.
 
 Curation here means a methodology, not a metaphor: multi-source fact-checking, ML-driven ranking, and adaptive learning, backed by a published per-selection track record. The protocol acquires and allocates claim after claim, week after week; what each holder does with their allocated assets thereafter is theirs to decide.
 
-Why MIKO allocates the community-driven assets of this chain's DEX market, and how this differs from the fixed-list distribution models that preceded it, is covered in [What MIKO Allocates and Why](../miko-protocol/what-miko-allocates-and-why).
+Why MIKO allocates the community-driven assets of this chain's DEX market, and how this differs from the fixed-list distribution models that preceded it, is covered in [What MIKO Allocates and Why](../docs/miko-protocol/what-miko-allocates-and-why).
