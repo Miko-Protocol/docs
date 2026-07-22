@@ -141,14 +141,18 @@ const config = {
           {
             title: 'More',
             items: [
-	      {
-		label: 'HuggingFace',
-		href: 'https://huggingface.co/projectmiko/miko-persona-31b',
-	      },
               {
                 label: 'Youtube',
                 href: 'https://www.youtube.com/@miko-sound-stage',
               },
+	      {
+		label: 'GitHub',
+		href: 'https://github.com/Miko-Protocol',
+	      },
+	      {
+		label: 'Hugging Face',
+		href: 'https://huggingface.co/projectmiko/miko-persona-31b',
+	      },	    
             ],
           },
         ],
