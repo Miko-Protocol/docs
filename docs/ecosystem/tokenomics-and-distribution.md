@@ -12,7 +12,7 @@ MIKO Protocol’s tokenomics are designed with fairness, long-term sustainabilit
 -   **Ticker:** `MIKO`
 -   **Blockchain:** Robinhood Chain (Ethereum L2, chain ID 4663) — standard ERC-20 with an immutable Uniswap v4 swap-tax hook on the canonical pool
 -   **Total Supply:** 1,000,000,000 MIKO
--   **Contract Address:** TBD at deployment
+-   **Contract Address:** 0xacdbf5297eC6d6febddFdC68a7eCB7AB4F2ea922
 
 ## 2. Initial Distribution
 
