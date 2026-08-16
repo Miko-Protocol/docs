@@ -196,42 +196,49 @@ Miko's persona is also **published as an open model**: a fine-tuned open-weights
 
 This is the financial brain of the protocol. It runs **two decision streams** — the weekly core selection that determines what the core sleeve buys, and the continuous attention-leader tracking that steers the satellite sleeve. It is the most critical component for holder allocations and the most technically sophisticated.
 
-### Three-Phase ML Evolution
+### The Model Tournament: Three Phases, One Live Seat
 
-The Selection Algorithm evolves through three distinct statistical phases, each requiring more data and delivering higher precision. Phase transitions are automatic (based on statistical significance thresholds) and reversible (automatic rollback on performance degradation).
+The Selection Algorithm is built as a live tournament between competing models. Three statistical phases — each a real model family requiring progressively more data — enter the tournament as training data accumulates, and the weekly core selection is always made by the current champion.
 
 ```mermaid
 graph LR
-    subgraph P1["Phase 1: Exploration"]
-        P1A["Bayesian Optimization<br/>(Optuna, 100 trials)"]
-        P1B["Min: 6 weeks data<br/>Confidence: 80%<br/>Threshold: ρ ≥ 0.65"]
+    subgraph R["Tournament Roster"]
+        R0["Deterministic Baseline<br/>(attention scorer,<br/>permanent competitor)"]
+        R1["Phase 1: Bayesian<br/>linear return model"]
+        R2["Phase 2: Thompson Sampling<br/>(one posterior draw<br/>per selection)"]
+        R3["Phase 3: CatBoost<br/>Learning-to-Rank<br/>(YetiRank loss)"]
     end
-    subgraph P2["Phase 2: Exploitation"]
-        P2A["Thompson Sampling<br/>+ ε-greedy (ε = 0.10)"]
-        P2B["Min: 16 weeks data<br/>Confidence: 85%<br/>Threshold: ρ ≥ 0.70"]
-    end
-    subgraph P3["Phase 3: Precision"]
-        P3A["CatBoost<br/>Learning-to-Rank<br/>(YetiRank loss)"]
-        P3B["Min: 26 weeks data<br/>Confidence: 90%<br/>Threshold: ρ ≥ 0.75"]
-    end
-    P1 -->|"Performance<br/>threshold met"| P2
-    P2 -->|"Performance<br/>threshold met"| P3
-    P3 -.->|"Performance drop ≥ 15%<br/>or 3 consecutive failures"| P2
-    P2 -.->|"Rollback"| P1
-    style P1 fill:#fef08a,stroke:#facc15
-    style P2 fill:#bbf7d0,stroke:#22c55e
-    style P3 fill:#93c5fd,stroke:#2563eb
+    R --> S["Each weekly selection:<br/>every entrant ranks the same<br/>frozen candidate set,<br/>recorded before outcomes exist"]
+    S --> E["7-day outcomes mature →<br/>every entrant scored by Spearman ρ<br/>between its recorded ranking<br/>and realized returns"]
+    E --> C["Cumulative leader<br/>holds the live seat"]
+    C -->|"automatic,<br/>bidirectional"| S
+    style R0 fill:#fef08a,stroke:#facc15
+    style C fill:#86efac,stroke:#16a34a
 ```
 
-**Phase 1 — Bayesian Optimization:** With limited historical data (first 6+ weeks), the system uses Bayesian optimization via Optuna to explore which features and weight combinations best predict successful asset selections. This phase is exploratory. The model is learning what matters.
+How the seat is decided:
 
-**Phase 2 — Thompson Sampling:** With 16+ weeks of accumulated data, the system transitions to Thompson Sampling with 10% epsilon-greedy exploration. This balances exploiting known successful patterns with continued exploration of new opportunities. The transition requires a Spearman correlation coefficient $\rho \geq 0.7$ between predicted and actual outcomes.
+-   **Blind predictions first.** At each weekly selection, every entrant scores the same frozen candidate view, and its complete ranking is recorded before any outcome exists. Predictions are immutable — there is no backscoring.
+-   **Outcomes as the judge.** When a selection group's 7-day outcomes are complete, each entrant is scored by the Spearman rank correlation between its recorded ranking and the candidates' realized 7-day returns — every entrant against the identical candidate set and identical labels.
+-   **The champion is the cumulative leader.** The live selector is whichever entrant leads the accumulated paired record. Promotion and demotion are the same rule in both directions: a model takes the seat by out-predicting the incumbent on the shared record, and loses it the same way. Both directions are automatic.
+-   **Sequential entry.** Phase 1 — a Bayesian linear return model fitted over the frozen candidate features, with its prior anchored to the deterministic baseline — enters as soon as the first complete training group exists. Phase 2 — Thompson sampling that draws one reproducible coefficient sample from the Phase 1 posterior per selection and scores all candidates with that same draw — follows. Phase 3 — CatBoost learning-to-rank with YetiRank loss, one ranking group per selection — enters as the dataset grows. Each new entrant competes from its first week: it is scored, not trusted.
+-   **The permanent baseline.** The deterministic attention scorer anchoring the roster is never retired. If no learned model can out-predict it, it simply keeps the seat — a floor under the whole system. Random selection and the chain's benchmark asset are recorded alongside the roster as reference floors, visible in the same records but never eligible for the seat.
 
-**Phase 3 — CatBoost Learning-to-Rank:** With 26+ weeks of data, a full machine learning model using CatBoost's YetiRank loss function takes over. This model predicts which candidate asset will achieve the highest Composite Outcome Score.
+### The Deterministic Baseline: Attention Acceleration
 
-### Composite Outcome Score
+The tournament's founding incumbent is a deterministic scorer built for one question: *where is verified, independent attention arriving right now?*
 
-Each selection is evaluated against a multi-metric composite score. The weights are derived from empirical research on cryptocurrency success factors:
+-   **Independent-author corroboration:** selection input is KOL coverage with **one vote per distinct author** — an author's repeated posts collapse into a single voice, so posting volume cannot substitute for breadth. A minimum number of independent authors in the current window is required before a token is rankable at all.
+-   **Persuasion-weighted support:** each author's voice is weighted by the persuasion score of their posts, so reasoned conviction counts more than reflexive hype, and low-persuasion noise shrinks toward zero.
+-   **Acceleration, not level:** support is measured against the token's own trailing 7-day baseline. A token that has been loud all week must keep exceeding its own normal to stay on top; a quiet token that suddenly draws broad, persuasive attention registers immediately.
+
+### Outcome Measurement
+
+Two layers of outcome data are recorded for every weekly cycle.
+
+**Training labels.** The learning models train on — and are judged by — the realized 7-day return of **every candidate** in the frozen selection group, not only the announced winner. All-candidate labels are what make rank correlation measurable: the system records not just how its pick performed, but how everything it ranked performed.
+
+**The public track record.** Each announced selection additionally receives a multi-metric composite score for the public track record. The weights are derived from empirical research on cryptocurrency success factors:
 
 $$
 S_{\text{composite}} = \sum_{i=1}^{n} w_i \cdot x_i
@@ -250,19 +257,9 @@ $$
 \sum_{i=1}^{6} w_i = 1.00
 $$
 
-### Automatic Rollback Mechanism
+### Champion Accountability
 
-The system includes hard-coded safeguards against model degradation:
-
-$$
-\text{Rollback triggers if:} \begin{cases}
-\Delta_{\text{performance}} \geq 0.15 & \text{(15\% drop from baseline)} \\
-n_{\text{consecutive\_failures}} \geq 3 & \text{(3 sequential underperformances)} \\
-\Delta_{\text{confidence}} \geq 0.10 & \text{(10\% confidence degradation)}
-\end{cases}
-$$
-
-When triggered, the system reverts to the previous phase and continues collecting data until the transition threshold is met again. This ensures that a poorly calibrated model never persists in making selections with real capital.
+Degradation protection is built into the seat itself rather than bolted on as a separate mechanism. The champion is re-derived from the cumulative record every time a selection group's outcomes mature: a model that stops out-predicting its competitors loses the live seat to whichever entrant now leads — including back to the deterministic baseline. Because demotion is the same automatic rule as promotion, a poorly calibrated model cannot persist in making selections with real capital, and every seat change is recorded with the standings that caused it.
 
 ### Token Quality Filters
 
@@ -279,7 +276,7 @@ Before any token can be considered as a selection candidate, it must pass a two-
 
 **Tier 2: DEX Market Structure Assessment**
 
-Candidates that pass the hard filters are then evaluated through a multi-factor market structure analysis using real-time DEX data. This assessment produces a market bonus score that incorporates:
+Candidates that pass the hard filters are then screened through a multi-factor market structure analysis using real-time DEX data. The assessment is a safety screen: structural red flags veto a candidate for that cycle rather than adjusting its score. Signals evaluated include:
 
 -   **Order flow analysis:** Buy/sell pressure ratio — measures whether a token is under net accumulation or distribution
 -   **Transaction velocity:** Rate of on-chain transactions — accelerating velocity suggests growing organic interest
@@ -287,14 +284,11 @@ Candidates that pass the hard filters are then evaluated through a multi-factor 
 -   **Relative strength:** Performance relative to the broader Robinhood Chain market — filters for tokens showing independent momentum
 -   **Holder breadth:** Distribution of token holders — wider distribution suggests healthier, less manipulable markets
 
-**Risk-Based Safety Penalties:**
+**Structural Vetoes:**
 
-The market bonus is subject to multiplicative safety penalties:
--   **Severe risk flags** (e.g., concentrated ownership, suspicious contract patterns) → 75% penalty
--   **Fast decay detection** (rapid price decline pattern) → 50% penalty
--   **Elevated risk score** → proportional discount based on severity
+Severe risk flags — concentrated ownership, one-way order flow, thin exit liquidity — remove a candidate from consideration for that cycle outright, regardless of how strongly the attention scoring favors it.
 
-This two-tier system ensures that candidate assets both clear minimum quality thresholds and are also evaluated for market health and manipulation risk before being considered by the ML selection algorithm.
+This two-tier system ensures that candidate assets both clear minimum quality thresholds and pass a market-health and manipulation-risk screen before any selection is finalized.
 
 ### Equity Market Context for Stock-Token Candidates
 
@@ -318,31 +312,33 @@ This is what "reading both engines of the chain" means in practice: community to
 
 ### Community Suggestions and Persuasion Analysis
 
-Community members can recommend tokens by mentioning Miko (`@mikorithm`) with a `$SYMBOL` tag. Unlike simple vote-counting systems, each recommendation is evaluated by the PostAnalyzer's persuasion scoring:
+Community members can put a token on Miko's radar by mentioning her (`@mikorithm`) with a `$SYMBOL` tag. Every recommendation is read and evaluated — the PostAnalyzer scores its persuasiveness from Miko's own perspective:
 
 $$
 \text{persuasion\_score}(tweet) = f(\text{authenticity}, \text{reasoning\_depth}, \text{community\_alignment}, \text{ecosystem\_relevance})
 $$
 
+A recommendation that clears the spam filter and the persuasion screen **admits the token into Miko's tracked candidate universe**: its on-chain identity is resolved, its pool is verified, and from that point its attention and market history are recorded continuously. Discovery is where community input carries real power — a token that no one on the KOL radar has named yet can enter Miko's field of view through a single well-argued mention.
+
+Selection weight, however, is earned through independent corroboration: the ranking that decides the weekly asset counts one vote per distinct author on the KOL radar, persuasion-weighted and measured against the token's own baseline. Spamming a \$SYMBOL is ineffective by construction — repeated posts from one account collapse into a single voice, and no volume of self-promotion can substitute for broad, independent conviction.
+
 ```mermaid
 graph TD
     A>"User tweets @mikorithm<br/>with $SYMBOL"] --> B["Spam & Abuse Filter"]
     B --> C["PostAnalyzer:<br/>Persuasion Score (0.0 – 1.0)"]
-    C --> D{"Score ≥ 0.3?"}
-    D -->|"Yes"| E["Weighted input to Selection"]
+    C --> D{"Passes screening?"}
+    D -->|"Yes"| E["Token admitted to tracked universe:<br/>identity resolved, pool verified,<br/>history recorded"]
     D -->|"No"| F["Filtered out"]
-    E --> G["Combined with KOL data<br/>+ on-chain metrics"]
+    E --> G["Selection ranking:<br/>independent-author corroboration<br/>(one vote per distinct author,<br/>persuasion-weighted)"]
     G --> H["Final Asset Selection"]
     style A fill:#E9D5FF,stroke:#8B5CF6
     style F fill:#fca5a5,stroke:#dc2626
     style H fill:#A78BFA,stroke:#5B21B6,color:#fff
 ```
 
-Spamming the same \$SYMBOL repeatedly is ineffective — the minimum persuasion threshold of 0.3 (lower 30th percentile cutoff) and the minimum of 3 total mentions ensure that only reasoned, authentic community input influences the selection.
-
 ### The Satellite Stream: Gated Attention Tracking
 
-The satellite sleeve's decision stream runs continuously rather than weekly. MIKO's attention board ranks community tokens in real time from verified mentions, KOL activity, and market data; the board's leader is the satellite's target. A leader change does not rotate the sleeve by itself — the rotation must first pass **evidence-based veto gates**:
+The satellite sleeve's decision stream runs continuously rather than weekly. MIKO's attention board ranks community tokens in real time using the deterministic attention-acceleration scorer directly — author-deduplicated, persuasion-weighted KOL support measured against each token's own baseline — and the board's leader is the satellite's target. The satellite always runs on this deterministic instrument: fast rotation stays on the scorer purpose-built for freshness, while the learned models compete for the weekly core seat. A leader change does not rotate the sleeve by itself — the rotation must first pass **evidence-based veto gates**:
 
 -   **Spike discipline:** a candidate whose day combines an outsized price move with abnormal volume (both thresholds measured, not guessed — they were selected from an out-of-sample backtest across 404 tokens and 64 candidate rules, of which only this pattern showed consistent directional evidence) is vetoed for that day. The gate exists because such days statistically precede underperformance — the rotation waits rather than buys the hangover.
 -   **Structural safety vetoes:** minimum market cap, DEX market-structure risk flags, and a re-entry cooldown that prevents rotating back into a token the sleeve just exited.
@@ -353,28 +349,29 @@ A vetoed rotation is deferred, never forced: the sleeve simply keeps its current
 
 ### The Self-Improvement Loop
 
-Every selection generates outcome data that feeds back into the model:
+Every weekly cycle generates outcome data that feeds back into the models:
 
 ```mermaid
 graph TD
-    A["Weekly Asset<br/>Selected & Announced"] --> B["Outcome Collector:<br/>24h & 7d Performance"]
-    B --> C["Calculate Composite<br/>Outcome Score"]
-    C --> D["Update Training Dataset:<br/>Features + Outcome"]
-    D --> E["Retrain / Update<br/>ML Model"]
-    E --> F["Next Week's Selection<br/>(Improved Model)"]
+    A["Weekly Selection:<br/>every entrant's ranking<br/>recorded blind"] --> B["Outcome Collector:<br/>7d return of every<br/>ranked candidate"]
+    B --> C["Group Evaluation:<br/>each entrant scored by Spearman ρ<br/>vs. realized returns"]
+    C --> D["Standings Updated:<br/>cumulative leader<br/>holds the live seat"]
+    C --> E["Retrain Challengers<br/>on the grown dataset"]
+    D --> F["Next Week's Selection<br/>(Current Champion)"]
+    E --> F
     F --> A
     style A fill:#a78bfa,stroke:#7c3aed,color:#fff
     style E fill:#86efac,stroke:#16a34a
 ```
 
-This creates a closed-loop system where the AI's selections become progressively more refined over time. Early selections (Phase 1) are exploratory; later selections (Phase 3) are informed by months of accumulated outcome data and a fully trained ranking model.
+This creates a closed-loop system where the selection intelligence becomes progressively more refined: every completed week adds one more fully scored group to the shared record, the learning models retrain on the grown dataset, and the live seat follows the accumulated evidence.
 
 ## Verifiable Track Record
 
 Most AI agent projects ask holders to trust their intelligence based on narrative — follower counts, ecosystem metrics, or team credentials. MIKO's system is designed to be **measurable by default**.
 
-Every asset selection is automatically recorded with its full context: the asset selected, the ML phase and model version that made the decision, whether it was an exploration pick, and — critically — the selected asset's price performance at 24 hours and 7 days after announcement. Each selection receives a Composite Outcome Score that quantifies its success, and this score feeds directly back into the ML model's training data.
+Every asset selection is automatically recorded with its full context: the asset selected, the exact tournament entrant and model artifact that made the decision, every entrant's blind ranking of the full candidate set, and — critically — the realized price performance of every ranked candidate at 24 hours and 7 days after announcement. Each announced selection receives a Composite Outcome Score for the public record, while the all-candidate outcomes feed the models' training data.
 
-Phase transitions and rollbacks are logged with their trigger metrics, creating a complete, queryable history of how the AI's decision-making has evolved over time.
+Champion changes and each cycle's tournament standings are logged with the record that produced them, creating a complete, queryable history of how the AI's decision-making has evolved over time.
 
 This means MIKO's AI's intelligence is grounded in an auditable track record against objective outcomes. The Selection Track Record and MIKO's Insight Dashboard make this data publicly accessible, allowing holders and prospective investors to evaluate the AI's performance directly from the data.

@@ -25,7 +25,7 @@ The \$MIKO token's role differs from that of governance, utility, or a AI narrat
 4. Miko's on-chain module acquires the selected asset with accumulated tax revenue
 5. All eligible holders receive the acquired asset as a pro-rata allocation
 
-This is a measurable system. Every selection is recorded with its outcome: the asset selected, its price performance at 24 hours and 7 days, and a composite outcome score that feeds back into the AI's learning. MIKO's intelligence is grounded in this track record, accumulating with every weekly cycle and publicly auditable.
+This is a measurable system. Every selection is recorded with its outcome: the asset selected, its price performance at 24 hours and 7 days, and a composite outcome score for the public record — while the realized outcome of every candidate the AI ranked feeds back into its learning. MIKO's intelligence is grounded in this track record, accumulating with every weekly cycle and publicly auditable.
 
 ```mermaid
 graph LR
