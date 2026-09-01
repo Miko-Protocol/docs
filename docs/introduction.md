@@ -33,6 +33,7 @@ graph TD
         B>"Community Mentions"] --> D
         C>"On-Chain Market Data<br/>(CoinGecko/Dexscreener/Birdeye API)"] --> D
         C2>"Equity Market Data<br/>(Quotes, History, Earnings —<br/>Finnhub/Yahoo Finance)"] --> D
+        C3>"Smart-Wallet Flows<br/>(receipt-verified buys & sells)"] --> D
         D["Layer 1: Semantic Filtering<br/>& Scoring"]
     end
     subgraph "Intelligence Processing"
@@ -53,9 +54,9 @@ graph TD
     style J fill:#4ade80,stroke:#15803d,color:#fff
 ```
 
-1.  **Miko continuously monitors** hundreds of KOL tweets, community discussions, on-chain data across the Robinhood Chain ecosystem, and — for the chain's tokenized equities — live stock market data: real-time quotes, price history, and earnings calendars, read with awareness of the underlying market's trading sessions
+1.  **Miko continuously monitors** hundreds of KOL tweets, community discussions, on-chain data across the Robinhood Chain ecosystem, the receipt-verified buys and sells of proven on-chain traders, and — for the chain's tokenized equities — live stock market data: real-time quotes, price history, and earnings calendars, read with awareness of the underlying market's trading sessions
 2.  **A multi-source Fact-Checking Engine** verifies claims before they influence any decision, consulting up to 6 independent verification providers with AI-driven verification strategy
-3.  **A self-improving ML pipeline** — Bayesian regression, Thompson Sampling, and CatBoost Learning-to-Rank models competing in a live tournament against a deterministic baseline — selects the week's optimal core asset, while gated attention tracking steers the satellite
+3.  **A self-improving ML pipeline** — Bayesian regression, Thompson Sampling, and CatBoost Learning-to-Rank models competing in a live tournament against a deterministic baseline — selects the week's optimal core asset from two fused evidence axes, verified attention and verified capital, while gated attention tracking steers the satellite
 4.  **Miko's on-chain module** autonomously acquires the selected assets using the swap-tax revenue accumulated from the canonical MIKO/ETH pool — the weekly selection through the core sleeve, and the market's current attention leader through a continuously rotating satellite sleeve
 5.  **The acquired assets are allocated** to all eligible holders' positions, proportional to their \$MIKO holdings
 
@@ -67,6 +68,7 @@ graph TD
 -   **Self-Improving Selection Intelligence:** The Selection Algorithm evolves through three statistical phases that enter a live model tournament as data accumulates. The live seat belongs to whichever model's predictions best match realized outcomes — promotion and demotion are both automatic. Every selection feeds back into the models, making future selections more precise.
 -   **Two-Speed Allocation:** The acquisition treasury runs two sleeves at once — a weekly core sleeve carrying the AI's verified selection, and a continuously rotating satellite sleeve tracking the chain's live community attention leader behind evidence-based safety gates. Holders hold one token and receive both rhythms of the market.
 -   **Sustainable On-Chain Funding:** A fixed 4% swap tax on every \$MIKO trade in the canonical pool, enforced by an immutable Uniswap v4 hook, provides a continuous funding stream for acquisitions. There is no pool fee on top of it, and wallet-to-wallet transfers are untaxed. As long as \$MIKO is traded, the acquisition treasury is funded.
+-   **A Treasury That Trades:** Beyond collecting fees, the protocol puts its own capital to work. The MIKO Treasury Desk trades the same selections the AI makes for holders, under mechanical take-profit and stop-loss discipline, and settles 75% of its realized weekly profit back to the ecosystem — half into the allocation treasury, half into a \$MIKO buyback. The swap fee pays holders when \$MIKO trades; the desk pays holders when the intelligence is right.
 -   **An Intelligence Surface You Can Call:** MIKO's capabilities are not locked inside the protocol. Holders can call the fact-checker, narrative reads, insights, and Miko's own voice through a live wallet-authenticated [REST API](technical-architecture/built-with-miko/rest-api) and [MCP server](technical-architecture/built-with-miko/mcp-server), and Miko's persona model is published as [open weights](technical-architecture/built-with-miko/open-model) on Hugging Face and Ollama — downloadable and runnable by anyone.
 </div>
 

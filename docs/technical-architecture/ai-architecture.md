@@ -12,10 +12,11 @@ Miko's intelligence is not a single model responding to prompts. It is a product
 graph TD
     subgraph D["Data Sources"]
         direction LR
-        DS1>"KOL Tweets<br/>(400+ monitored)"]
+        DS1>"KOL Tweets<br/>(500+ monitored)"]
         DS2>"Community Mentions<br/>& Recommendations"]
         DS3>"On-Chain Data<br/>(CoinGecko/Dexscreener/Birdeye API)"]
         DS4>"Equity Market Data<br/>(Finnhub/Yahoo Finance:<br/>Quotes, History, Earnings)"]
+        DS5>"Smart-Wallet Flows<br/>(receipt-verified on-chain<br/>buys & sells)"]
     end
     subgraph M["Miko AI Agent — Intelligence Stack"]
         direction TB
@@ -36,6 +37,7 @@ graph TD
     DS2 --> L1
     DS3 --> L1
     DS4 --> L1
+    DS5 --> L1
     L3 --> X1
     L4 --> X2
     style L1 fill:#bfdbfe,stroke:#60a5fa
@@ -47,7 +49,7 @@ graph TD
 
 ## Layer 1: Data Ingestion and Semantic Filtering
 
-The first layer is the system's sensory apparatus. It connects to the Twitter API, on-chain data sources, and — for the chain's tokenized equities — traditional equity market data feeds (Finnhub and Yahoo Finance) to collect raw information in real-time.
+The first layer is the system's sensory apparatus. It connects to the Twitter API, on-chain data sources, and — for the chain's tokenized equities — traditional equity market data feeds (Finnhub and Yahoo Finance) to collect raw information in real-time. It also ingests a curated smart-wallet feed: the on-chain buys and sells of proven Robinhood Chain traders. Unlike social data, wallet events are not taken at their word — each one is verified against the chain itself (the transaction receipt must show the exact token moving to the exact wallet) before it can influence anything downstream.
 
 Raw data is not useful data. This layer applies NLP-based analysis and heuristic rules to:
 
@@ -203,7 +205,7 @@ The Selection Algorithm is built as a live tournament between competing models. 
 ```mermaid
 graph LR
     subgraph R["Tournament Roster"]
-        R0["Deterministic Baseline<br/>(attention scorer,<br/>permanent competitor)"]
+        R0["Deterministic Baseline<br/>(attention + capital<br/>fusion scorer,<br/>permanent competitor)"]
         R1["Phase 1: Bayesian<br/>linear return model"]
         R2["Phase 2: Thompson Sampling<br/>(one posterior draw<br/>per selection)"]
         R3["Phase 3: CatBoost<br/>Learning-to-Rank<br/>(YetiRank loss)"]
@@ -222,15 +224,50 @@ How the seat is decided:
 -   **Outcomes as the judge.** When a selection group's 7-day outcomes are complete, each entrant is scored by the Spearman rank correlation between its recorded ranking and the candidates' realized 7-day returns — every entrant against the identical candidate set and identical labels.
 -   **The champion is the cumulative leader.** The live selector is whichever entrant leads the accumulated paired record. Promotion and demotion are the same rule in both directions: a model takes the seat by out-predicting the incumbent on the shared record, and loses it the same way. Both directions are automatic.
 -   **Sequential entry.** Phase 1 — a Bayesian linear return model fitted over the frozen candidate features, with its prior anchored to the deterministic baseline — enters as soon as the first complete training group exists. Phase 2 — Thompson sampling that draws one reproducible coefficient sample from the Phase 1 posterior per selection and scores all candidates with that same draw — follows. Phase 3 — CatBoost learning-to-rank with YetiRank loss, one ranking group per selection — enters as the dataset grows. Each new entrant competes from its first week: it is scored, not trusted.
--   **The permanent baseline.** The deterministic attention scorer anchoring the roster is never retired. If no learned model can out-predict it, it simply keeps the seat — a floor under the whole system. Random selection and the chain's benchmark asset are recorded alongside the roster as reference floors, visible in the same records but never eligible for the seat.
+-   **An honest history.** When the evidence basis widened from attention alone to attention plus verified capital, the record was not rewritten. The earlier social-only models remain in the same records as reference benchmarks — scored on every selection group they can represent, visible alongside the current roster, but no longer eligible for the seat. The track record keeps its past instead of replacing it.
+-   **The permanent baseline.** The deterministic fusion scorer anchoring the roster is never retired. If no learned model can out-predict it, it simply keeps the seat — a floor under the whole system. Random selection and the chain's benchmark asset are recorded alongside the roster as reference floors, visible in the same records but never eligible for the seat.
 
 ### The Deterministic Baseline: Attention Acceleration
 
-The tournament's founding incumbent is a deterministic scorer built for one question: *where is verified, independent attention arriving right now?*
+The roster's deterministic anchor is a scorer built for one question: *where is verified, independent conviction arriving right now?* Its first axis is attention:
 
 -   **Independent-author corroboration:** selection input is KOL coverage with **one vote per distinct author** — an author's repeated posts collapse into a single voice, so posting volume cannot substitute for breadth. A minimum number of independent authors in the current window is required before a token is rankable at all.
 -   **Persuasion-weighted support:** each author's voice is weighted by the persuasion score of their posts, so reasoned conviction counts more than reflexive hype, and low-persuasion noise shrinks toward zero.
 -   **Acceleration, not level:** support is measured against the token's own trailing 7-day baseline. A token that has been loud all week must keep exceeding its own normal to stay on top; a quiet token that suddenly draws broad, persuasive attention registers immediately.
+
+### The Second Evidence Axis: Verified Capital
+
+Attention tells the system what the market is *saying*. Since the multisignal upgrade, the scorer reads a second, independent axis: what a curated set of proven on-chain traders is *doing with real money*. The two axes are fused into one score — and the capital axis is engineered so that it corroborates attention without ever being buyable:
+
+```mermaid
+graph LR
+    subgraph "Axis 1: Attention"
+        A>"KOL & community posts"] --> AD["One vote per<br/>distinct author,<br/>persuasion-weighted"]
+    end
+    subgraph "Axis 2: Capital"
+        W>"Smart-wallet buys & sells"] --> WV["On-chain receipt<br/>verification"]
+        WV --> WC["One bounded unit per<br/>effective actor<br/>(wallet cluster)"]
+    end
+    AD --> F["Actor-additive fusion:<br/>two axes, added once"]
+    WC --> F
+    F --> S["Core ranking &<br/>satellite attention board"]
+    style WV fill:#fef08a,stroke:#facc15
+    style F fill:#bbf7d0,stroke:#22c55e
+    style S fill:#86efac,stroke:#16a34a
+```
+
+-   **Receipts, not reports.** A wallet event enters the pipeline only after the chain itself confirms it: the transaction receipt must show the exact token transferring to the exact wallet. An unconfirmable event is held for review, never scored.
+-   **One actor, one voice — on-chain too.** Just as the attention axis counts one vote per distinct author, the capital axis counts one bounded unit per *effective actor*: wallets that can be linked are collapsed into a single cluster, and a cluster's contribution is the **mean** of its buys' time-decay weights, not the sum:
+
+$$
+w_{\text{actor}} = \frac{1}{|B|} \sum_{b \in B} 2^{-\Delta t_b / \tau}
+$$
+
+Twenty buys from one actor are one voice, and re-buying cannot pin that voice at maximum freshness.
+-   **Size saturates.** On the satellite board, an actor's conviction is scaled by a saturating size factor measured against the current market's own median buy, $\sigma = U / (U + \tilde{U})$ — an actor buying the median size carries weight 0.5, and no position, however large, can even double that. Breadth of independent conviction outranks depth of any single pocket.
+-   **Sells count against.** A tracked actor distributing a position decays its earlier support; a sell with no matching buy registers as bounded negative evidence. The capital axis reads exits as honestly as entries.
+
+The result is a scorer that cannot be gamed from either side alone: posting volume collapses into one social voice, and buying volume collapses into one capital voice. Moving the board requires what a genuine narrative produces naturally — many independent people saying it, and many independent wallets doing it.
 
 ### Outcome Measurement
 
@@ -338,10 +375,15 @@ graph TD
 
 ### The Satellite Stream: Gated Attention Tracking
 
-The satellite sleeve's decision stream runs continuously rather than weekly. MIKO's attention board ranks community tokens in real time using the deterministic attention-acceleration scorer directly — author-deduplicated, persuasion-weighted KOL support measured against each token's own baseline — and the board's leader is the satellite's target. The satellite always runs on this deterministic instrument: fast rotation stays on the scorer purpose-built for freshness, while the learned models compete for the weekly core seat. A leader change does not rotate the sleeve by itself — the rotation must first pass **evidence-based veto gates**:
+The satellite sleeve's decision stream runs continuously rather than weekly. MIKO's attention board ranks community tokens in real time on the same two fused axes — author-deduplicated, persuasion-weighted attention and receipt-verified smart-wallet capital, each measured against the token's own baseline — and the board's leader is the satellite's target.
+
+The switch-or-hold decision itself runs as a tournament, mirroring the weekly core seat at rotation speed. On every decision edge, the evidence is sealed once and every roster entrant reads the same sealed view; the seated entrant's verdict is the one that acts, matured decisions are scored against realized short-horizon outcomes, and the seat follows the standings on a daily review — automatically, in both directions. Any inability to decide resolves to HOLD: the sleeve fails closed, never open.
+
+A leader change does not rotate the sleeve by itself — the seated entrant's rotation must still pass **evidence-based veto gates**:
 
 -   **Spike discipline:** a candidate whose day combines an outsized price move with abnormal volume (both thresholds measured, not guessed — they were selected from an out-of-sample backtest across 404 tokens and 64 candidate rules, of which only this pattern showed consistent directional evidence) is vetoed for that day. The gate exists because such days statistically precede underperformance — the rotation waits rather than buys the hangover.
 -   **Structural safety vetoes:** minimum market cap, DEX market-structure risk flags, and a re-entry cooldown that prevents rotating back into a token the sleeve just exited.
+-   **Execution-impact discipline:** approval to rotate is not approval to buy at any cost. At claim time, the execution layer measures the actual swap route's price impact at the sleeve's real size; a market too thin to absorb the order within a 3% impact tolerance is not force-bought — the sleeve takes WETH for that claim instead, visible on-chain in the claim's own purchase transaction. Holders are never handed the slippage bill for a market that could not carry the position.
 
 The attention board's reads are further enriched with **observed holder-structure data** from public, parameterized on-chain queries (Dune Analytics): what share of a token's recent buyers are first-time entrants within the scan window, what share of earlier buyers have not sold, and how concentrated the buying is — measured DEX activity only, never inferred "holding" claims.
 

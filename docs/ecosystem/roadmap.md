@@ -15,12 +15,13 @@ graph LR
     style P3 fill:#bfdbfe,stroke:#60a5fa
 ```
 
-## Phase 1: Genesis and Protocol Launch (Current)
+## Phase 1: Genesis and Protocol Launch
 
 -   **Miko AI Agent:** KOL tweet collection, knowledge base construction, multi-source fact-checking, and weekly asset selection via the Selection Algorithm.
 -   **MIKO Token and Protocol Contracts:** Deployment on the Robinhood Chain mainnet.
 -   **Initial Liquidity and Trading:** Initial liquidity in the canonical MIKO/ETH pool and the start of \$MIKO trading.
 -   **Weekly Allocation Cycle:** Weekly selection, acquisition, and allocation to holders, with the acquisition treasury split between the core selection and the attention satellite sleeve.
+-   **Treasury Desk and Weekly Settlement:** The protocol's own capital trading the AI's selections under mechanical risk discipline, settling 75% of realized weekly profit into the allocation treasury and a \$MIKO buyback.
 -   **'MIKO's Insight' Dashboard and Selection Track Record:** Public analytics covering the data Miko collects and the recorded performance of every weekly selection.
 -   **'Miko's Circle' Leaderboard:** The platform connecting users' X activity with their on-chain wallets, opening with the Season 1 airdrop.
 -   **REST API, MCP Server, and Open Model:** Wallet-authenticated access to fact-checking, narrative reads, insights, watchlist, and persona, with the persona model published as open weights on Hugging Face and Ollama.

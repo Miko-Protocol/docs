@@ -32,3 +32,5 @@ The flow of collected fees drives an automated 'Acquisition Flywheel' as follows
 2.  **Acquisition Funding:** 75% of each claim (3% of trade value) funds asset acquisition; the remainder funds protocol operations.
 3.  **Two-Sleeve Acquisition:** The acquisition pool is split between two sleeves: the core sleeve (75%) programmatically acquires the week's selected asset chosen by the Miko AI, and the satellite sleeve (25%) acquires the community attention leader that MIKO tracks continuously, rotating when attention genuinely moves.
 4.  **Holder Allocation:** The acquired assets are allocated pro-rata to all eligible MIKO holders, proportional to their holdings.
+
+The swap fee is the flywheel's first engine, scaling with trading volume. A second engine runs beside it: the **MIKO Treasury Desk** trades the protocol's own capital on the same AI selections and settles the majority of its realized profit into this same treasury and a \$MIKO buyback every week — a funding stream tied to the intelligence's performance rather than to trading volume. The full mechanics are covered in [Symbiotic Loop & Economics](./symbiotic-loop-and-economics).

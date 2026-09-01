@@ -24,6 +24,7 @@ Here is how the two protocols compare:
 | :--- | :--- | :--- |
 | **Total trading cost** | About **4%**: the documented 3% hook fee plus a 1% pool fee that its materials do not mention (`FEE_BPS = 300` in the verified hook, `fee = 10000` in the pool's Initialize event) | Exactly **4%**: `FEE_BPS = 400` in the verified hook, and the pool fee is set to **zero**. There is no cost outside the stated number |
 | **Where the cost goes** | **3%** to holders; **1%** undisclosed in its docs and website | **3%** to holders (2.25% weekly core + 0.75% attention satellite), **1%** operations — both stated up front |
+| **What funds the payouts** | The trading tax alone — no volume, no payout | The trading tax, **plus** the weekly settled profit of the protocol's own treasury desk: 37.5% of realized trading profit tops up the allocation treasury and 37.5% buys \$MIKO back through the canonical pool, independent of \$MIKO's own trading volume |
 | **How the allocated asset is chosen** | Operator-registered list (`addStock()` / `removeStock()`), bought in equal slices — a fixed list, manually maintained | Weekly AI selection across both tokenized stocks and community tokens, plus a continuously tracked attention sleeve, with a published per-selection track record |
 | **Can the distribution structure change after launch?** | Yes, by owner call: `setDistributor()` reassigns where purchased assets go, `setMinShareBalance()` moves the eligibility bar, `setRewardsExcluded()` adds and removes reward exclusions in both directions, `setInterval()` changes the payout timer | The destination of purchased assets, the holder split, and the eligibility basis are fixed at deployment with no function to change them. The core/satellite ratio moves only inside immutable contract bounds. The system-account exclusion list is **append-only**: new protocol accounts can be excluded as the infrastructure grows, no exclusion can ever be reversed, and every addition is a public on-chain event |
 | **Holder eligibility** | Fixed quantity: 10,000 INDEX | Fixed value: \$100 of MIKO, converted on-chain at claim time. |
@@ -47,11 +48,13 @@ This is why MIKO's allocation covers both markets, through two sleeves of one tr
 graph TD
     F["4% swap fee<br/>on every MIKO trade"] --> O["1%<br/>Protocol operations"]
     F --> P["3%<br/>Asset acquisition"]
+    T["Treasury desk:<br/>37.5% of weekly<br/>settled trading profit"] -.-> P
     P --> C["Core sleeve: 2.25%<br/>buys the week's<br/>AI-selected asset"]
     P --> S["Satellite sleeve: 0.75%<br/>buys the current<br/>community attention leader"]
     C --> H["All eligible holders,<br/>pro-rata"]
     S --> H
     style F fill:#e9d5ff,stroke:#a78bfa
+    style T fill:#fde68a,stroke:#d97706
     style O fill:#fde68a,stroke:#d97706
     style P fill:#d1fae5,stroke:#10b981
     style C fill:#86efac,stroke:#16a34a
@@ -64,5 +67,7 @@ graph TD
 **The satellite sleeve (25% of the acquisition pool)** follows the chain's faster engine. It holds the current leader of the community's attention and rotates when that leadership genuinely changes, with safety checks that keep it out of one-day spikes and structurally unsafe candidates. Holders get direct exposure to the market the chain actually trades, without trading it themselves.
 
 The contrast with the fixed-list model is structural. The Index and its copies cover one asset class with an operator-maintained list; MIKO reads the whole chain and lets that reading decide what the treasury buys. When attention converges on a tokenized stock, holders receive stock exposure. When it converges on a community token, the acquisition routes buying pressure into the asset the community itself chose.
+
+And the reading is not only spent on holders' behalf — it is also traded on. The protocol's own treasury desk holds the same selections with its own capital and settles its realized profit back into the allocation pipeline weekly, so the funding of holder payouts is tied to two things instead of one: how much \$MIKO trades, and how well MIKO reads the market. A fixed-list model can copy the first; only a selection intelligence with a published track record can offer the second.
 
 That is what an AI curation protocol means in practice: the treasury buys what verified community attention points at, whether that is a tokenized stock or a community token, and every acquisition and allocation is on-chain for anyone to verify.

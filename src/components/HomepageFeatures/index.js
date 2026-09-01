@@ -19,7 +19,7 @@ const FeatureList = [
     img: '/img/feature_ai_miko.png', // Placeholder path for Miko's image
     description: (
       <>
-        A multi-source verification pipeline ensures decisions are grounded in verified data. A 3-phase ML system evolves with every selection, getting sharper over time.
+        Every decision is grounded in two verified evidence axes — fact-checked attention and receipt-verified wallet capital — sharpened by a live model tournament.
       </>
     ),
   },
